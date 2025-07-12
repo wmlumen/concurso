@@ -1,3 +1,16 @@
+function cargarModulo(id, archivo, callback) {
+  fetch(archivo)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById(id).innerHTML = html;
+      if (callback) callback();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  cargarModulo('registro', './modules/registro.html', initRegistro);
+  // otros módulos...
+});
 // Carga modular de componentes HTML
 function cargarModulo(id, archivo) {
   fetch(archivo)
