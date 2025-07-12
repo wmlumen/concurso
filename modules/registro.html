@@ -25,3 +25,38 @@
   </form>
   <div id="mensaje-registro" style="margin-top: 1rem; font-weight: 600; text-align:center;"></div>
 </section>
+document.addEventListener("DOMContentLoaded", () => {
+  const inputFoto = document.getElementById("foto-perfil");
+  const preview = document.getElementById("preview");
+  const form = document.getElementById("registroForm");
+
+  inputFoto.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        preview.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const cedula = document.getElementById("cedula").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    if (!cedula || !email) {
+      alert("Todos los campos son obligatorios.");
+      return;
+    }
+
+    // Guardar en localStorage o enviar al backend
+    localStorage.setItem("cedula", cedula);
+    localStorage.setItem("email", email);
+
+    alert("Datos registrados correctamente. ¡Vamos al siguiente paso!");
+    window.location.href = "documentos.html"; // próxima etapa
+  });
+});
+
