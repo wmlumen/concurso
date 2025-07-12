@@ -3,46 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Descripción del Proyecto</title>
+  <title>Registro Proyecto Simple</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      color: #333;
-      margin: 0;
-      padding: 2rem;
+      background: #4b6cb7;
+      background: linear-gradient(to right, #182848, #4b6cb7);
+      color: white;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      text-align: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 0 20px;
+    }
+    .container {
+      background: rgba(0,0,0,0.5);
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
     h1 {
-      color: #0070f3;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: normal;
     }
-    p {
-      max-width: 600px;
-      font-size: 1.1rem;
-      line-height: 1.5;
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #6a8de3;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #557ac1;
     }
     small {
-      margin-top: 2rem;
-      color: #666;
+      display: block;
+      margin-top: 15px;
+      font-size: 12px;
+      text-align: center;
+      color: #ccc;
     }
   </style>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init('TU_USER_ID');  // Reemplaza TU_USER_ID aquí
+    })();
+  </script>
 </head>
 <body>
-  <h1>Bienvenido a Mi Proyecto</h1>
-  <p>
-    Este proyecto es una aplicación web desarrollada para [aquí pones el propósito principal, ejemplo: "facilitar la gestión de concursos docentes", "visualizar datos geoespaciales", etc.].
-  </p>
-  <p>
-    Está implementado con tecnologías modernas como React y se despliega en Vercel para asegurar una experiencia rápida y confiable.
-  </p>
-  <p>
-    Puedes explorar las funcionalidades principales accediendo a las diferentes secciones desde el menú o URL correspondiente.
-  </p>
-  <small>Esta página es temporal y será removida una vez que el proyecto esté listo para producción.</small>
+  <div class="container">
+    <h1>Regístrate para recibir novedades</h1>
+    <form id="form-registro">
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre" />
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" required placeholder="tu@email.com" />
+
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" required minlength="6" placeholder="******" />
+
+      <button type="submit">Enviar</button>
+    </form>
+    <small>Esta página es temporal y será removida cuando el proyecto esté listo.</small>
+  </div>
+
+  <script>
+    const form = document.getElementById('form-registro');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nombre = form.nombre.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+
+      if (!nombre || !email || password.length < 6) {
+        alert('Por favor completa todos los campos correctamente.');
+        return;
+      }
+
+      const templateParams = {
+        nombre: nombre,
+        email: email,
+        password: password
+      };
+
+      emailjs.send('TU_SERVICE_ID', 'TU_TEMPLATE_ID', templateParams)
+        .then(() => {
+          alert(`¡Gracias por registrarte, ${nombre}! Pronto recibirás novedades.`);
+          form.reset();
+        })
+        .catch(() => {
+          alert('Error al enviar el formulario. Intenta nuevamente más tarde.');
+        });
+    });
+  </script>
 </body>
 </html>
