@@ -3,40 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Proyecto Modular - DocentePy</title>
+  <title>DocentePy - Plataforma Integral para Docentes</title>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z67H6DBG4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-7Z67H6DBG4');
-  </script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
+  <!-- CSS principal -->
   <link rel="stylesheet" href="./styles/main.css" />
 </head>
 <body>
-  <header>
-    <h1>🌐 Proyecto Modular - DocentePy</h1>
-    <p>Plataforma escalable en desarrollo</p>
+
+  <header class="app-header">
+    <div class="container">
+      <h1>DocentePy</h1>
+      <p class="tagline">Conectamos docentes con oportunidades y simplificamos su gestión</p>
+      <nav class="main-nav">
+        <a href="#registro" class="btn btn-primary">Regístrate Gratis</a>
+        <a href="#caracteristicas" class="btn btn-outline">Características</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <!-- Módulo presentación -->
-    <section id="presentacion"></section>
+  <main class="container">
+    <section id="introduccion" style="margin-top: 3rem; text-align: center;">
+      <h2>¿Qué es DocentePy?</h2>
+      <p style="max-width: 600px; margin: 1rem auto; font-size: 1.2rem; color: #444;">
+        DocentePy es una plataforma modular diseñada para ayudar a los docentes a gestionar sus perfiles, postular a concursos públicos, almacenar documentos y recibir alertas personalizadas. Construimos soluciones paso a paso para que tu experiencia sea sencilla y eficiente.
+      </p>
+      <a href="#registro" class="btn btn-primary btn-lg">Comenzar Ahora</a>
+    </section>
 
-    <!-- Módulo registro (vacío por ahora) -->
-    <section id="modulo-registro"></section>
+    <section id="caracteristicas" style="margin-top: 4rem;">
+      <h2 style="text-align: center;">Características Destacadas</h2>
+      <div class="features-grid" style="display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 2rem; margin-top: 2rem;">
+        <div class="feature-card">
+          <h3><i class="fas fa-user"></i> Perfil Personalizado</h3>
+          <p>Crea y actualiza tu perfil docente de forma rápida y segura.</p>
+        </div>
+        <div class="feature-card">
+          <h3><i class="fas fa-file-alt"></i> Gestión de Documentos</h3>
+          <p>Sube y organiza tus certificados, puntajes y otros documentos importantes.</p>
+        </div>
+        <div class="feature-card">
+          <h3><i class="fas fa-bullhorn"></i> Alertas y Notificaciones</h3>
+          <p>Recibe avisos sobre concursos y novedades relevantes para ti.</p>
+        </div>
+        <div class="feature-card">
+          <h3><i class="fas fa-trophy"></i> Concursos Públicos</h3>
+          <p>Consulta, filtra y postúlate directamente desde la plataforma.</p>
+        </div>
+      </div>
+    </section>
 
-    <!-- Módulo perfil docente -->
-    <section id="perfil-docente"></section>
+    <section id="registro" style="margin-top: 5rem; text-align:center;">
+      <h2>Únete a DocentePy</h2>
+      <p>Regístrate hoy y forma parte de la comunidad docente que está transformando la gestión educativa.</p>
+      <a href="#" class="btn btn-primary btn-lg">Crear Cuenta</a>
+    </section>
   </main>
 
-  <footer>
-    <p>© 2025 - Proyecto en construcción</p>
+  <footer class="app-footer" style="margin-top: 6rem; padding: 2rem 0; background:#2c3e50; color:#fff; text-align:center;">
+    <p>© 2025 DocentePy - Todos los derechos reservados</p>
+    <p>Contacto: <a href="mailto:contacto@docentepy.edu.py" style="color:#f39c12;">contacto@docentepy.edu.py</a></p>
   </footer>
 
-  <script src="./scripts/main.js"></script>
+  <!-- FontAwesome (para iconos) -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
 </body>
 </html>
