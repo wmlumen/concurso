@@ -1,128 +1,26 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CONCURSA PY - Perfil Docente Profesional</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0; padding: 0;
-      background: #f5f7fa;
-      color: #333;
-    }
-    header {
-      background: #2c3e50;
-      color: white;
-      padding: 2rem;
-      text-align: center;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      margin: 0;
-    }
-    header p {
-      margin-top: 0.5rem;
-      font-weight: 300;
-    }
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    form label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 500;
-    }
-    form input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .photo-upload {
-      margin: 2rem 0;
-      text-align: center;
-    }
-    .photo-upload label {
-      display: inline-block;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: #e0e0e0;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .photo-upload label::after {
-      content: '+';
-      position: absolute;
-      font-size: 2rem;
-      color: #555;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .photo-upload input[type="file"] {
-      display: none;
-    }
-    .section-title {
-      text-align: center;
-      font-size: 1.5rem;
-      margin-top: 3rem;
-      color: #2c3e50;
-    }
-    .btn {
-      display: block;
-      background: #3498db;
-      color: white;
-      padding: 0.75rem;
-      text-align: center;
-      border-radius: 5px;
-      margin: 2rem auto 0;
-      width: 200px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>CONCURSA PY</h1>
-    <p>Perfil Docente Profesional - Gestión simplificada y automatizada</p>
-  </header>
-  <div class="container">
-    <h2 class="section-title">Registro Inicial</h2>
-    <form id="registroForm">
-      <label for="cedula">Cédula de Identidad</label>
-      <input type="text" id="cedula" name="cedula" placeholder="Ej: 1234567" required />
+<section id="registro-inicial" style="max-width: 600px; margin: 3rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+  <h2 style="text-align:center; color: #2c3e50;">Registro Inicial - CONCURSA PY</h2>
+  <form id="registroForm">
+    <div style="text-align:center; margin-bottom: 2rem;">
+      <label for="foto-perfil" style="display: inline-block; position: relative; width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 2px dashed #ccc; cursor: pointer;">
+        <img id="preview" src="./assets/default-avatar.jpg" alt="Foto de Perfil" style="width: 100%; height: 100%; object-fit: cover;" />
+        <div style="position: absolute; bottom: 0; right: 0; background: #3498db; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-plus"></i>
+        </div>
+        <input type="file" id="foto-perfil" accept="image/*" style="display: none;" />
+      </label>
+    </div>
 
-      <label for="email">Correo Electrónico</label>
-      <input type="email" id="email" name="email" placeholder="Ej: docente@email.com" required />
+    <div style="margin-bottom: 1.5rem;">
+      <label for="cedula">Cédula de Identidad:</label>
+      <input type="text" id="cedula" required placeholder="Ej: 1234567" style="width: 100%; padding: 0.75rem; border-radius: 5px; border: 1px solid #ccc;" />
+    </div>
 
-      <div class="photo-upload">
-        <label for="foto"></label>
-        <input type="file" id="foto" name="foto" accept="image/*" />
-      </div>
+    <div style="margin-bottom: 2rem;">
+      <label for="email">Correo Electrónico:</label>
+      <input type="email" id="email" required placeholder="ejemplo@correo.com" style="width: 100%; padding: 0.75rem; border-radius: 5px; border: 1px solid #ccc;" />
+    </div>
 
-      <h2 class="section-title">Cargar Documentación</h2>
-      <label for="certificacion">Certificación Documental</label>
-      <input type="file" id="certificacion" name="certificacion" accept="application/pdf" />
-
-      <label for="constancia">Constancia de Cargo</label>
-      <input type="file" id="constancia" name="constancia" accept="application/pdf" />
-
-      <label for="puntaje">Puntaje de Banco de Datos</label>
-      <input type="file" id="puntaje" name="puntaje" accept="application/pdf" />
-
-      <a href="#" class="btn">Generar Currículum Profesional</a>
-    </form>
-  </div>
-</body>
-</html>
+    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.2rem;">Continuar</button>
+  </form>
+</section>
