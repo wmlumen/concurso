@@ -1,0 +1,17 @@
+src/
+├── components/
+│   └── Contests/
+│       ├── Admin/
+│       │   ├── ContestForm.jsx       # Formulario creación/edición
+│       │   ├── ContestManagement.jsx # Panel gestión concursos
+│       │   ├── ApplicantsList.jsx    # Listado postulantes
+│       │   └── EvaluationPanel.jsx   # Panel evaluación
+│       ├── Public/
+│       │   ├── ContestList.jsx       # Listado público concursos
+│       │   ├── ContestCard.jsx       # Tarjeta de concurso
+│       │   ├── ContestDetail.jsx     # Detalle completo
+│       │   └── ApplicationForm.jsx   # Formulario postulación
+│       └── Shared/
+│           ├── Timeline.jsx          # Cronograma visual
+│           ├── RequirementsList.jsx  # Lista requisitos
+│           └── ScoringSystem.jsx     # Visualización criterios
