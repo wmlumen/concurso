@@ -121,4 +121,37 @@ document.addEventListener('DOMContentLoaded', () => {
   cargarModulo("presentacion", "./modules/presentacion.html");
   cargarModulo("perfil-docente", "./modules/perfilDocente.html");
 });
+function initRegistro() {
+  const form = document.getElementById('form-registro');
+  const mensaje = document.getElementById('mensaje-registro');
+
+  // Código válido para ejemplo
+  const codigoValido = 'DOC2025';
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const email = form.email.value.trim();
+    const codigo = form.codigo.value.trim();
+
+    mensaje.style.color = 'red';
+
+    if (!email || !codigo) {
+      mensaje.textContent = 'Por favor complete todos los campos.';
+      return;
+    }
+
+    if (codigo !== codigoValido) {
+      mensaje.textContent = 'El código de plataforma es incorrecto.';
+      return;
+    }
+
+    // Simulamos registro exitoso
+    mensaje.style.color = 'green';
+    mensaje.textContent = `¡Registro exitoso para ${email}! Gracias por unirte a DocentePy.`;
+
+    // Aquí podrías limpiar el formulario o avanzar al siguiente paso
+    form.reset();
+  });
+}
 
