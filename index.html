@@ -1,13 +1,151 @@
-<div style="max-width:600px; margin:auto; font-family:Arial, sans-serif; padding:2rem; text-align:center;">
-  <h1>Únete a nuestro proyecto</h1>
-  <p>
-    Estamos creando una plataforma que revolucionará [tu objetivo].  
-    Deja tus datos y sé el primero en recibir todas las novedades y oportunidades.
-  </p>
-  <a href="AQUÍ_EL_LINK_DE_TU_GOOGLE_FORM" target="_blank" style="display:inline-block; padding:15px 30px; background:#4b6cb7; color:#fff; border-radius:10px; font-weight:bold; text-decoration:none; font-size:1.1rem;">
-    Completar inscripción
-  </a>
-  <p style="margin-top:1rem; color:#666; font-size:0.9rem;">
-    Esta página es temporal y será removida cuando el proyecto esté listo.
-  </p>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro - Proyecto Educativo</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z67H6DBG4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-7Z67H6DBG4');
+  </script>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init('TU_USER_ID'); // Reemplaza con tu public key
+    })();
+  </script>
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(to right, #1d2b64, #f8cdda);
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #ffffffcc;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+    p {
+      text-align: center;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background: #1d2b64;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #142048;
+    }
+    .alt-registro {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .alt-registro a {
+      text-decoration: none;
+      background: #f8cdda;
+      color: #1d2b64;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    small {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¡Bienvenido al Proyecto Educativo!</h1>
+    <p>Estamos desarrollando una plataforma digital para mejorar el acceso y seguimiento a los concursos docentes. Deja tus datos para mantenerte informado.</p>
+
+    <form id="form-registro">
+      <input type="text" name="nombre" placeholder="Nombre completo" required />
+      <input type="email" name="email" placeholder="Correo electrónico" required />
+      <input type="password" name="password" placeholder="Contraseña" required minlength="6" />
+      <button type="submit">Registrarse</button>
+    </form>
+
+    <div class="alt-registro">
+      <p>¿Preferís registrarte directamente en Google?</p>
+      <a href="https://forms.gle/REEMPLAZA_CON_EL_TUYO" target="_blank">Ir al Formulario de Google</a>
+    </div>
+
+    <small>Tu información será tratada con confidencialidad. Página temporal.</small>
+  </div>
+
+  <script>
+    document.getElementById('form-registro').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const form = this;
+      const nombre = form.nombre.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+
+      if (!nombre || !email || password.length < 6) {
+        alert('Por favor, completa correctamente todos los campos.');
+        return;
+      }
+
+      const templateParams = {
+        nombre: nombre,
+        email: email,
+        password: password
+      };
+
+      emailjs.send('service_yubldfh', 'TU_TEMPLATE_ID', templateParams)
+        .then(() => {
+          alert(`¡Gracias por registrarte, ${nombre}! Pronto recibirás novedades.`);
+          form.reset();
+        })
+        .catch((error) => {
+          console.error('Error al enviar:', error);
+          alert('No se pudo enviar el formulario. Intenta más tarde.');
+        });
+    });
+  </script>
+</body>
+</html>
+
