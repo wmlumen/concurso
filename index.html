@@ -1,45 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>DocentePy - Inicio</title>
-  <link rel="stylesheet" href="styles/main.css">
-  <script defer src="scripts/main.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #panel-usuario { display: none; border: 1px solid #ccc; padding: 20px; margin-top: 20px; }
+    button { padding: 8px 15px; margin: 5px; cursor: pointer; }
+  </style>
 </head>
 <body>
-  <header class="app-header">
-    <div class="container">
-      <div class="header-content">
-        <div class="logo">
-          <img src="./assets/logo-docentepy.svg" alt="DocentePy Logo" width="140">
-          <h1>DocentePy</h1>
-        </div>
-        <nav class="main-nav">
-          <ul>
-            <li><a href="registro.html" class="nav-link"><i class="fas fa-sign-in-alt"></i> Ingresar</a></li>
-            <li><a href="Preguntas%20Frecuentes.html" class="nav-link"><i class="fas fa-question-circle"></i> Preguntas Frecuentes</a></li>
-            <li><a href="admin.html" class="nav-link"><i class="fas fa-tools"></i> Administrador</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
+
+  <header>
+    <h1>DocentePy Logo</h1>
+    <nav>
+      <button id="btn-ingresar">Ingresar</button>
+      <button id="btn-preguntas">Preguntas Frecuentes</button>
+    </nav>
   </header>
 
-  <main class="main-content">
-    <section class="hero">
-      <div class="container">
-        <h2>Bienvenido a DocentePy</h2>
-        <p>Una plataforma pensada para apoyar tu desarrollo profesional docente</p>
-        <a href="registro.html" class="btn btn-accent">Comenzar</a>
-      </div>
+  <main>
+    <section id="inicio">
+      <h2>Bienvenido a DocentePy</h2>
+      <p>Una plataforma pensada para apoyar tu desarrollo profesional docente</p>
+      <button id="btn-comenzar">Comenzar</button>
+      <footer><small>© 2025 DocentePy - Todos los derechos reservados</small></footer>
+    </section>
+
+    <section id="panel-usuario">
+      <h2>Panel del Usuario</h2>
+      <p><strong>Nombre:</strong> Christian Keim</p>
+      <p><strong>Rol:</strong> Docente</p>
+      <p><strong>Email:</strong> ckeim@example.com</p>
+      <button id="btn-logout">Cerrar sesión</button>
     </section>
   </main>
 
-  <footer class="app-footer">
-    <div class="container">
-      <p>© 2025 DocentePy - Todos los derechos reservados</p>
-    </div>
-  </footer>
+  <script>
+    const btnIngresar = document.getElementById('btn-ingresar');
+    const btnPreguntas = document.getElementById('btn-preguntas');
+    const btnComenzar = document.getElementById('btn-comenzar');
+    const panelUsuario = document.getElementById('panel-usuario');
+    const inicio = document.getElementById('inicio');
+    const btnLogout = document.getElementById('btn-logout');
+
+    function mostrarPanelUsuario() {
+      inicio.style.display = 'none';
+      panelUsuario.style.display = 'block';
+    }
+
+    function mostrarInicio() {
+      panelUsuario.style.display = 'none';
+      inicio.style.display = 'block';
+    }
+
+    btnIngresar.addEventListener('click', mostrarPanelUsuario);
+    btnComenzar.addEventListener('click', mostrarPanelUsuario);
+
+    btnLogout.addEventListener('click', mostrarInicio);
+
+    btnPreguntas.addEventListener('click', () => {
+      alert('Aquí iría la sección de Preguntas Frecuentes');
+    });
+  </script>
+
 </body>
 </html>
