@@ -1,75 +1,183 @@
-# Proyecto DocentePy: Plataforma Modular para Gestión Educativa
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DocentePy - Presentación</title>
+  <link rel="stylesheet" href="estilos/main.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    /* Estilos extra para la presentación */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f9fafb;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background: #2c3e50;
+      padding: 1rem 2rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: white;
+    }
+    header .logo img {
+      height: 40px;
+    }
+    nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #3498db;
+    }
+    main {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 4rem;
+      background: #3498db;
+      color: white;
+      border-radius: 8px;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .btn-primary {
+      background: white;
+      color: #3498db;
+      padding: 0.75rem 2rem;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: #2980b9;
+      color: white;
+    }
 
-## Visión General
+    section.info {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 2rem;
+    }
+    .info-card {
+      background: white;
+      padding: 1.5rem 1.8rem;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .info-card i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #3498db;
+    }
+    .info-card h3 {
+      margin-bottom: 0.75rem;
+      font-size: 1.25rem;
+    }
+    .info-card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
 
-DocentePy es una **plataforma modular** diseñada específicamente para la comunidad educativa en Paraguay, que ofrece:
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      margin-top: 5rem;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
 
-```mermaid
-graph TD
-    A[DocentePy] --> B[Formularios]
-    A --> C[Concursos]
-    A --> D[Dashboards]
-    A --> E[Gestión Documental]
-    A --> F[Alertas Personalizadas]
-```
+  <header role="banner">
+    <a href="index.html" class="logo" aria-label="Inicio DocentePy">
+      <img src="assets/logo-docentepy.svg" alt="DocentePy Logo" />
+      DocentePy
+    </a>
+    <nav role="navigation" aria-label="Menú principal">
+      <a href="registro.html">Registrarse</a>
+      <a href="login.html">Iniciar Sesión</a>
+      <a href="preguntas-frecuentes.html">Preguntas Frecuentes</a>
+      <a href="administrador.html">Administración</a>
+    </nav>
+  </header>
 
-## Características Clave
+  <main role="main" class="container">
+    <section class="hero" aria-label="Introducción DocentePy">
+      <h1>Bienvenido a DocentePy</h1>
+      <p>La plataforma integral para potenciar tu carrera docente, gestionar concursos y construir tu currículum profesional.</p>
+      <a href="registro.html" class="btn-primary" aria-label="Registrarse en DocentePy">Regístrate ahora</a>
+    </section>
 
-### 1. Arquitectura Modular
-- **Componentes intercambiables**: Cada funcionalidad es independiente
-- **Desarrollo por etapas**: Implementación progresiva según necesidades
-- **Fácil personalización**: Adaptable a diferentes instituciones
+    <section class="info" aria-label="Características principales">
+      <article class="info-card">
+        <i class="fas fa-user-graduate" aria-hidden="true"></i>
+        <h3>Perfil Docente</h3>
+        <p>Crea y administra tu currículum profesional fácilmente, subiendo documentos y certificaciones.</p>
+      </article>
+      <article class="info-card">
+        <i class="fas fa-bullhorn" aria-hidden="true"></i>
+        <h3>Concursos Abiertos</h3>
+        <p>Consulta las convocatorias disponibles y postúlate a los cargos que se ajusten a tu perfil.</p>
+      </article>
+      <article class="info-card">
+        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+        <h3>Mapa Interactivo</h3>
+        <p>Visualiza la ubicación geográfica de las vacancias para planificar mejor tus postulaciones.</p>
+      </article>
+      <article class="info-card">
+        <i class="fas fa-users-cog" aria-hidden="true"></i>
+        <h3>Administración</h3>
+        <p>Gestiona usuarios, concursos y documentos de manera segura y eficiente.</p>
+      </article>
+    </section>
+  </main>
 
-### 2. Módulos Disponibles
+  <footer role="contentinfo">
+    <p>© 2025 DocentePy. Todos los derechos reservados. | <a href="contacto.html">Contacto</a></p>
+  </footer>
 
-| Módulo | Descripción | Estado |
-|--------|-------------|--------|
-| Registro Docente | Formulario completo con validación | ✅ Implementado |
-| Concursos Públicos | Postulación y seguimiento | 🚧 En desarrollo |
-| Dashboard Analítico | Visualización de datos educativos | ✏️ Planeado |
-| Gestión Documental | Almacenamiento y organización | 🚧 En desarrollo |
-
-### 3. Beneficios para Usuarios
-
-1. **Para docentes**:
-   - Postulación simplificada a concursos
-   - Centralización de documentos profesionales
-   - Alertas personalizadas de oportunidades
-
-2. **Para instituciones**:
-   - Sistema estandarizado de procesos
-   - Reducción de carga administrativa
-   - Acceso a datos consolidados
-
-## Tecnologías Utilizadas
-
-```mermaid
-pie
-    title Stack Tecnológico
-    "Frontend (HTML/CSS/JS)" : 45
-    "Leaflet.js (Mapas)" : 15
-    "PDF.js (Documentos)" : 20
-    "LocalStorage" : 20
-```
-
-## Próximas Etapas de Desarrollo
-
-1. **Versión 1.1 (Q3 2024)**:
-   - Integración completa del módulo de concursos
-   - Sistema de notificaciones por correo
-
-2. **Versión 2.0 (Q1 2025)**:
-   - Autenticación segura con JWT
-   - Conexión con bases de datos del MEC
-
-## ¿Cómo Contribuir?
-
-Este proyecto está abierto a colaboraciones. Si deseas participar:
-
-1. Reportar issues en GitHub
-2. Proponer nuevas funcionalidades
-3. Contribuir con desarrollo frontend/backend
-
-> "La educación es el arma más poderosa para cambiar el mundo" - Nelson Mandela
-
-Este proyecto busca precisamente eso: **transformar la experiencia educativa** mediante herramientas digitales accesibles y eficientes.
+</body>
+</html>
