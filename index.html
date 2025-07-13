@@ -5,11 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Inicio - DocentePy</title>
 
-  <!-- Estilos principales -->
+  <!-- Estilos -->
   <link rel="stylesheet" href="estilos/main.css" />
-
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+4I14GPCbO1kkN+2zUC3KjQpXtcKnMoEnSkKD/0Lw="
+    crossorigin=""
+  />
+  <style>
+    #mapa-concursos {
+      height: 400px;
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
   <!-- HEADER -->
@@ -23,34 +38,28 @@
         <ul>
           <li><a href="registro.html">Registro</a></li>
           <li><a href="perfilDocente.html">Mi Perfil</a></li>
-          <li><a href="administrador.html"><i class="fas fa-lock"></i></a></li>
+          <li><a href="administrador.html" title="Acceso Administrador"><i class="fas fa-lock"></i></a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <!-- MAIN -->
-  <main class="container main-content" role="main">
+  <main class="container main-content">
     <section class="welcome-section text-center">
       <h1 class="title">Bienvenido a DocentePy</h1>
-      <p class="subtitle">
-        Plataforma pensada para apoyar tu desarrollo profesional docente.
-      </p>
-
-      <div class="mt-4">
-        <a href="registro.html" class="btn btn-primary btn-lg">Registrarse</a>
-        <a href="perfilDocente.html" class="btn btn-outline btn-lg">Ver Perfil</a>
-      </div>
-
-      <div class="mt-3">
-        <a href="preguntas-frecuentes.html" class="link link-secondary">Preguntas Frecuentes</a>
-      </div>
+      <p class="subtitle">Plataforma pensada para apoyar tu desarrollo profesional docente.</p>
+      <a href="registro.html" class="btn btn-primary btn-lg">Registrarse</a>
     </section>
 
-    <!-- Área de concursos para visitantes (puede desaparecer tras 2 horas) -->
-    <section class="section mt-5">
-      <h2 class="section-title">Cargos en Concurso</h2>
+    <!-- Panel de concursos -->
+    <section class="section mt-5" id="panel-visitante">
+      <h2 class="section-title">Cargos en Concurso (Modo Visitante)</h2>
       <div id="lista-concursos" class="grid mt-3"></div>
+      <div id="mapa-concursos"></div>
+      <div class="alert alert-warning mt-3" id="aviso-expirado" style="display:none;">
+        Tu sesión como visitante ha expirado. Por favor <a href="registro.html">regístrate</a> para continuar.
+      </div>
     </section>
   </main>
 
@@ -69,12 +78,59 @@
     </div>
   </footer>
 
-  <!-- SCRIPTS -->
+  <!-- Scripts principales -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="sessionControl.js"></script>
   <script src="main.js"></script>
   <script src="register.js"></script>
   <script src="validate.js"></script>
   <script src="mapa-concursos.js"></script>
+
+  <!-- Script adicional: Mostrar concursos y controlar tiempo de visitante -->
+  <script>
+    // Guardar hora de ingreso si es visitante
+    if (!localStorage.getItem("visitante_inicia")) {
+      const ahora = new Date().getTime();
+      localStorage.setItem("visitante_inicia", ahora);
+    }
+
+    // Validar si ya pasaron 2 horas
+    const inicio = parseInt(localStorage.getItem("visitante_inicia"), 10);
+    const ahora = new Date().getTime();
+    const dosHoras = 2 * 60 * 60 * 1000;
+
+    if (ahora - inicio > dosHoras) {
+      document.getElementById("panel-visitante").classList.add("fade-out");
+      document.getElementById("aviso-expirado").style.display = "block";
+      document.getElementById("lista-concursos").innerHTML = "";
+      document.getElementById("mapa-concursos").remove();
+    } else {
+      // Mostrar concursos disponibles (simulados)
+      const concursos = [
+        { titulo: "Inicial - Asunción", fecha: "2025-07-20", vacancias: 12, lat: -25.2637, lng: -57.5759 },
+        { titulo: "Matemática - Encarnación", fecha: "2025-07-25", vacancias: 5, lat: -27.3306, lng: -55.8667 }
+      ];
+
+      const lista = document.getElementById("lista-concursos");
+      concursos.forEach(c => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<h4>${c.titulo}</h4><p><strong>Fecha:</strong> ${c.fecha}</p><p><strong>Vacancias:</strong> ${c.vacancias}</p>`;
+        lista.appendChild(card);
+      });
+
+      // Mapa Leaflet
+      const mapa = L.map("mapa-concursos").setView([-23.5, -58], 6);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(mapa);
+
+      concursos.forEach(c => {
+        L.marker([c.lat, c.lng])
+          .addTo(mapa)
+          .bindPopup(`<strong>${c.titulo}</strong><br>${c.fecha}<br>${c.vacancias} vacancias`);
+      });
+    }
+  </script>
 </body>
 </html>
-
