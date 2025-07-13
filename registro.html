@@ -29,7 +29,7 @@
 
     .register-container {
       background: white;
-      padding: 2.5rem;
+      padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
       width: 100%;
@@ -49,13 +49,25 @@
       color: var(--text);
     }
 
-    form input, form select {
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"] {
       width: 100%;
       padding: 0.6rem;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
+    }
+
+    .checkbox {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .checkbox input {
+      margin-right: 0.5rem;
     }
 
     .btn-submit {
@@ -88,34 +100,48 @@
     .text-center a:hover {
       text-decoration: underline;
     }
+
+    #coordenadas {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    #mensaje-espera {
+      margin-top: 1rem;
+      color: green;
+      font-weight: bold;
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="register-container">
-    <h2><i class="fas fa-user-plus"></i> Crear Cuenta Docente</h2>
+    <h2><i class="fas fa-user-plus"></i> Registro Docente</h2>
     <form id="registro-form">
       <label for="nombre">Nombre completo</label>
-      <input type="text" id="nombre" name="nombre" required>
+      <input type="text" id="nombre" required>
 
       <label for="ci">Cédula de Identidad</label>
-      <input type="text" id="ci" name="ci" required>
+      <input type="text" id="ci" required>
 
       <label for="email">Correo Electrónico</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="departamento">Departamento</label>
-      <select id="departamento" name="departamento" required>
-        <option value="">Seleccione...</option>
-        <option value="Asunción">Asunción</option>
-        <option value="Central">Central</option>
-        <option value="Alto Paraná">Alto Paraná</option>
-      </select>
+      <input type="email" id="email" required>
 
       <label for="password">Contraseña</label>
-      <input type="password" id="password" name="password" required>
+      <input type="password" id="password" required>
 
-      <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Registrarme</button>
+      <div class="checkbox">
+        <input type="checkbox" id="enCasa">
+        <label for="enCasa">Estoy en mi hogar</label>
+      </div>
+
+      <div id="coordenadas"></div>
+
+      <button type="submit" class="btn-submit">Registrarme</button>
     </form>
+
+    <div id="mensaje-espera">✅ Se ha enviado un correo de verificación. Por favor, revisa tu bandeja de entrada.</div>
 
     <div class="text-center">
       ¿Ya tienes cuenta? <a href="index.html">Iniciar sesión</a>
@@ -123,11 +149,48 @@
   </div>
 
   <script>
-    document.getElementById("registro-form").addEventListener("submit", function(e) {
+    let lat = null;
+    let lon = null;
+
+    document.getElementById("enCasa").addEventListener("change", function () {
+      if (this.checked && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function (pos) {
+            lat = pos.coords.latitude.toFixed(6);
+            lon = pos.coords.longitude.toFixed(6);
+            document.getElementById("coordenadas").textContent = `📍 Coordenadas capturadas: ${lat}, ${lon}`;
+          },
+          function () {
+            alert("No se pudo obtener tu ubicación.");
+          }
+        );
+      } else {
+        document.getElementById("coordenadas").textContent = "";
+        lat = null;
+        lon = null;
+      }
+    });
+
+    document.getElementById("registro-form").addEventListener("submit", function (e) {
       e.preventDefault();
-      alert("Registro enviado correctamente. Verifica tu correo para activar tu cuenta.");
-      // Aquí podrías enviar los datos a backend o guardarlos en localStorage
+      const nombre = document.getElementById("nombre").value;
+      const email = document.getElementById("email").value;
+
+      if (!lat || !lon) {
+        alert("Por favor, marca que estás en tu hogar para continuar.");
+        return;
+      }
+
+      console.log("Registro enviado:", { nombre, email, lat, lon });
+
+      // Simular envío y espera de verificación
+      document.getElementById("mensaje-espera").style.display = "block";
+      setTimeout(() => {
+        alert("Registro procesado. Esperando verificación de correo...");
+        // Redirigir o limpiar form si es necesario
+      }, 3000);
     });
   </script>
 </body>
 </html>
+
