@@ -466,3 +466,76 @@ img {
 .rounded { border-radius: var(--border-radius-md); }
 .rounded-sm { border-radius: var(--border-radius-sm); }
 .rounded-lg { border-radius: var(--border-radius-lg); }
+/* Estilos específicos para formularios */
+.form-registro {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.avatar-upload {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto var(--space-sm);
+  border: 3px solid var(--light-gray);
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form-hint {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--medium-gray);
+  margin-top: var(--space-xs);
+}
+
+.alert {
+  padding: var(--space-md);
+  border-radius: var(--border-radius-sm);
+  margin-top: var(--space-md);
+  text-align: center;
+  font-weight: 500;
+}
+
+.alert-success {
+  background-color: rgba(39, 174, 96, 0.1);
+  color: var(--success-color);
+  border: 1px solid var(--success-color);
+}
+
+.alert-error {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Validación de formularios */
+input:invalid {
+  border-color: var(--danger-color);
+}
+
+input:valid {
+  border-color: var(--success-color);
+}
