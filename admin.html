@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocentePy - Panel Administrador</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script defer src="scripts/admin.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <img src="./assets/logo-docentepy.svg" alt="DocentePy Logo" width="120">
+          <h1>Admin DocentePy</h1>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Sitio Principal</a></li>
+            <li><a href="#usuarios" class="nav-link"><i class="fas fa-users"></i> Usuarios</a></li>
+            <li><a href="#concursos" class="nav-link"><i class="fas fa-trophy"></i> Concursos</a></li>
+            <li><a href="#documentos" class="nav-link"><i class="fas fa-folder-open"></i> Documentos</a></li>
+            <li><a href="#configuracion" class="nav-link"><i class="fas fa-cogs"></i> Configuración</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-content">
+    <section class="dashboard container">
+      <h2>Panel de Control del Administrador</h2>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <i class="fas fa-users fa-2x"></i>
+          <h3>Usuarios Registrados</h3>
+          <p id="total-usuarios">0</p>
+        </div>
+        <div class="admin-card">
+          <i class="fas fa-trophy fa-2x"></i>
+          <h3>Concursos Activos</h3>
+          <p id="total-concursos">0</p>
+        </div>
+        <div class="admin-card">
+          <i class="fas fa-file-alt fa-2x"></i>
+          <h3>Documentos Cargados</h3>
+          <p id="total-documentos">0</p>
+        </div>
+      </div>
+
+      <section id="usuarios">
+        <h3><i class="fas fa-users"></i> Gestión de Usuarios</h3>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>C.I.</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-usuarios">
+            <!-- Usuarios cargados dinámicamente -->
+          </tbody>
+        </table>
+      </section>
+
+      <section id="concursos">
+        <h3><i class="fas fa-trophy"></i> Concursos</h3>
+        <button class="btn btn-primary">+ Nuevo Concurso</button>
+        <div id="lista-concursos">
+          <!-- Lista de concursos cargada dinámicamente -->
+        </div>
+      </section>
+
+      <section id="documentos">
+        <h3><i class="fas fa-folder-open"></i> Documentos</h3>
+        <div id="documentos-admin">
+          <!-- Documentos cargados dinámicamente -->
+        </div>
+      </section>
+
+      <section id="configuracion">
+        <h3><i class="fas fa-cogs"></i> Configuración General</h3>
+        <form class="config-form">
+          <div class="form-group">
+            <label for="correo-contacto">Correo de contacto</label>
+            <input type="email" id="correo-contacto" value="contacto@docentepy.edu.py">
+          </div>
+          <div class="form-group">
+            <label for="telefono-contacto">Teléfono</label>
+            <input type="text" id="telefono-contacto" value="(021) 123-456">
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <p>© 2025 DocentePy - Administrador</p>
+    </div>
+  </footer>
+</body>
+</html>
