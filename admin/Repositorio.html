@@ -1,201 +1,263 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Repositorio Documentos - DocentePy</title>
-<style>
-  body { font-family: Arial, sans-serif; padding: 1rem; background: #f9f9f9; }
-  .badge {
-    padding: 0.2em 0.5em;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-  }
-  .activo { background-color: #27ae60; }
-  .cerrado { background-color: #c0392b; }
-  .reabierto { background-color: #e67e22; }
-  .desierto { background-color: #7f8c8d; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin DocentePy - Repositorio de Documentos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Admin Styles -->
+    <link rel="stylesheet" href="estilos-admin.css">
+    <style>
+        /* Estilos específicos para el repositorio de documentos */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 1rem;
+            background: #f9f9f9;
+        }
+        .badge {
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .activo { background-color: #27ae60; }
+        .cerrado { background-color: #c0392b; }
+        .reabierto { background-color: #e67e22; }
+        .desierto { background-color: #7f8c8d; }
 
-  .acordion-section {
-    border: 1px solid #ccc;
-    margin: 1rem 0;
-    border-radius: 6px;
-    background: white;
-  }
-  .acordion-header {
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    font-weight: bold;
-    background: #3498db;
-    color: white;
-    user-select: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .acordion-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    padding: 0 1rem;
-  }
-  .acordion-content.open {
-    padding: 1rem;
-    max-height: 1000px; /* bastante para contenido */
-  }
+        .acordion-section {
+            border: 1px solid #ccc;
+            margin: 1rem 0;
+            border-radius: 6px;
+            background: white;
+        }
+        .acordion-header {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            background: #3498db;
+            color: white;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .acordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1rem;
+        }
+        .acordion-content.open {
+            padding: 1rem;
+            max-height: 1000px; /* Suficiente para el contenido */
+        }
 
-  a.document-link {
-    display: block;
-    margin-bottom: 0.5rem;
-    text-decoration: none;
-    color: #2980b9;
-  }
+        a.document-link {
+            display: block;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            color: #2980b9;
+        }
 
-  a.document-link:hover {
-    text-decoration: underline;
-  }
+        a.document-link:hover {
+            text-decoration: underline;
+        }
 
-  #toggleView {
-    margin-bottom: 1rem;
-    cursor: pointer;
-    background: #2980b9;
-    border: none;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-weight: bold;
-  }
-</style>
+        #toggleView {
+            margin-bottom: 1rem;
+            cursor: pointer;
+            background: #2980b9;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
+    <div class="admin-container">
+        <!-- Sidebar de Navegación -->
+        <aside class="admin-sidebar">
+            <div>
+                <div class="logo">
+                    <img src="https://placehold.co/40x40/E0E0E0/333333?text=DP" alt="DocentePy Logo" class="rounded-full"/>
+                    <h1>Admin DocentePy</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="concurso-publico.html"><i class="fas fa-bullhorn"></i> Concursos Públicos</a></li>
+                        <li><a href="Concursos Privados.html"><i class="fas fa-lock"></i> Concursos Privados</a></li>
+                        <li><a href="instituciones.html"><i class="fas fa-school"></i> Instituciones</a></li>
+                        <li><a href="permisos.html"><i class="fas fa-user-shield"></i> Permisos y Roles</a></li>
+                        <li><a href="comunicaciones.html"><i class="fas fa-envelope"></i> Comunicaciones</a></li>
+                        <li><a href="auditoria.html"><i class="fas fa-clipboard-list"></i> Auditoría</a></li>
+                        <li><a href="reportes.html"><i class="fas fa-chart-line"></i> Reportes</a></li>
+                        <li><a href="Repositorio.html" class="active"><i class="fas fa-folder-open"></i> Repositorio Doc.</a></li>
+                        <li><a href="ai-asistente.html"><i class="fas fa-robot"></i> Asistente IA</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="mt-auto">
+                <a href="#" class="btn btn-danger w-full"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </aside>
 
-<h1>Repositorio Documentos - DocentePy</h1>
+        <!-- Contenido Principal -->
+        <main class="admin-content">
+            <div class="admin-content-header">
+                <h1>Repositorio de Documentos</h1>
+                <button class="btn btn-primary"><i class="fas fa-upload"></i> Subir Documento</button>
+            </div>
 
-<button id="toggleView">Mostrar todos los documentos</button>
+            <!-- Nuevo contenido para el repositorio de documentos -->
+            <button id="toggleView">Mostrar todos los documentos</button>
+            <div id="repositorio"></div>
 
-<div id="repositorio"></div>
+            <!-- El formulario de carga de documentos se mantiene si es necesario, o se puede eliminar -->
+            <div class="card mt-6">
+                <div class="card-header">Cargar Documento al Repositorio</div>
+                <form class="space-y-4">
+                    <div class="form-group">
+                        <label for="doc-type">Tipo de Documento</label>
+                        <input type="text" id="doc-type" placeholder="Ej: Guía de Concursos" class="w-full">
+                    </div>
+                    <div class="form-group">
+                        <label for="doc-file">Archivo (PDF)</label>
+                        <input type="file" id="doc-file" accept=".pdf" class="w-full p-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> Subir a Repositorio</button>
+                </form>
+            </div>
+        </main>
+    </div>
 
-<script>
-  // Datos simulados
-  const documentosRepositorio = {
-    publico: {
-      convocatoria: [
-        { codigo: 'PUB-CONV-001', nombre: 'Convocatoria General 2025', enlace: '#', estado: 'Activo' },
-        { codigo: 'PUB-CONV-002', nombre: 'Convocatoria Extraordinaria', enlace: '#', estado: 'Cerrado' },
-        { codigo: 'PUB-CONV-003', nombre: 'Convocatoria Especial Región Norte', enlace: '#', estado: 'Re abierto' },
-        { codigo: 'PUB-CONV-004', nombre: 'Convocatoria Anticipada Zona Sur', enlace: '#', estado: 'Desierto' },
-      ],
-      mejores: [
-        { codigo: 'PUB-MEJ-001', nombre: 'Ranking Mejores Posicionados 2025', enlace: '#', estado: 'Activo' },
-        { codigo: 'PUB-MEJ-002', nombre: 'Listado Destacados Concurso 2024', enlace: '#', estado: 'Cerrado' },
-      ],
-      ganadores: [
-        { codigo: 'PUB-GAN-001', nombre: 'Ganadores Concurso General 2024', enlace: '#', estado: 'Activo' },
-        { codigo: 'PUB-GAN-002', nombre: 'Ganadores Concurso Extraordinario 2023', enlace: '#', estado: 'Cerrado' },
-      ],
-    },
-    privado: {
-      convocatoria: [
-        { codigo: 'PRI-CONV-001', nombre: 'Convocatoria Privada Institución A', enlace: '#', estado: 'Activo' },
-        { codigo: 'PRI-CONV-002', nombre: 'Convocatoria Privada Institución B', enlace: '#', estado: 'Cerrado' },
-      ],
-      ganadores: [
-        { codigo: 'PRI-GAN-001', nombre: 'Ganadores Privados Institución A', enlace: '#', estado: 'Activo' },
-        { codigo: 'PRI-GAN-002', nombre: 'Ganadores Privados Institución B', enlace: '#', estado: 'Cerrado' },
-      ],
-    },
-  };
+    <script>
+        // Datos simulados
+        const documentosRepositorio = {
+            publico: {
+                convocatoria: [
+                    { codigo: 'PUB-CONV-001', nombre: 'Convocatoria General 2025', enlace: '#', estado: 'Activo' },
+                    { codigo: 'PUB-CONV-002', nombre: 'Convocatoria Extraordinaria', enlace: '#', estado: 'Cerrado' },
+                    { codigo: 'PUB-CONV-003', nombre: 'Convocatoria Especial Región Norte', enlace: '#', estado: 'Re abierto' },
+                    { codigo: 'PUB-CONV-004', nombre: 'Convocatoria Anticipada Zona Sur', enlace: '#', estado: 'Desierto' },
+                ],
+                mejores: [
+                    { codigo: 'PUB-MEJ-001', nombre: 'Ranking Mejores Posicionados 2025', enlace: '#', estado: 'Activo' },
+                    { codigo: 'PUB-MEJ-002', nombre: 'Listado Destacados Concurso 2024', enlace: '#', estado: 'Cerrado' },
+                ],
+                ganadores: [
+                    { codigo: 'PUB-GAN-001', nombre: 'Ganadores Concurso General 2024', enlace: '#', estado: 'Activo' },
+                    { codigo: 'PUB-GAN-002', nombre: 'Ganadores Concurso Extraordinario 2023', enlace: '#', estado: 'Cerrado' },
+                ],
+            },
+            privado: {
+                convocatoria: [
+                    { codigo: 'PRI-CONV-001', nombre: 'Convocatoria Privada Institución A', enlace: '#', estado: 'Activo' },
+                    { codigo: 'PRI-CONV-002', nombre: 'Convocatoria Privada Institución B', enlace: '#', estado: 'Cerrado' },
+                ],
+                ganadores: [
+                    { codigo: 'PRI-GAN-001', nombre: 'Ganadores Privados Institución A', enlace: '#', estado: 'Activo' },
+                    { codigo: 'PRI-GAN-002', nombre: 'Ganadores Privados Institución B', enlace: '#', estado: 'Cerrado' },
+                ],
+            },
+        };
 
-  // Mapear estado a clase CSS para badge
-  function claseEstado(estado) {
-    switch (estado.toLowerCase()) {
-      case 'activo': return 'activo';
-      case 'cerrado': return 'cerrado';
-      case 're abierto': return 'reabierto';
-      case 'desierto': return 'desierto';
-      default: return '';
-    }
-  }
+        // Mapear estado a clase CSS para badge
+        function claseEstado(estado) {
+            switch (estado.toLowerCase()) {
+                case 'activo': return 'activo';
+                case 'cerrado': return 'cerrado';
+                case 're abierto': return 'reabierto';
+                case 'desierto': return 'desierto';
+                default: return '';
+            }
+        }
 
-  // Renderizar documentos según filtro
-  function renderRepositorio(mostrarTodos) {
-    const contenedor = document.getElementById('repositorio');
-    contenedor.innerHTML = '';
+        // Renderizar documentos según filtro
+        function renderRepositorio(mostrarTodos) {
+            const contenedor = document.getElementById('repositorio');
+            contenedor.innerHTML = '';
 
-    function crearAcordion(titulo, categoria, datos) {
-      // Filtrar datos si no mostrarTodos
-      const items = mostrarTodos ? datos : datos.filter(d => d.estado.toLowerCase() === 'activo');
-      if (items.length === 0) return '';
+            function crearAcordion(titulo, categoria, datos) {
+                // Filtrar datos si no mostrarTodos
+                const items = mostrarTodos ? datos : datos.filter(d => d.estado.toLowerCase() === 'activo');
+                if (items.length === 0) return '';
 
-      // Crear elementos acordeón
-      const section = document.createElement('section');
-      section.className = 'acordion-section';
+                // Crear elementos acordeón
+                const section = document.createElement('section');
+                section.className = 'acordion-section';
 
-      const header = document.createElement('div');
-      header.className = 'acordion-header';
-      header.textContent = titulo;
+                const header = document.createElement('div');
+                header.className = 'acordion-header';
+                header.textContent = titulo;
 
-      // Icono para expandir/colapsar
-      const icon = document.createElement('span');
-      icon.textContent = '+';
-      header.appendChild(icon);
+                // Icono para expandir/colapsar
+                const icon = document.createElement('span');
+                icon.textContent = '+';
+                header.appendChild(icon);
 
-      header.addEventListener('click', () => {
-        content.classList.toggle('open');
-        icon.textContent = content.classList.contains('open') ? '-' : '+';
-      });
+                header.addEventListener('click', () => {
+                    content.classList.toggle('open');
+                    icon.textContent = content.classList.contains('open') ? '-' : '+';
+                });
 
-      const content = document.createElement('div');
-      content.className = 'acordion-content';
+                const content = document.createElement('div');
+                content.className = 'acordion-content';
 
-      items.forEach(doc => {
-        const a = document.createElement('a');
-        a.href = doc.enlace;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.className = 'document-link';
-        a.textContent = `[${doc.codigo}] ${doc.nombre} `;
-        
-        // Badge estado
-        const badge = document.createElement('span');
-        badge.className = 'badge ' + claseEstado(doc.estado);
-        badge.textContent = doc.estado;
-        badge.style.marginLeft = '8px';
+                items.forEach(doc => {
+                    const a = document.createElement('a');
+                    a.href = doc.enlace;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.className = 'document-link';
+                    a.textContent = `[${doc.codigo}] ${doc.nombre} `;
 
-        a.appendChild(badge);
-        content.appendChild(a);
-      });
+                    // Badge estado
+                    const badge = document.createElement('span');
+                    badge.className = 'badge ' + claseEstado(doc.estado);
+                    badge.textContent = doc.estado;
+                    badge.style.marginLeft = '8px';
 
-      section.appendChild(header);
-      section.appendChild(content);
-      contenedor.appendChild(section);
-    }
+                    a.appendChild(badge);
+                    content.appendChild(a);
+                });
 
-    // Publico
-    crearAcordion('Público - Convocatoria', 'publico-convocatoria', documentosRepositorio.publico.convocatoria);
-    crearAcordion('Público - Mejores Posicionados', 'publico-mejores', documentosRepositorio.publico.mejores);
-    crearAcordion('Público - Ganadores', 'publico-ganadores', documentosRepositorio.publico.ganadores);
+                section.appendChild(header);
+                section.appendChild(content);
+                contenedor.appendChild(section);
+            }
 
-    // Privado
-    crearAcordion('Privado - Convocatoria', 'privado-convocatoria', documentosRepositorio.privado.convocatoria);
-    crearAcordion('Privado - Ganadores', 'privado-ganadores', documentosRepositorio.privado.ganadores);
-  }
+            // Público
+            crearAcordion('Público - Convocatoria', 'publico-convocatoria', documentosRepositorio.publico.convocatoria);
+            crearAcordion('Público - Mejores Posicionados', 'publico-mejores', documentosRepositorio.publico.mejores);
+            crearAcordion('Público - Ganadores', 'publico-ganadores', documentosRepositorio.publico.ganadores);
 
-  // Inicializar mostrando solo activos
-  let mostrarTodos = false;
-  renderRepositorio(mostrarTodos);
+            // Privado
+            crearAcordion('Privado - Convocatoria', 'privado-convocatoria', documentosRepositorio.privado.convocatoria);
+            crearAcordion('Privado - Ganadores', 'privado-ganadores', documentosRepositorio.privado.ganadores);
+        }
 
-  // Botón toggle
-  const toggleBtn = document.getElementById('toggleView');
-  toggleBtn.addEventListener('click', () => {
-    mostrarTodos = !mostrarTodos;
-    renderRepositorio(mostrarTodos);
-    toggleBtn.textContent = mostrarTodos ? 'Mostrar solo documentos activos' : 'Mostrar todos los documentos';
-  });
-</script>
+        // Inicializar mostrando solo activos
+        let mostrarTodos = false;
+        renderRepositorio(mostrarTodos);
 
+        // Botón toggle
+        const toggleBtn = document.getElementById('toggleView');
+        toggleBtn.addEventListener('click', () => {
+            mostrarTodos = !mostrarTodos;
+            renderRepositorio(mostrarTodos);
+            toggleBtn.textContent = mostrarTodos ? 'Mostrar solo documentos activos' : 'Mostrar todos los documentos';
+        });
+    </script>
 </body>
 </html>
