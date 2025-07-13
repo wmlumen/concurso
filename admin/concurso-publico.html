@@ -3,32 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Concurso Público - Admin DocentePy</title>
-  <link rel="stylesheet" href="../estilos/main.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-  <link rel="stylesheet" href="estilos-admin.css" />
+  <title>Cargar Convocatoria - PDF, CSV, XLSX - Admin DocentePy</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 1rem; background: #f9f9f9; }
+    label { font-weight: 600; display: block; margin-bottom: 0.25rem; }
+    input[type=file] { margin-bottom: 1rem; }
+    #tablaDatosContainer { margin-top: 1rem; overflow-x: auto; max-width: 100%; }
+    table { border-collapse: collapse; width: 100%; border: 1px solid #ccc; }
+    th, td { border: 1px solid #ccc; padding: 0.4rem 0.8rem; text-align: left; }
+    th { background-color: #3498db; color: white; position: sticky; top: 0; }
+    select { margin-top: 0.5rem; }
+  </style>
+  <!-- SheetJS para leer Excel -->
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/shim.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-  <header>
-    <a href="../index.html" class="logo" aria-label="Ir a Inicio DocentePy">
-      <img src="../assets/logo-docentepy.svg" alt="DocentePy" style="height: 40px;" />
-      DocentePy
-    </a>
-  </header>
+  <h1>Cargar Convocatoria Pública</h1>
 
-  <main>
-    <!-- Aquí va el formulario para cargar concurso público -->
-    <section aria-labelledby="titulo-convocatoria-publica">
-      <h2 id="titulo-convocatoria-publica">Cargar Convocatoria Pública (PDF)</h2>
-      <form id="formConvocatoriaPublica">
-        <!-- campos como antes -->
-      </form>
-    </section>
-  </main>
+  <form id="formCarga">
+    <label for="inputArchivo">Seleccionar archivo (PDF, CSV, XLSX):</label>
+    <input type="file" id="inputArchivo" accept=".pdf,.csv,.xls,.xlsx" required />
+    <button type="button" id="btnCargar">Cargar y Procesar</button>
+  </form>
 
-  <script src="admin.js"></script>
+  <div id="infoPDF" style="display:none; margin-top:1rem; background:#eee; padding:1rem;"></div>
+
+  <div id="mapeo" style="display:none; margin-top:1rem;">
+    <label for="selectCodigo">Seleccionar columna para Código Vacante:</label>
+    <select id="selectCodigo"></select>
+
+    <label for="selectInstitucion" style="margin-top:1rem;">Seleccionar columna para Institución:</label>
+    <select id="selectInstitucion"></select>
+  </div>
+
+  <div id="tablaDatosContainer" style="display:none;">
+    <table id="tablaDatos" aria-label="Datos de convocatoria">
+      <thead id="theadDatos"></thead>
+      <tbody id="tbodyDatos"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const inputArchivo = document.getElementById('inputArchivo');
+    const btnCargar = document.getElementById('btnCargar');
+    const tablaContainer = document.getElementById('tablaDatosContainer');
+    const theadDatos = document.getElementById('theadDatos');
+    const tbodyDatos = document.getElementById('tbodyDatos');
+    const mapeoDiv = document.getElementById('mapeo');
+    const selectCodigo = document.getElementById('selectCodigo');
+    const selectInstitucion = document.getElementById('selectInstitucion');
+    const infoPDF = document.getElementById('infoPDF');
+
+    let datosCargados = [];
+    let columnas = [];
+
+    btnCargar.addEventListener('click', () => {
+      const file = inputArchivo.files[0];
+      if (!file) {
+        alert('Selecciona un archivo primero.');
+        return;
+      }
+
+      const ext = file.name.split('.').pop().toLowerCase();
+
+      // Reset visuales
+      tablaContainer.style.display = 'none';
+      mapeoDiv.style.display = 'none';
+      infoPDF.style.display = 'none';
+      theadDatos.innerHTML = '';
+      tbodyDatos.innerHTML = '';
+      selectCodigo.innerHTML = '';
+      selectInstitucion.innerHTML = '';
+
+      if (ext === 'csv') {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const texto = e.target.result;
+          procesarCSV(texto);
+        };
+        reader.readAsText(file);
+      }
+      else if (ext === 'xls' || ext === 'xlsx') {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, {type: 'array'});
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const jsonData = XLSX.utils.sheet_to_json(worksheet, {header:1});
+          procesarDatos(jsonData);
+        };
+        reader.readAsArrayBuffer(file);
+      }
+      else if (ext === 'pdf') {
+        // Para PDF sólo mostramos info, extracción de tabla es avanzada y necesita pdf.js
+        infoPDF.style.display = 'block';
+        infoPDF.textContent = `Archivo PDF cargado: ${file.name} (${(file.size/1024).toFixed(2)} KB). La extracción automática de datos no está implementada aún.`;
+      }
+      else {
+        alert('Formato no soportado. Usa PDF, CSV o XLSX.');
+      }
+    });
+
+    function procesarCSV(texto) {
+      const filas = texto.trim().split('\n').map(line => line.split(',').map(cell => cell.trim()));
+      procesarDatos(filas);
+    }
+
+    function procesarDatos(datos) {
+      if (!datos.length) {
+        alert('No se encontraron datos.');
+        return;
+      }
+      columnas = datos[0];
+      datosCargados = datos;
+
+      construirTabla(datosCargados);
+      cargarMapeoColumnas(columnas);
+      tablaContainer.style.display = 'block';
+      mapeoDiv.style.display = 'block';
+    }
+
+    function construirTabla(datos) {
+      theadDatos.innerHTML = '';
+      tbodyDatos.innerHTML = '';
+
+      const trHead = document.createElement('tr');
+      columnas.forEach(col => {
+        const th = document.createElement('th');
+        th.textContent = col;
+        trHead.appendChild(th);
+      });
+      theadDatos.appendChild(trHead);
+
+      for (let i = 1; i < datos.length; i++) {
+        const tr = document.createElement('tr');
+        datos[i].forEach(celda => {
+          const td = document.createElement('td');
+          td.textContent = celda;
+          tr.appendChild(td);
+        });
+        tbodyDatos.appendChild(tr);
+      }
+    }
+
+    function cargarMapeoColumnas(cols) {
+      selectCodigo.innerHTML = '';
+      selectInstitucion.innerHTML = '';
+
+      cols.forEach((col, i) => {
+        const option1 = document.createElement('option');
+        option1.value = i;
+        option1.textContent = col;
+        selectCodigo.appendChild(option1);
+
+        const option2 = document.createElement('option');
+        option2.value = i;
+        option2.textContent = col;
+        selectInstitucion.appendChild(option2);
+      });
+
+      // Selección automática heurística
+      const codVacIndex = cols.findIndex(c => /codigo|vacante|id/i.test(c));
+      if(codVacIndex >= 0) selectCodigo.selectedIndex = codVacIndex;
+      const instIndex = cols.findIndex(c => /institucion|escuela|colegio|plantel/i.test(c));
+      if(instIndex >= 0) selectInstitucion.selectedIndex = instIndex;
+    }
+  </script>
 </body>
 </html>
