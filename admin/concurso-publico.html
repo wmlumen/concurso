@@ -1,175 +1,270 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cargar Convocatoria - PDF, CSV, XLSX - Admin DocentePy</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 1rem; background: #f9f9f9; }
-    label { font-weight: 600; display: block; margin-bottom: 0.25rem; }
-    input[type=file] { margin-bottom: 1rem; }
-    #tablaDatosContainer { margin-top: 1rem; overflow-x: auto; max-width: 100%; }
-    table { border-collapse: collapse; width: 100%; border: 1px solid #ccc; }
-    th, td { border: 1px solid #ccc; padding: 0.4rem 0.8rem; text-align: left; }
-    th { background-color: #3498db; color: white; position: sticky; top: 0; }
-    select { margin-top: 0.5rem; }
-  </style>
-  <!-- SheetJS para leer Excel -->
-  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/shim.min.js"></script>
-  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Procesar Tablas: PDF, CSV, XLS, XLSX</title>
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    margin: 1rem; 
+    background: #f9f9f9; 
+    color: #222;
+  }
+  label, button { 
+    font-weight: 600; 
+    margin-top: 0.5rem; 
+    display: block; 
+  }
+  #status { 
+    margin-top: 1rem; 
+    font-weight: bold; 
+    color: #2c3e50;
+  }
+  #output {
+    margin-top: 1rem;
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 1rem;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ccc;
+    margin-bottom: 2rem;
+    min-width: 600px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 0.4rem 0.8rem;
+    text-align: left;
+  }
+  th {
+    background-color: #3498db;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  h2 {
+    margin-top: 2rem;
+    font-weight: 700;
+    color: #34495e;
+  }
+</style>
+
+<!-- pdf.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.222/pdf.min.js"></script>
+<!-- PapaParse para CSV -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<!-- SheetJS para XLS/XLSX -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-  <h1>Cargar Convocatoria Pública</h1>
 
-  <form id="formCarga">
-    <label for="inputArchivo">Seleccionar archivo (PDF, CSV, XLSX):</label>
-    <input type="file" id="inputArchivo" accept=".pdf,.csv,.xls,.xlsx" required />
-    <button type="button" id="btnCargar">Cargar y Procesar</button>
-  </form>
+<h1>Procesar Tablas: PDF, CSV, XLS, XLSX</h1>
 
-  <div id="infoPDF" style="display:none; margin-top:1rem; background:#eee; padding:1rem;"></div>
+<label for="fileInput">Selecciona archivo (PDF, CSV, XLS, XLSX):</label>
+<input type="file" id="fileInput" accept=".pdf,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
 
-  <div id="mapeo" style="display:none; margin-top:1rem;">
-    <label for="selectCodigo">Seleccionar columna para Código Vacante:</label>
-    <select id="selectCodigo"></select>
+<button id="btnProcesar" disabled>Procesar archivo</button>
 
-    <label for="selectInstitucion" style="margin-top:1rem;">Seleccionar columna para Institución:</label>
-    <select id="selectInstitucion"></select>
-  </div>
+<div id="status" aria-live="polite"></div>
+<div id="output"></div>
 
-  <div id="tablaDatosContainer" style="display:none;">
-    <table id="tablaDatos" aria-label="Datos de convocatoria">
-      <thead id="theadDatos"></thead>
-      <tbody id="tbodyDatos"></tbody>
-    </table>
-  </div>
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const btnProcesar = document.getElementById('btnProcesar');
+  const output = document.getElementById('output');
+  const status = document.getElementById('status');
 
-  <script>
-    const inputArchivo = document.getElementById('inputArchivo');
-    const btnCargar = document.getElementById('btnCargar');
-    const tablaContainer = document.getElementById('tablaDatosContainer');
-    const theadDatos = document.getElementById('theadDatos');
-    const tbodyDatos = document.getElementById('tbodyDatos');
-    const mapeoDiv = document.getElementById('mapeo');
-    const selectCodigo = document.getElementById('selectCodigo');
-    const selectInstitucion = document.getElementById('selectInstitucion');
-    const infoPDF = document.getElementById('infoPDF');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.222/pdf.worker.min.js';
 
-    let datosCargados = [];
-    let columnas = [];
+  fileInput.addEventListener('change', () => {
+    btnProcesar.disabled = !fileInput.files.length;
+    status.textContent = '';
+    output.innerHTML = '';
+  });
 
-    btnCargar.addEventListener('click', () => {
-      const file = inputArchivo.files[0];
-      if (!file) {
-        alert('Selecciona un archivo primero.');
+  btnProcesar.addEventListener('click', () => {
+    output.innerHTML = '';
+    status.textContent = '';
+
+    const file = fileInput.files[0];
+    if (!file) {
+      status.textContent = 'Por favor selecciona un archivo primero.';
+      return;
+    }
+
+    const fileName = file.name.toLowerCase();
+
+    if (fileName.endsWith('.pdf')) {
+      status.textContent = 'Procesando PDF...';
+      procesarPDF(file);
+    } else if (fileName.endsWith('.csv')) {
+      status.textContent = 'Procesando CSV...';
+      procesarCSV(file);
+    } else if (fileName.endsWith('.xls') || fileName.endsWith('.xlsx')) {
+      status.textContent = 'Procesando Excel...';
+      procesarExcel(file);
+    } else {
+      status.textContent = 'Formato no soportado. Selecciona PDF, CSV o Excel.';
+    }
+  });
+
+  async function procesarPDF(file) {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+      let allTextItems = [];
+
+      for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const content = await page.getTextContent();
+        let textItems = content.items.map(item => item.str);
+        let pageText = textItems.join(' ');
+        allTextItems.push(pageText);
+      }
+
+      const fullText = allTextItems.join('\n');
+      const tablas = extraerTablas(fullText);
+
+      if (tablas.length === 0) {
+        status.textContent = 'No se detectaron tablas en el PDF.';
         return;
       }
 
-      const ext = file.name.split('.').pop().toLowerCase();
+      status.textContent = `Se detectaron ${tablas.length} tabla(s) en el PDF.`;
+      tablas.forEach((tabla, i) => {
+        output.appendChild(crearTablaHTML(tabla, i+1));
+      });
 
-      // Reset visuales
-      tablaContainer.style.display = 'none';
-      mapeoDiv.style.display = 'none';
-      infoPDF.style.display = 'none';
-      theadDatos.innerHTML = '';
-      tbodyDatos.innerHTML = '';
-      selectCodigo.innerHTML = '';
-      selectInstitucion.innerHTML = '';
+    } catch (error) {
+      status.textContent = 'Error procesando PDF: ' + error.message;
+    }
+  }
 
-      if (ext === 'csv') {
-        const reader = new FileReader();
-        reader.onload = e => {
-          const texto = e.target.result;
-          procesarCSV(texto);
-        };
-        reader.readAsText(file);
+  function procesarCSV(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+      const result = Papa.parse(text, {skipEmptyLines: true});
+      if(result.data.length === 0) {
+        status.textContent = 'CSV vacío o inválido.';
+        return;
       }
-      else if (ext === 'xls' || ext === 'xlsx') {
-        const reader = new FileReader();
-        reader.onload = e => {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, {type: 'array'});
-          const firstSheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[firstSheetName];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, {header:1});
-          procesarDatos(jsonData);
-        };
-        reader.readAsArrayBuffer(file);
+      status.textContent = 'CSV cargado. Mostrando tabla.';
+      const tabla = eliminarFilasDuplicadas(result.data);
+      output.appendChild(crearTablaHTML(tabla, 1));
+    };
+    reader.onerror = () => {
+      status.textContent = 'Error leyendo el archivo CSV.';
+    };
+    reader.readAsText(file);
+  }
+
+  function procesarExcel(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, {type: 'array'});
+      let sheetIndex = 0;
+      status.textContent = `Archivo Excel con ${workbook.SheetNames.length} hoja(s). Mostrando la primera.`;
+
+      const worksheet = workbook.Sheets[workbook.SheetNames[sheetIndex]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1, blankrows: false});
+      if(jsonData.length === 0) {
+        status.textContent = 'Hoja vacía o inválida.';
+        return;
       }
-      else if (ext === 'pdf') {
-        // Para PDF sólo mostramos info, extracción de tabla es avanzada y necesita pdf.js
-        infoPDF.style.display = 'block';
-        infoPDF.textContent = `Archivo PDF cargado: ${file.name} (${(file.size/1024).toFixed(2)} KB). La extracción automática de datos no está implementada aún.`;
+
+      const tabla = eliminarFilasDuplicadas(jsonData);
+      output.appendChild(crearTablaHTML(tabla, 1));
+    };
+    reader.onerror = () => {
+      status.textContent = 'Error leyendo archivo Excel.';
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function extraerTablas(texto) {
+    const lineas = texto.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    let tablasDetectadas = [];
+    let tablaActual = [];
+    const minCols = 3;
+
+    for(let i=0; i < lineas.length; i++) {
+      // Mejor split, acepta 2 o más espacios o tab
+      const celdas = lineas[i].split(/\s{2,}|\t/).filter(c => c.trim() !== '');
+      if (celdas.length >= minCols) {
+        tablaActual.push(celdas);
+      } else {
+        if (tablaActual.length > 0) {
+          tablasDetectadas.push(tablaActual);
+          tablaActual = [];
+        }
       }
-      else {
-        alert('Formato no soportado. Usa PDF, CSV o XLSX.');
-      }
+    }
+    if (tablaActual.length > 0) tablasDetectadas.push(tablaActual);
+
+    return tablasDetectadas.map(eliminarFilasDuplicadas);
+  }
+
+  function eliminarFilasDuplicadas(tabla) {
+    const vistos = new Set();
+    return tabla.filter(fila => {
+      const key = fila.join('|').toLowerCase();
+      if (vistos.has(key)) return false;
+      vistos.add(key);
+      return true;
     });
+  }
 
-    function procesarCSV(texto) {
-      const filas = texto.trim().split('\n').map(line => line.split(',').map(cell => cell.trim()));
-      procesarDatos(filas);
-    }
+  function crearTablaHTML(tabla, nro) {
+    const table = document.createElement('table');
+    table.setAttribute('aria-label', `Tabla número ${nro}`);
 
-    function procesarDatos(datos) {
-      if (!datos.length) {
-        alert('No se encontraron datos.');
-        return;
-      }
-      columnas = datos[0];
-      datosCargados = datos;
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
 
-      construirTabla(datosCargados);
-      cargarMapeoColumnas(columnas);
-      tablaContainer.style.display = 'block';
-      mapeoDiv.style.display = 'block';
-    }
+    // Si la tabla está vacía, devolver tabla vacía
+    if(tabla.length === 0) return table;
 
-    function construirTabla(datos) {
-      theadDatos.innerHTML = '';
-      tbodyDatos.innerHTML = '';
+    // Usar primera fila como header
+    const headerRow = document.createElement('tr');
+    tabla[0].forEach(texto => {
+      const th = document.createElement('th');
+      th.textContent = texto;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
 
-      const trHead = document.createElement('tr');
-      columnas.forEach(col => {
-        const th = document.createElement('th');
-        th.textContent = col;
-        trHead.appendChild(th);
+    for (let i=1; i < tabla.length; i++) {
+      const tr = document.createElement('tr');
+      tabla[i].forEach(texto => {
+        const td = document.createElement('td');
+        td.textContent = texto;
+        tr.appendChild(td);
       });
-      theadDatos.appendChild(trHead);
-
-      for (let i = 1; i < datos.length; i++) {
-        const tr = document.createElement('tr');
-        datos[i].forEach(celda => {
-          const td = document.createElement('td');
-          td.textContent = celda;
-          tr.appendChild(td);
-        });
-        tbodyDatos.appendChild(tr);
-      }
+      tbody.appendChild(tr);
     }
 
-    function cargarMapeoColumnas(cols) {
-      selectCodigo.innerHTML = '';
-      selectInstitucion.innerHTML = '';
+    table.appendChild(thead);
+    table.appendChild(tbody);
 
-      cols.forEach((col, i) => {
-        const option1 = document.createElement('option');
-        option1.value = i;
-        option1.textContent = col;
-        selectCodigo.appendChild(option1);
+    const titulo = document.createElement('h2');
+    titulo.textContent = `Tabla ${nro}`;
 
-        const option2 = document.createElement('option');
-        option2.value = i;
-        option2.textContent = col;
-        selectInstitucion.appendChild(option2);
-      });
+    const contenedor = document.createElement('div');
+    contenedor.appendChild(titulo);
+    contenedor.appendChild(table);
 
-      // Selección automática heurística
-      const codVacIndex = cols.findIndex(c => /codigo|vacante|id/i.test(c));
-      if(codVacIndex >= 0) selectCodigo.selectedIndex = codVacIndex;
-      const instIndex = cols.findIndex(c => /institucion|escuela|colegio|plantel/i.test(c));
-      if(instIndex >= 0) selectInstitucion.selectedIndex = instIndex;
-    }
-  </script>
+    return contenedor;
+  }
+</script>
+
 </body>
 </html>
