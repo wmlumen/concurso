@@ -2,237 +2,71 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Puestos Vacantes - DocentePy (Visitante)</title>
-
-  <link rel="stylesheet" href="estilos/main.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-
+  <title>Índice de Archivos del Proyecto DocentePy</title>
   <style>
     body {
-      font-family: var(--font-main, Arial, sans-serif);
-      background: var(--light-color, #f4f6f8);
-      margin: 0;
-      padding: 0;
-      color: var(--dark-color, #333);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f9f9f9;
+      color: #333;
     }
-
-    header {
-      background-color: var(--primary-color, #2c3e50);
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
     }
-    header .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 700;
-      font-size: 1.5rem;
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      margin: 0.3rem 0;
+    }
+    a {
       text-decoration: none;
-      color: white;
+      color: #3498db;
     }
-    header .logo img {
-      height: 40px;
+    a:hover {
+      text-decoration: underline;
     }
-
-    main {
-      flex: 1;
-      display: flex;
-      gap: 1rem;
-      padding: 1rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
-
-    /* Panel lateral */
-    aside.sidebar {
-      width: 320px;
-      background: white;
-      border-radius: var(--border-radius-md, 8px);
-      box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
-      padding: 1rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    aside.sidebar h2 {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-      color: var(--primary-color, #2c3e50);
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-    .filter-group label {
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 0.25rem;
-      color: var(--dark-gray, #555);
-    }
-    .filter-group select {
-      padding: 0.4rem 0.6rem;
-      border-radius: var(--border-radius-sm, 4px);
-      border: 1px solid var(--medium-gray, #b2bec3);
-      font-size: 0.95rem;
-    }
-    .filter-group select[multiple] {
-      height: 100px;
-    }
-
-    .btn-register {
-      margin-top: auto;
-      padding: 0.8rem 1.2rem;
-      background-color: var(--secondary-color, #3498db);
-      color: white;
-      font-weight: 600;
-      border: none;
-      border-radius: var(--border-radius-sm, 4px);
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-      display: block;
-    }
-    .btn-register:hover,
-    .btn-register:focus {
-      background-color: var(--secondary-dark, #2980b9);
-    }
-
-    /* Contenedor del mapa */
-    section.map-container {
-      flex: 1;
-      background: white;
-      border-radius: var(--border-radius-md, 8px);
-      box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    .map-image {
-      max-width: 100%;
-      height: auto;
-      border-radius: var(--border-radius-md, 8px);
-      box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.1));
-    }
-
-    .map-caption {
+    .folder {
+      font-weight: bold;
+      color: #2980b9;
       margin-top: 1rem;
-      font-style: italic;
-      color: var(--dark-gray, #555);
-      font-size: 0.9rem;
-      max-width: 600px;
-      text-align: center;
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      main {
-        flex-direction: column;
-        padding: 1rem;
-      }
-      aside.sidebar {
-        width: 100%;
-        order: 2;
-      }
-      section.map-container {
-        order: 1;
-        margin-bottom: 1rem;
-      }
     }
   </style>
 </head>
 <body>
-  <header role="banner">
-    <a href="index.html" class="logo" aria-label="Ir a inicio DocentePy">
-      <img src="assets/logo-docentepy.svg" alt="Logo DocentePy" />
-      DocentePy
-    </a>
-  </header>
+  <h1>Índice de Archivos del Proyecto DocentePy</h1>
 
-  <main role="main" aria-label="Mapa de puestos vacantes y filtros">
-    <aside class="sidebar" aria-label="Filtros para puestos vacantes">
-      <h2>Filtros</h2>
+  <ul>
+    <li><a href="estilos/" target="_blank">estilos/</a></li>
+    <li><a href="API/" target="_blank">API/</a></li>
+    <li><a href="registro.js" target="_blank">registro.js</a></li>
+    <li><a href="validar.js" target="_blank">validar.js</a></li>
+    <li><a href="módulos/" target="_blank">módulos/</a></li>
+    <li><a href="documents.js" target="_blank">documents.js</a></li>
+    <li><a href="presentacion.html" target="_blank">presentacion.html</a></li>
+    <li><a href="profile.js" target="_blank">profile.js</a></li>
+    <li><a href="registro.html" target="_blank">registro.html</a></li>
+    <li><a href="guiones/" target="_blank">guiones/</a></li>
+    <li><a href="Chart.js" target="_blank">Chart.js</a></li>
+    <li><a href="admin.js" target="_blank">admin.js</a></li>
+    <li><a href="main.js" target="_blank">main.js</a></li>
+    <li><a href="src/modules/" target="_blank">src/modules/</a></li>
+    <li><a href="perfilDocente.html" target="_blank">perfilDocente.html</a></li>
+    <li><a href="estilos/main.css" target="_blank">estilos/main.css</a></li>
+    <li><a href=".env" target="_blank">.env</a></li>
+    <li><a href=".gitignore" target="_blank">.gitignore</a></li>
+    <li><a href="Node.js" target="_blank">Node.js</a></li>
+    <li><a href="Preguntas frecuentes.html" target="_blank">Preguntas frecuentes.html</a></li>
+    <li><a href="README.md" target="_blank">README.md</a></li>
+    <li><a href="administrador.html" target="_blank">administrador.html</a></li>
+    <li><a href="datos.js" target="_blank">datos.js</a></li>
+    <li><a href="estructura/" target="_blank">estructura/</a></li>
+    <li><a href="índice.html" target="_blank">índice.html</a></li>
+    <li><a href="mapa-concursos.js" target="_blank">mapa-concursos.js</a></li>
+    <li><a href="sessionControl.js" target="_blank">sessionControl.js</a></li>
+  </ul>
 
-      <div class="filter-group">
-        <label for="filtro-departamento">Departamento</label>
-        <select id="filtro-departamento" aria-describedby="desc-departamento">
-          <option value="">-- Seleccionar --</option>
-          <option value="central">Central</option>
-          <option value="asuncion">Asunción</option>
-          <option value="cordillera">Cordillera</option>
-          <option value="paraguarí">Paraguarí</option>
-          <option value="alto-parana">Alto Paraná</option>
-        </select>
-        <small id="desc-departamento" class="sr-only">Seleccione uno o varios departamentos</small>
-      </div>
-
-      <div class="filter-group">
-        <label for="filtro-distrito">Distrito</label>
-        <select id="filtro-distrito" multiple aria-describedby="desc-distrito">
-          <option value="luque">Luque</option>
-          <option value="san-lorenzo">San Lorenzo</option>
-          <option value="lujan">Luján</option>
-          <option value="villarrica">Villarrica</option>
-          <option value="capiatá">Capiatá</option>
-        </select>
-        <small id="desc-distrito" class="sr-only">Puede seleccionar varios distritos manteniendo Ctrl o Shift</small>
-      </div>
-
-      <div class="filter-group">
-        <label for="filtro-institucion">Institución Educativa</label>
-        <select id="filtro-institucion" multiple aria-describedby="desc-institucion">
-          <option value="escuela1">Escuela Nº 1</option>
-          <option value="escuela2">Escuela Nº 2</option>
-          <option value="escuela3">Escuela Nº 3</option>
-          <option value="escuela4">Escuela Nº 4</option>
-        </select>
-        <small id="desc-institucion" class="sr-only">Seleccione una o más instituciones</small>
-      </div>
-
-      <div class="filter-group">
-        <label for="filtro-asignatura">Asignatura</label>
-        <select id="filtro-asignatura" multiple aria-describedby="desc-asignatura">
-          <option value="matematica">Matemática</option>
-          <option value="lengua">Lengua Española</option>
-          <option value="ciencias">Ciencias Naturales</option>
-          <option value="historia">Historia</option>
-          <option value="ingles">Inglés</option>
-        </select>
-        <small id="desc-asignatura" class="sr-only">Seleccione una o más asignaturas</small>
-      </div>
-
-      <a href="registro.html" class="btn-register" aria-label="Registrarse para acceder al mapa interactivo y filtros avanzados">
-        Registrarse para ver el mapa interactivo
-      </a>
-    </aside>
-
-    <section class="map-container" aria-label="Mapa estático de puestos vacantes">
-      <img
-        src="assets/mapa-vacantes.jpg"
-        alt="Mapa estático con la ubicación aproximada de los puestos vacantes"
-        class="map-image"
-      />
-      <p class="map-caption">
-        Este es un mapa estático que muestra la ubicación aproximada de los puestos vacantes. Para un acceso completo y detallado, regístrese en la plataforma.
-      </p>
-    </section>
-  </main>
 </body>
 </html>
