@@ -1,462 +1,506 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Preguntas Frecuentes - DocentePy</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-  <style>
-    :root {
-      --primary-color: #2c3e50;
-      --secondary-color: #3498db;
-      --accent-color: #f39c12;
-      --light-color: #ecf0f1;
-      --dark-color: #2d3436;
-      --success-color: #27ae60;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Preguntas Frecuentes - DocentePy</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+  rel="stylesheet"
+/>
+<!-- FontAwesome -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
 
-    body {
-      font-family: "Roboto", sans-serif;
-      line-height: 1.6;
-      color: var(--dark-color);
-      background-color: #f9f9f9;
-    }
+<style>
+  :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #f39c12;
+    --background-color: #fafafa;
+    --text-color: #2d3436;
+    --border-color: #dcdcdc;
+    --hover-bg: #eaf3fc;
+    --copy-btn-bg: var(--secondary-color);
+    --copy-btn-hover: #2a80b9;
+  }
 
-    .container {
-      width: 90%;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 2rem 0;
-    }
+  /* Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-    header {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 1.5rem 0;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+  body {
+    font-family: "Roboto", sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
+  /* Container */
+  .container {
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto 4rem;
+  }
+
+  /* Header */
+  header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1.5rem 0;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .logo img {
+    height: 42px;
+  }
+  .logo h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+  .back-btn {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .back-btn:hover {
+    color: var(--accent-color);
+  }
+
+  /* Title */
+  h2 {
+    text-align: center;
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  /* FAQ Container */
+  .faq-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* FAQ item */
+  .faq-item {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.25s ease;
+    position: relative;
+  }
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+  .faq-item:hover {
+    background-color: var(--hover-bg);
+  }
+
+  /* FAQ question */
+  .faq-question {
+    cursor: pointer;
+    padding: 1.3rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .faq-question > span {
+    flex: 1;
+  }
+  .faq-question i {
+    transition: transform 0.3s ease;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+  }
+  .faq-item.active .faq-question i {
+    transform: rotate(180deg);
+  }
+
+  /* Copy button */
+  .copy-btn {
+    background: var(--copy-btn-bg);
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.28rem 0.7rem;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  .copy-btn:hover {
+    background: var(--copy-btn-hover);
+  }
+  .copy-btn:disabled {
+    background: #7eaed9;
+    cursor: default;
+  }
+
+  /* FAQ answer */
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.2, 1, 0.3, 1),
+      padding 0.3s ease;
+    padding: 0 1.5rem;
+    font-weight: 400;
+    color: #444;
+  }
+  .faq-item.active .faq-answer {
+    padding: 1rem 1.5rem 1.5rem;
+    max-height: 1200px; /* suficiente para texto largo */
+  }
+  .faq-answer p,
+  .faq-answer ol,
+  .faq-answer ul {
+    margin-bottom: 1rem;
+  }
+  .faq-answer ol,
+  .faq-answer ul {
+    padding-left: 1.5rem;
+  }
+  .faq-answer strong {
+    font-weight: 600;
+  }
+
+  /* Contact Section */
+  .contact-section {
+    margin-top: 3rem;
+    text-align: center;
+  }
+  .contact-btn {
+    background: var(--accent-color);
+    color: white;
+    padding: 0.9rem 2rem;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    transition: background-color 0.3s ease;
+  }
+  .contact-btn i {
+    font-size: 1.3rem;
+  }
+  .contact-btn:hover {
+    background-color: #e67e22;
+  }
+
+  /* Footer */
+  footer {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem 0;
+    margin-top: auto;
+  }
+  .footer-content {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .social-links a {
+    color: white;
+    font-size: 1.3rem;
+    margin-left: 0.6rem;
+    transition: color 0.3s ease;
+  }
+  .social-links a:hover {
+    color: var(--accent-color);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
     .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo img {
-      height: 40px;
-    }
-
-    .logo h1 {
-      font-size: 1.5rem;
-    }
-
-    .back-btn {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    h2 {
-      color: var(--primary-color);
-      margin-bottom: 2rem;
+      flex-direction: column;
+      gap: 1rem;
       text-align: center;
-      font-size: 2rem;
     }
-
-    .faq-container {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      overflow: hidden;
-    }
-
-    .faq-item {
-      border-bottom: 1px solid #eee;
-      user-select: none;
-      transition: background-color 0.3s ease;
-      position: relative;
-    }
-
-    .faq-item:hover {
-      background-color: #dbe9f4;
-    }
-
     .faq-question {
-      padding: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s;
-      gap: 1rem;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      font-size: 1rem;
     }
-
-    .faq-question:hover {
-      background-color: #f5f5f5;
+    .contact-btn {
+      font-size: 1rem;
+      padding: 0.75rem 1.4rem;
+      justify-content: center;
     }
-
-    .faq-question i {
-      transition: transform 0.3s;
-      flex-shrink: 0;
-    }
-
-    .faq-item.active .faq-question i {
-      transform: rotate(180deg);
-    }
-
-    .copy-btn {
-      background: var(--secondary-color);
-      border: none;
-      color: white;
-      font-size: 0.85rem;
-      padding: 0.3rem 0.6rem;
-      border-radius: 4px;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background-color 0.3s;
-      user-select: none;
-    }
-
-    .copy-btn:hover {
-      background-color: #2a80b9;
-    }
-
-    .faq-answer {
-      padding: 0 1.5rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out, padding 0.3s ease;
-      font-weight: 400;
-      color: #444;
-    }
-
-    .faq-item.active .faq-answer {
-      padding: 0 1.5rem 1.5rem;
-      max-height: 1000px;
-    }
-
-    .faq-answer p,
-    .faq-answer ol,
-    .faq-answer ul {
-      margin-bottom: 1rem;
-    }
-
-    .faq-answer ol,
-    .faq-answer ul {
-      padding-left: 1.5rem;
-    }
-
-    .contact-section {
-      margin-top: 3rem;
+    .footer-content {
+      flex-direction: column;
       text-align: center;
     }
-
-    .contact-btn {
-      display: inline-block;
-      padding: 0.8rem 1.5rem;
-      background-color: var(--accent-color);
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: 500;
-      margin-top: 1rem;
-      transition: background-color 0.3s;
-    }
-
-    .contact-btn:hover {
-      background-color: #e67e22;
-    }
-
-    footer {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 2rem 0;
-      margin-top: 3rem;
-    }
-
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .social-links a {
-      color: white;
-      margin-left: 0.5rem;
-      font-size: 1.2rem;
-      transition: color 0.3s ease;
-    }
-
-    .social-links a:hover {
-      color: var(--accent-color);
-    }
-
-    @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
-
-      .faq-question {
-        padding: 1rem;
-      }
-
-      .footer-content {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <div class="logo">
-          <img src="./assets/logo-docentepy.svg" alt="DocentePy Logo" />
-          <h1>DocentePy</h1>
-        </div>
-        <a href="index.html" class="back-btn"
-          ><i class="fas fa-arrow-left"></i> Volver al inicio</a
-        >
-      </div>
+<header>
+  <div class="header-content">
+    <div class="logo">
+      <img src="./assets/logo-docentepy.svg" alt="DocentePy Logo" />
+      <h1>DocentePy</h1>
     </div>
-  </header>
+    <a href="index.html" class="back-btn" aria-label="Volver al inicio">
+      <i class="fas fa-arrow-left"></i> Volver al inicio
+    </a>
+  </div>
+</header>
 
-  <main>
-    <div class="container">
-      <h2>Preguntas Frecuentes</h2>
+<main class="container" role="main">
+  <h2>Preguntas Frecuentes</h2>
 
-      <div class="faq-container">
-        <!-- Pregunta 1 -->
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>¿Cómo me registro en la plataforma?</span>
-            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Para registrarte en DocentePy:</p>
-            <ol>
-              <li>Haz clic en el botón "Registrarse" en la esquina superior derecha</li>
-              <li>Completa el formulario con tus datos personales</li>
-              <li>Verifica tu correo electrónico</li>
-              <li>Inicia sesión con tus credenciales</li>
-            </ol>
-            <p>
-              Necesitarás tu número de cédula y matrícula docente para completar
-              el registro.
-            </p>
-          </div>
-        </div>
-
-        <!-- Pregunta 2 -->
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>¿Qué documentos necesito para postular a concursos?</span>
-            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Los documentos básicos requeridos son:</p>
-            <ul>
-              <li>Constancia de puntajes actualizada</li>
-              <li>Título profesional escaneado</li>
-              <li>Certificado de antecedentes</li>
-              <li>Currículum Vitae actualizado</li>
-              <li>Documento de identidad</li>
-            </ul>
-            <p>Algunos concursos pueden requerir documentos adicionales específicos.</p>
-          </div>
-        </div>
-
-        <!-- Pregunta 3 -->
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>¿Cómo subo mis documentos a la plataforma?</span>
-            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Sigue estos pasos para subir documentos:</p>
-            <ol>
-              <li>Inicia sesión en tu cuenta</li>
-              <li>Ve a la sección "Documentos"</li>
-              <li>Selecciona el tipo de documento que deseas subir</li>
-              <li>Haz clic en "Seleccionar Archivo" y elige el documento desde tu computadora</li>
-              <li>Haz clic en "Procesar Documentos"</li>
-            </ol>
-            <p>Solo aceptamos archivos en formato PDF con un tamaño máximo de 5MB.</p>
-          </div>
-        </div>
-
-        <!-- Pregunta 4 -->
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>¿Cómo sé si mis documentos fueron aprobados?</span>
-            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>
-              Puedes verificar el estado de tus documentos en la sección "Mis Documentos
-              Cargados". Los estados posibles son:
-            </p>
-            <ul>
-              <li><strong>Pendiente:</strong> El documento está en proceso de revisión</li>
-              <li><strong>Verificado:</strong> El documento fue aprobado</li>
-              <li><strong>Rechazado:</strong> El documento no cumple los requisitos (se indica
-                el motivo)</li>
-            </ul>
-            <p>También recibirás una notificación por correo electrónico cuando se complete la revisión.</p>
-          </div>
-        </div>
-
-        <!-- Pregunta 5 -->
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>¿Puedo postular a más de un concurso a la vez?</span>
-            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Sí, puedes postularte a múltiples concursos simultáneamente, siempre que:</p>
-            <ul>
-              <li>Cumplas con los requisitos específicos de cada concurso</li>
-              <li>Los horarios de los cargos no se superpongan</li>
-              <li>No existan restricciones específicas en las bases del concurso</li>
-            </ul>
-            <p>Puedes monitorear todas tus postulaciones activas en la sección "Concursos".</p>
-          </div>
-        </div>
+  <section class="faq-container" aria-label="Preguntas frecuentes">
+    <!-- FAQ Item Template -->
+    <article class="faq-item" aria-expanded="false">
+      <header class="faq-question" tabindex="0" role="button" aria-controls="faq1-desc" aria-expanded="false">
+        <span>¿Cómo me registro en la plataforma?</span>
+        <button class="copy-btn" title="Copiar pregunta y respuesta" aria-label="Copiar pregunta y respuesta 1">Copiar</button>
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </header>
+      <div class="faq-answer" id="faq1-desc" role="region" aria-live="polite" aria-hidden="true">
+        <p>Para registrarte en DocentePy:</p>
+        <ol>
+          <li>Haz clic en el botón "Registrarse" en la esquina superior derecha</li>
+          <li>Completa el formulario con tus datos personales</li>
+          <li>Verifica tu correo electrónico</li>
+          <li>Inicia sesión con tus credenciales</li>
+        </ol>
+        <p>
+          Necesitarás tu número de cédula y matrícula docente para completar el registro.
+        </p>
       </div>
+    </article>
 
-      <div class="contact-section">
-        <p>¿No encontraste respuesta a tu pregunta?</p>
-        <a href="contacto.html" class="contact-btn">
-          <i class="fas fa-envelope"></i> Contáctanos
-        </a>
+    <article class="faq-item" aria-expanded="false">
+      <header class="faq-question" tabindex="0" role="button" aria-controls="faq2-desc" aria-expanded="false">
+        <span>¿Qué documentos necesito para postular a concursos?</span>
+        <button class="copy-btn" title="Copiar pregunta y respuesta" aria-label="Copiar pregunta y respuesta 2">Copiar</button>
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </header>
+      <div class="faq-answer" id="faq2-desc" role="region" aria-live="polite" aria-hidden="true">
+        <p>Los documentos básicos requeridos son:</p>
+        <ul>
+          <li>Constancia de puntajes actualizada</li>
+          <li>Título profesional escaneado</li>
+          <li>Certificado de antecedentes</li>
+          <li>Currículum Vitae actualizado</li>
+          <li>Documento de identidad</li>
+        </ul>
+        <p>Algunos concursos pueden requerir documentos adicionales específicos.</p>
       </div>
-    </div>
-  </main>
+    </article>
 
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <p>© 2025 DocentePy - Todos los derechos reservados</p>
-        <div class="social-links">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-        </div>
+    <article class="faq-item" aria-expanded="false">
+      <header class="faq-question" tabindex="0" role="button" aria-controls="faq3-desc" aria-expanded="false">
+        <span>¿Cómo subo mis documentos a la plataforma?</span>
+        <button class="copy-btn" title="Copiar pregunta y respuesta" aria-label="Copiar pregunta y respuesta 3">Copiar</button>
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </header>
+      <div class="faq-answer" id="faq3-desc" role="region" aria-live="polite" aria-hidden="true">
+        <p>Sigue estos pasos para subir documentos:</p>
+        <ol>
+          <li>Inicia sesión en tu cuenta</li>
+          <li>Ve a la sección "Documentos"</li>
+          <li>Selecciona el tipo de documento que deseas subir</li>
+          <li>Haz clic en "Seleccionar Archivo" y elige el documento desde tu computadora</li>
+          <li>Haz clic en "Procesar Documentos"</li>
+        </ol>
+        <p>Solo aceptamos archivos en formato PDF con un tamaño máximo de 5MB.</p>
       </div>
-    </div>
-  </footer>
+    </article>
 
-  <script>
-    // Funcionalidad acordeón
-    document.querySelectorAll(".faq-question").forEach((question) => {
-      question.addEventListener("click", (e) => {
-        // No expandir si clic en botón copiar
-        if (e.target.classList.contains("copy-btn")) return;
+    <article class="faq-item" aria-expanded="false">
+      <header class="faq-question" tabindex="0" role="button" aria-controls="faq4-desc" aria-expanded="false">
+        <span>¿Cómo sé si mis documentos fueron aprobados?</span>
+        <button class="copy-btn" title="Copiar pregunta y respuesta" aria-label="Copiar pregunta y respuesta 4">Copiar</button>
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </header>
+      <div class="faq-answer" id="faq4-desc" role="region" aria-live="polite" aria-hidden="true">
+        <p>
+          Puedes verificar el estado de tus documentos en la sección "Mis Documentos
+          Cargados". Los estados posibles son:
+        </p>
+        <ul>
+          <li><strong>Pendiente:</strong> El documento está en proceso de revisión</li>
+          <li><strong>Verificado:</strong> El documento fue aprobado</li>
+          <li><strong>Rechazado:</strong> El documento no cumple los requisitos (se indica el motivo)</li>
+        </ul>
+        <p>También recibirás una notificación por correo electrónico cuando se complete la revisión.</p>
+      </div>
+    </article>
 
-        const item = question.parentElement;
-        const isActive = item.classList.contains("active");
+    <article class="faq-item" aria-expanded="false">
+      <header class="faq-question" tabindex="0" role="button" aria-controls="faq5-desc" aria-expanded="false">
+        <span>¿Puedo postular a más de un concurso a la vez?</span>
+        <button class="copy-btn" title="Copiar pregunta y respuesta" aria-label="Copiar pregunta y respuesta 5">Copiar</button>
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </header>
+      <div class="faq-answer" id="faq5-desc" role="region" aria-live="polite" aria-hidden="true">
+        <p>Sí, puedes postularte a múltiples concursos simultáneamente, siempre que:</p>
+        <ul>
+          <li>Cumplas con los requisitos específicos de cada concurso</li>
+          <li>Los horarios de los cargos no se superpongan</li>
+          <li>No existan restricciones específicas en las bases del concurso</li>
+        </ul>
+        <p>Puedes monitorear todas tus postulaciones activas en la sección "Concursos".</p>
+      </div>
+    </article>
+  </section>
 
-        // Cerrar todas
-        document.querySelectorAll(".faq-item").forEach((el) =>
-          el.classList.remove("active")
-        );
+  <section class="contact-section" aria-label="Contacto">
+    <p>¿No encontraste respuesta a tu pregunta?</p>
+    <a href="contacto.html" class="contact-btn" role="button">
+      <i class="fas fa-envelope"></i> Contáctanos
+    </a>
+  </section>
+</main>
 
-        if (!isActive) {
-          item.classList.add("active");
-        }
-      });
+<footer>
+  <div class="footer-content" role="contentinfo">
+    <p>© 2025 DocentePy - Todos los derechos reservados</p>
+    <nav class="social-links" aria-label="Redes sociales">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // Acordeón con accesibilidad (teclado y ARIA)
+  const faqItems = document.querySelectorAll(".faq-item");
+
+  faqItems.forEach((item) => {
+    const question = item.querySelector(".faq-question");
+    const answer = item.querySelector(".faq-answer");
+
+    function toggleFaq() {
+      const isActive = item.classList.contains("active");
+      if (isActive) {
+        item.classList.remove("active");
+        item.setAttribute("aria-expanded", "false");
+        question.setAttribute("aria-expanded", "false");
+        answer.setAttribute("aria-hidden", "true");
+      } else {
+        // Cerrar otros abiertos (solo uno activo)
+        faqItems.forEach((el) => {
+          el.classList.remove("active");
+          el.setAttribute("aria-expanded", "false");
+          el.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+          el.querySelector(".faq-answer").setAttribute("aria-hidden", "true");
+        });
+        // Abrir este
+        item.classList.add("active");
+        item.setAttribute("aria-expanded", "true");
+        question.setAttribute("aria-expanded", "true");
+        answer.setAttribute("aria-hidden", "false");
+        answer.focus();
+      }
+    }
+
+    question.addEventListener("click", (e) => {
+      if (e.target.classList.contains("copy-btn")) return; // Ignorar click en copiar
+      toggleFaq();
     });
 
-    // Abrir la primera pregunta por defecto
-    const firstFaq = document.querySelector(".faq-item");
-    if (firstFaq) firstFaq.classList.add("active");
+    // Habilitar teclado para abrir/cerrar con Enter o Espacio
+    question.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleFaq();
+      }
+    });
+  });
 
-    // Copiar pregunta + respuesta al portapapeles con buen formato
-    document.querySelectorAll(".copy-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const faqItem = btn.closest(".faq-item");
-        const pregunta = faqItem.querySelector(".faq-question span").textContent.trim();
-        const respuestaNode = faqItem.querySelector(".faq-answer");
+  // Copiar pregunta + respuesta con formato limpio
+  const copyButtons = document.querySelectorAll(".copy-btn");
 
-        // Crear texto limpio formateado para copiar:
-        // Extraer texto de respuesta respetando párrafos y listas:
-        function extractText(node) {
-          let text = "";
-          node.childNodes.forEach((child) => {
-            if (child.nodeType === Node.TEXT_NODE) {
-              text += child.textContent.trim() + "\n";
-            } else if (child.nodeType === Node.ELEMENT_NODE) {
-              if (child.tagName === "P") {
-                text += child.textContent.trim() + "\n\n";
-              } else if (child.tagName === "OL" || child.tagName === "UL") {
-                Array.from(child.children).forEach((li, idx) => {
-                  if (child.tagName === "OL") {
-                    text += `${idx + 1}. ${li.textContent.trim()}\n`;
-                  } else {
-                    text += `- ${li.textContent.trim()}\n`;
-                  }
-                });
-                text += "\n";
-              } else {
-                // Otros nodos (span, strong, etc)
-                text += child.textContent.trim() + "\n";
-              }
+  function extractText(node) {
+    let text = "";
+    node.childNodes.forEach((child) => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        text += child.textContent.trim() + "\n";
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        if (child.tagName === "P") {
+          text += child.textContent.trim() + "\n\n";
+        } else if (child.tagName === "OL" || child.tagName === "UL") {
+          Array.from(child.children).forEach((li, idx) => {
+            if (child.tagName === "OL") {
+              text += `${idx + 1}. ${li.textContent.trim()}\n`;
+            } else {
+              text += `- ${li.textContent.trim()}\n`;
             }
           });
-          return text.trim();
+          text += "\n";
+        } else {
+          text += child.textContent.trim() + "\n";
         }
+      }
+    });
+    return text.trim();
+  }
 
-        const respuesta = extractText(respuestaNode);
+  copyButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const faqItem = btn.closest(".faq-item");
+      const pregunta = faqItem.querySelector(".faq-question span").textContent.trim();
+      const respuestaNode = faqItem.querySelector(".faq-answer");
+      const respuesta = extractText(respuestaNode);
 
-        const textoACopiar = `PREGUNTA:\n${pregunta}\n\nRESPUESTA:\n${respuesta}`;
+      const textoACopiar = `PREGUNTA:\n${pregunta}\n\nRESPUESTA:\n${respuesta}`;
 
-        navigator.clipboard
-          .writeText(textoACopiar)
-          .then(() => {
-            const original = btn.textContent;
-            btn.textContent = "Copiado!";
-            btn.disabled = true;
-            setTimeout(() => {
-              btn.textContent = original;
-              btn.disabled = false;
-            }, 1800);
-          })
-          .catch(() => {
-            alert("Error al copiar al portapapeles");
-          });
+      navigator.clipboard.writeText(textoACopiar).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = "¡Copiado!";
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }, 1800);
+      }).catch(() => {
+        alert("Error al copiar al portapapeles");
       });
     });
-  </script>
+  });
+</script>
 </body>
 </html>
