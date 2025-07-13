@@ -1,1 +1,32 @@
-Función: Generar informes automáticos, respuestas frecuentes, análisis de vacancias sin postulantes, alertas de incompatibilidades
+<script>
+  function procesarAI() {
+    const pregunta = document.getElementById("aiPregunta").value.trim();
+    const respuesta = document.getElementById("aiRespuesta");
+
+    if (!pregunta) {
+      alert("Por favor, ingresa una consulta.");
+      return;
+    }
+
+    const preguntaLower = pregunta.toLowerCase();
+    let simulacion = "";
+
+    // Casos simulados
+    if (preguntaLower.includes("reporte") && preguntaLower.includes("cerrados")) {
+      simulacion = "📄 Se encontraron 3 concursos cerrados en julio:\n\n1. Concurso Lengua (Esc. 5)\n2. Matemática Media (Col. Central)\n3. Historia Media (Col. Libertad)";
+    } else if (preguntaLower.includes("usuarios activos")) {
+      simulacion = "👥 Usuarios activos: 84\n• Administradores: 3\n• Docentes: 65\n• Instituciones: 16";
+    } else if (preguntaLower.includes("vacancias sin postulantes")) {
+      simulacion = "⚠️ Hay 5 vacancias sin postulantes:\n- Física (Esc. Técnica)\n- Química (Col. Santa Rosa)\n- Educación Musical (Inst. Creativo)\n- Inglés Básico (Col. Bilingüe)\n- Matemática (Esc. Rural 3)";
+    } else if (preguntaLower.includes("incompatibilidad") || preguntaLower.includes("alerta")) {
+      simulacion = "🚨 2 docentes superan el máximo de 260 horas:\n- Prof. Marta Rivas: 280h\n- Prof. Jorge Pérez: 290h\n\nSe sugiere revisar sus asignaciones.";
+    } else if (preguntaLower.includes("faq") || preguntaLower.includes("frecuentes")) {
+      simulacion = "📚 Preguntas Frecuentes:\n1. ¿Cómo postulo a un concurso?\n2. ¿Dónde veo mis documentos?\n3. ¿Cómo actualizo mi perfil docente?\n4. ¿Qué hacer si no puedo acceder a la plataforma?";
+    } else {
+      simulacion = "🤖 La consulta aún no tiene una respuesta programada. Pronto estará conectado al motor de AI de DocentePy.";
+    }
+
+    respuesta.style.display = "block";
+    respuesta.textContent = simulacion;
+  }
+</script>
