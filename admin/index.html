@@ -14,6 +14,84 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel Administrador - DocentePy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../estilos/admin.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body>
+  <nav class="sidebar" role="navigation" aria-label="Menú principal administrador">
+    <h2>DocentePy Admin</h2>
+    <a href="#" class="active"><i class="fas fa-tachometer-alt icon"></i>Dashboard</a>
+    <a href="#"><i class="fas fa-users icon"></i>Usuarios</a>
+    <a href="#"><i class="fas fa-clipboard-list icon"></i>Concursos</a>
+    <a href="#"><i class="fas fa-file-alt icon"></i>Documentos</a>
+    <a href="#"><i class="fas fa-cogs icon"></i>Configuración</a>
+  </nav>
+
+  <main class="content" role="main">
+    <header class="page-header">
+      Panel de Control
+      <i class="fas fa-lock"></i>
+    </header>
+
+    <section class="cards-summary" aria-label="Resumen rápido">
+      <article class="card" tabindex="0">
+        <h3 id="total-usuarios">12</h3>
+        <p>Usuarios activos</p>
+      </article>
+      <article class="card" tabindex="0">
+        <h3 id="total-concursos">5</h3>
+        <p>Concursos activos</p>
+      </article>
+      <article class="card" tabindex="0">
+        <h3 id="total-documentos">20</h3>
+        <p>Documentos cargados</p>
+      </article>
+    </section>
+
+    <section class="quick-access" aria-label="Accesos rápidos">
+      <h2>Accesos Rápidos</h2>
+      <div class="access-grid">
+        <div class="access-card" tabindex="0">
+          <i class="fas fa-users icon"></i>
+          <h3>Gestión de Usuarios</h3>
+          <p>Administra perfiles, roles y estados</p>
+          <button>Entrar</button>
+        </div>
+        <div class="access-card" tabindex="0">
+          <i class="fas fa-clipboard-list icon"></i>
+          <h3>Concursos Públicos</h3>
+          <p>Publica y gestiona convocatorias</p>
+          <button>Entrar</button>
+        </div>
+        <div class="access-card" tabindex="0">
+          <i class="fas fa-file-alt icon"></i>
+          <h3>Repositorio Documentos</h3>
+          <p>Revisa y verifica documentos cargados</p>
+          <button>Entrar</button>
+        </div>
+        <div class="access-card" tabindex="0">
+          <i class="fas fa-cogs icon"></i>
+          <h3>Configuración</h3>
+          <p>Ajusta parámetros del sistema</p>
+          <button>Entrar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
+
 
   <style>
     /* Simple layout y estilos rápidos para este panel */
