@@ -1,4 +1,75 @@
-<h2>¿Qué es este proyecto?</h2>
-<p>
-  Este sitio es una base modular para desarrollar herramientas educativas como formularios, concursos, dashboards y más. Se construirá por etapas, permitiendo añadir o quitar partes según necesidad.
-</p>
+# Proyecto DocentePy: Plataforma Modular para Gestión Educativa
+
+## Visión General
+
+DocentePy es una **plataforma modular** diseñada específicamente para la comunidad educativa en Paraguay, que ofrece:
+
+```mermaid
+graph TD
+    A[DocentePy] --> B[Formularios]
+    A --> C[Concursos]
+    A --> D[Dashboards]
+    A --> E[Gestión Documental]
+    A --> F[Alertas Personalizadas]
+```
+
+## Características Clave
+
+### 1. Arquitectura Modular
+- **Componentes intercambiables**: Cada funcionalidad es independiente
+- **Desarrollo por etapas**: Implementación progresiva según necesidades
+- **Fácil personalización**: Adaptable a diferentes instituciones
+
+### 2. Módulos Disponibles
+
+| Módulo | Descripción | Estado |
+|--------|-------------|--------|
+| Registro Docente | Formulario completo con validación | ✅ Implementado |
+| Concursos Públicos | Postulación y seguimiento | 🚧 En desarrollo |
+| Dashboard Analítico | Visualización de datos educativos | ✏️ Planeado |
+| Gestión Documental | Almacenamiento y organización | 🚧 En desarrollo |
+
+### 3. Beneficios para Usuarios
+
+1. **Para docentes**:
+   - Postulación simplificada a concursos
+   - Centralización de documentos profesionales
+   - Alertas personalizadas de oportunidades
+
+2. **Para instituciones**:
+   - Sistema estandarizado de procesos
+   - Reducción de carga administrativa
+   - Acceso a datos consolidados
+
+## Tecnologías Utilizadas
+
+```mermaid
+pie
+    title Stack Tecnológico
+    "Frontend (HTML/CSS/JS)" : 45
+    "Leaflet.js (Mapas)" : 15
+    "PDF.js (Documentos)" : 20
+    "LocalStorage" : 20
+```
+
+## Próximas Etapas de Desarrollo
+
+1. **Versión 1.1 (Q3 2024)**:
+   - Integración completa del módulo de concursos
+   - Sistema de notificaciones por correo
+
+2. **Versión 2.0 (Q1 2025)**:
+   - Autenticación segura con JWT
+   - Conexión con bases de datos del MEC
+
+## ¿Cómo Contribuir?
+
+Este proyecto está abierto a colaboraciones. Si deseas participar:
+
+1. Reportar issues en GitHub
+2. Proponer nuevas funcionalidades
+3. Contribuir con desarrollo frontend/backend
+
+> "La educación es el arma más poderosa para cambiar el mundo" - Nelson Mandela
+
+Este proyecto busca precisamente eso: **transformar la experiencia educativa** mediante herramientas digitales accesibles y eficientes.
