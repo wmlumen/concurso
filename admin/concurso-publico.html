@@ -1,270 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Procesar Tablas: PDF, CSV, XLS, XLSX</title>
-<style>
-  body { 
-    font-family: Arial, sans-serif; 
-    margin: 1rem; 
-    background: #f9f9f9; 
-    color: #222;
-  }
-  label, button { 
-    font-weight: 600; 
-    margin-top: 0.5rem; 
-    display: block; 
-  }
-  #status { 
-    margin-top: 1rem; 
-    font-weight: bold; 
-    color: #2c3e50;
-  }
-  #output {
-    margin-top: 1rem;
-    overflow-x: auto;
-    max-width: 100%;
-    padding: 1rem;
-    background: white;
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid #ccc;
-    margin-bottom: 2rem;
-    min-width: 600px;
-  }
-  th, td {
-    border: 1px solid #ccc;
-    padding: 0.4rem 0.8rem;
-    text-align: left;
-  }
-  th {
-    background-color: #3498db;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-  h2 {
-    margin-top: 2rem;
-    font-weight: 700;
-    color: #34495e;
-  }
-</style>
-
-<!-- pdf.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.222/pdf.min.js"></script>
-<!-- PapaParse para CSV -->
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<!-- SheetJS para XLS/XLSX -->
-<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Concursos Públicos - Admin DocentePy</title>
+  <link rel="stylesheet" href="../estilos/main.css" />
+  <link rel="stylesheet" href="estilos-admin.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 </head>
 <body>
 
-<h1>Procesar Tablas: PDF, CSV, XLS, XLSX</h1>
+<nav class="sidebar" role="navigation" aria-label="Panel de administración">
+  <h2>DocentePy Admin</h2>
+  <a href="index.html"><span class="icon"><i class="fas fa-tachometer-alt"></i></span> Panel Principal</a>
+  <a href="concursos-publicos.html" class="active" aria-current="page"><span class="icon"><i class="fas fa-bullhorn"></i></span> Concursos Públicos</a>
+  <a href="concursos-privados.html"><span class="icon"><i class="fas fa-user-shield"></i></span> Concursos Privados</a>
+  <a href="repositorio-documentos.html"><span class="icon"><i class="fas fa-folder-open"></i></span> Repositorio Documentos</a>
+  <a href="usuarios.html"><span class="icon"><i class="fas fa-users"></i></span> Gestión de Usuarios</a>
+  <a href="../index.html" target="_blank"><span class="icon"><i class="fas fa-globe"></i></span> Ver Plataforma Pública</a>
+</nav>
 
-<label for="fileInput">Selecciona archivo (PDF, CSV, XLS, XLSX):</label>
-<input type="file" id="fileInput" accept=".pdf,text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+<main class="content" role="main">
+  <header class="page-header">
+    Gestión de Concursos Públicos
+  </header>
 
-<button id="btnProcesar" disabled>Procesar archivo</button>
+  <section>
+    <!-- Aquí formulario o tabla para gestionar concursos públicos -->
+    <p>Listado y gestión de concursos públicos próximamente...</p>
+  </section>
+</main>
 
-<div id="status" aria-live="polite"></div>
-<div id="output"></div>
-
-<script>
-  const fileInput = document.getElementById('fileInput');
-  const btnProcesar = document.getElementById('btnProcesar');
-  const output = document.getElementById('output');
-  const status = document.getElementById('status');
-
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.222/pdf.worker.min.js';
-
-  fileInput.addEventListener('change', () => {
-    btnProcesar.disabled = !fileInput.files.length;
-    status.textContent = '';
-    output.innerHTML = '';
-  });
-
-  btnProcesar.addEventListener('click', () => {
-    output.innerHTML = '';
-    status.textContent = '';
-
-    const file = fileInput.files[0];
-    if (!file) {
-      status.textContent = 'Por favor selecciona un archivo primero.';
-      return;
-    }
-
-    const fileName = file.name.toLowerCase();
-
-    if (fileName.endsWith('.pdf')) {
-      status.textContent = 'Procesando PDF...';
-      procesarPDF(file);
-    } else if (fileName.endsWith('.csv')) {
-      status.textContent = 'Procesando CSV...';
-      procesarCSV(file);
-    } else if (fileName.endsWith('.xls') || fileName.endsWith('.xlsx')) {
-      status.textContent = 'Procesando Excel...';
-      procesarExcel(file);
-    } else {
-      status.textContent = 'Formato no soportado. Selecciona PDF, CSV o Excel.';
-    }
-  });
-
-  async function procesarPDF(file) {
-    try {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
-      let allTextItems = [];
-
-      for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-        const page = await pdf.getPage(pageNum);
-        const content = await page.getTextContent();
-        let textItems = content.items.map(item => item.str);
-        let pageText = textItems.join(' ');
-        allTextItems.push(pageText);
-      }
-
-      const fullText = allTextItems.join('\n');
-      const tablas = extraerTablas(fullText);
-
-      if (tablas.length === 0) {
-        status.textContent = 'No se detectaron tablas en el PDF.';
-        return;
-      }
-
-      status.textContent = `Se detectaron ${tablas.length} tabla(s) en el PDF.`;
-      tablas.forEach((tabla, i) => {
-        output.appendChild(crearTablaHTML(tabla, i+1));
-      });
-
-    } catch (error) {
-      status.textContent = 'Error procesando PDF: ' + error.message;
-    }
-  }
-
-  function procesarCSV(file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const text = e.target.result;
-      const result = Papa.parse(text, {skipEmptyLines: true});
-      if(result.data.length === 0) {
-        status.textContent = 'CSV vacío o inválido.';
-        return;
-      }
-      status.textContent = 'CSV cargado. Mostrando tabla.';
-      const tabla = eliminarFilasDuplicadas(result.data);
-      output.appendChild(crearTablaHTML(tabla, 1));
-    };
-    reader.onerror = () => {
-      status.textContent = 'Error leyendo el archivo CSV.';
-    };
-    reader.readAsText(file);
-  }
-
-  function procesarExcel(file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, {type: 'array'});
-      let sheetIndex = 0;
-      status.textContent = `Archivo Excel con ${workbook.SheetNames.length} hoja(s). Mostrando la primera.`;
-
-      const worksheet = workbook.Sheets[workbook.SheetNames[sheetIndex]];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1, blankrows: false});
-      if(jsonData.length === 0) {
-        status.textContent = 'Hoja vacía o inválida.';
-        return;
-      }
-
-      const tabla = eliminarFilasDuplicadas(jsonData);
-      output.appendChild(crearTablaHTML(tabla, 1));
-    };
-    reader.onerror = () => {
-      status.textContent = 'Error leyendo archivo Excel.';
-    };
-    reader.readAsArrayBuffer(file);
-  }
-
-  function extraerTablas(texto) {
-    const lineas = texto.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-    let tablasDetectadas = [];
-    let tablaActual = [];
-    const minCols = 3;
-
-    for(let i=0; i < lineas.length; i++) {
-      // Mejor split, acepta 2 o más espacios o tab
-      const celdas = lineas[i].split(/\s{2,}|\t/).filter(c => c.trim() !== '');
-      if (celdas.length >= minCols) {
-        tablaActual.push(celdas);
-      } else {
-        if (tablaActual.length > 0) {
-          tablasDetectadas.push(tablaActual);
-          tablaActual = [];
-        }
-      }
-    }
-    if (tablaActual.length > 0) tablasDetectadas.push(tablaActual);
-
-    return tablasDetectadas.map(eliminarFilasDuplicadas);
-  }
-
-  function eliminarFilasDuplicadas(tabla) {
-    const vistos = new Set();
-    return tabla.filter(fila => {
-      const key = fila.join('|').toLowerCase();
-      if (vistos.has(key)) return false;
-      vistos.add(key);
-      return true;
-    });
-  }
-
-  function crearTablaHTML(tabla, nro) {
-    const table = document.createElement('table');
-    table.setAttribute('aria-label', `Tabla número ${nro}`);
-
-    const thead = document.createElement('thead');
-    const tbody = document.createElement('tbody');
-
-    // Si la tabla está vacía, devolver tabla vacía
-    if(tabla.length === 0) return table;
-
-    // Usar primera fila como header
-    const headerRow = document.createElement('tr');
-    tabla[0].forEach(texto => {
-      const th = document.createElement('th');
-      th.textContent = texto;
-      headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-
-    for (let i=1; i < tabla.length; i++) {
-      const tr = document.createElement('tr');
-      tabla[i].forEach(texto => {
-        const td = document.createElement('td');
-        td.textContent = texto;
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-    }
-
-    table.appendChild(thead);
-    table.appendChild(tbody);
-
-    const titulo = document.createElement('h2');
-    titulo.textContent = `Tabla ${nro}`;
-
-    const contenedor = document.createElement('div');
-    contenedor.appendChild(titulo);
-    contenedor.appendChild(table);
-
-    return contenedor;
-  }
-</script>
+<script src="admin.js"></script>
 
 </body>
 </html>
