@@ -1,0 +1,263 @@
+/* estilos/admin.css */
+
+/* Variables de color y fuentes */
+:root {
+  --primary-color: #2c3e50;
+  --primary-color-dark: #22303b;
+  --secondary-color: #3498db;
+  --secondary-color-dark: #2980b9;
+  --background-light: #f0f2f5;
+  --background-white: #fff;
+  --text-dark: #222;
+  --text-muted: #555;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 3px 7px rgba(0, 0, 0, 0.15);
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Reset y base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+nav.sidebar {
+  width: 260px;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+  transition: width 0.3s ease;
+}
+
+nav.sidebar h2 {
+  margin-top: 0;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+nav.sidebar a {
+  color: #ddd;
+  text-decoration: none;
+  padding: 0.7rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 600;
+  user-select: none;
+}
+
+nav.sidebar a .icon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+nav.sidebar a:hover,
+nav.sidebar a.active {
+  background-color: var(--primary-color-dark);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Main content */
+main.content {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: var(--background-white);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page header */
+header.page-header {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header.page-header i {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+}
+
+/* Summary cards container */
+.cards-summary {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: var(--secondary-color);
+  color: white;
+  flex: 1 1 180px;
+  padding: 1.5rem 2rem;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  cursor: default;
+  transition: background-color 0.3s ease;
+}
+
+.card:hover {
+  background-color: var(--secondary-color-dark);
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  user-select: text;
+}
+
+.card p {
+  margin-top: 0.4rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+  user-select: none;
+}
+
+/* Quick Access Section */
+section.quick-access {
+  margin-top: auto;
+}
+
+section.quick-access h2 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Access cards grid */
+.access-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.2rem;
+}
+
+/* Individual access card */
+.access-card {
+  background-color: var(--background-light);
+  border-radius: var(--border-radius-md);
+  padding: 1rem 1.2rem;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: box-shadow 0.25s ease;
+}
+
+.access-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.access-card .icon {
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+  margin-bottom: 0.3rem;
+}
+
+.access-card h3 {
+  margin: 0;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
+.access-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.access-card button {
+  margin-top: auto;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+}
+
+.access-card button:hover {
+  background-color: var(--secondary-color-dark);
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  nav.sidebar {
+    width: 220px;
+  }
+  .cards-summary {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    flex-direction: column;
+  }
+  nav.sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0.5rem 1rem;
+  }
+  nav.sidebar h2 {
+    display: none;
+  }
+  nav.sidebar a {
+    flex: 0 0 auto;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+  }
+  main.content {
+    padding: 1rem;
+  }
+  .cards-summary {
+    flex-direction: column;
+  }
+  .access-grid {
+    grid-template-columns: 1fr;
+  }
+}
