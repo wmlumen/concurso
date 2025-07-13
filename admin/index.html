@@ -2,85 +2,212 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Panel Administrador - DocentePy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <!-- Estilos principales del admin -->
-  <link rel="stylesheet" href="../estilos/admin.css" />
-  <!-- FontAwesome para iconos -->
+  <title>Panel Administrador - DocentePy</title>
+  <link rel="stylesheet" href="estilos/main.css" />
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   />
+  <style>
+    /* Simple layout y estilos rápidos para este panel */
+    body {
+      margin: 0; font-family: Arial, sans-serif; background: #f0f2f5; color: #222;
+      display: flex; min-height: 100vh; 
+    }
+    nav.sidebar {
+      width: 260px; background: #2c3e50; color: white; display: flex; flex-direction: column;
+      padding: 1rem 1.5rem;
+    }
+    nav.sidebar h2 {
+      margin-top: 0; font-weight: 700; font-size: 1.4rem; margin-bottom: 1rem;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    nav.sidebar a {
+      color: #ddd; text-decoration: none; padding: 0.7rem 0.5rem; display: flex; align-items: center;
+      gap: 0.8rem; border-radius: 4px; transition: background 0.3s ease;
+      font-weight: 600;
+    }
+    nav.sidebar a:hover, nav.sidebar a.active {
+      background: #34495e; color: #fff;
+    }
+    nav.sidebar a .icon {
+      font-size: 1.2rem;
+      width: 24px; text-align: center;
+    }
+    main.content {
+      flex: 1; padding: 1.5rem 2rem; overflow-y: auto;
+      background: white;
+      box-shadow: inset 0 0 10px rgb(0 0 0 / 0.05);
+    }
+    header.page-header {
+      font-size: 1.7rem; font-weight: 700; margin-bottom: 1.5rem; color: #2c3e50;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cards-summary {
+      display: flex; gap: 1rem; margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: #3498db; color: white; flex: 1 1 180px; padding: 1.2rem 1.5rem;
+      border-radius: 10px; box-shadow: 0 3px 7px rgb(52 152 219 / 0.4);
+      display: flex; flex-direction: column; justify-content: center;
+      text-align: center;
+      cursor: default;
+      transition: background 0.3s ease;
+    }
+    .card:hover {
+      background: #2980b9;
+    }
+    .card h3 {
+      margin: 0; font-size: 2.8rem; font-weight: 700; line-height: 1;
+    }
+    .card p {
+      margin: 0.3rem 0 0; font-weight: 600; font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* Sección de accesos rápidos */
+    section.quick-access {
+      margin-top: 2rem;
+    }
+    section.quick-access h2 {
+      font-weight: 700; font-size: 1.4rem; margin-bottom: 1rem; color: #2c3e50;
+    }
+    .access-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+      gap: 1rem;
+    }
+    .access-card {
+      background: #ecf0f1; border-radius: 10px; padding: 1rem 1.2rem;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      cursor: pointer;
+      transition: box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .access-card:hover {
+      box-shadow: 0 6px 15px rgb(0 0 0 / 0.15);
+    }
+    .access-card .icon {
+      font-size: 2rem;
+      color: #2980b9;
+      margin-bottom: 0.3rem;
+    }
+    .access-card h3 {
+      margin: 0;
+      font-weight: 700;
+      color: #2c3e50;
+      font-size: 1.1rem;
+    }
+    .access-card p {
+      margin: 0;
+      color: #555;
+      font-size: 0.9rem;
+      flex-grow: 1;
+    }
+    .access-card button {
+      margin-top: auto;
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .access-card button:hover {
+      background: #2980b9;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navegación lateral -->
-  <nav class="sidebar" role="navigation" aria-label="Menú principal administrador">
-    <h2>DocentePy Admin</h2>
-    <a href="#" class="active" aria-current="page"><i class="fas fa-tachometer-alt icon"></i>Dashboard</a>
-    <a href="#"><i class="fas fa-users icon"></i>Usuarios</a>
-    <a href="#"><i class="fas fa-clipboard-list icon"></i>Concursos</a>
-    <a href="#"><i class="fas fa-file-alt icon"></i>Documentos</a>
-    <a href="#"><i class="fas fa-cogs icon"></i>Configuración</a>
-  </nav>
 
-  <!-- Contenido principal -->
-  <main class="content" role="main">
-    <!-- Cabecera -->
-    <header class="page-header">
-      Panel de Control
-      <i class="fas fa-lock" title="Área segura - Administrador"></i>
-    </header>
+<nav class="sidebar" role="navigation" aria-label="Panel de administración">
+  <h2>DocentePy Admin</h2>
+  <a href="admin/index.html" class="active" aria-current="page"><span class="icon"><i class="fas fa-tachometer-alt"></i></span> Panel Principal</a>
+  <a href="admin/concursos-publicos.html"><span class="icon"><i class="fas fa-bullhorn"></i></span> Concursos Públicos</a>
+  <a href="admin/concursos-privados.html"><span class="icon"><i class="fas fa-user-shield"></i></span> Concursos Privados</a>
+  <a href="admin/repositorio-documentos.html"><span class="icon"><i class="fas fa-folder-open"></i></span> Repositorio Documentos</a>
+  <a href="admin/usuarios.html"><span class="icon"><i class="fas fa-users"></i></span> Gestión de Usuarios</a>
+  <a href="index.html" target="_blank"><span class="icon"><i class="fas fa-globe"></i></span> Ver Plataforma Pública</a>
+</nav>
 
-    <!-- Resumen rápido con tarjetas -->
-    <section class="cards-summary" aria-label="Resumen rápido">
-      <article class="card" tabindex="0" aria-labelledby="usuarios-label">
-        <h3 id="usuarios-label" class="card-number" aria-live="polite">0</h3>
-        <p>Usuarios activos</p>
-      </article>
-      <article class="card" tabindex="0" aria-labelledby="concursos-label">
-        <h3 id="concursos-label" class="card-number" aria-live="polite">0</h3>
-        <p>Concursos activos</p>
-      </article>
-      <article class="card" tabindex="0" aria-labelledby="documentos-label">
-        <h3 id="documentos-label" class="card-number" aria-live="polite">0</h3>
-        <p>Documentos cargados</p>
-      </article>
-    </section>
+<main class="content" role="main">
+  <header class="page-header">
+    Panel de Administración - DocentePy
+    <span><i class="fas fa-user-lock" title="Acceso Administrador"></i></span>
+  </header>
 
-    <!-- Accesos rápidos -->
-    <section class="quick-access" aria-label="Accesos rápidos">
-      <h2>Accesos Rápidos</h2>
-      <div class="access-grid">
-        <div class="access-card" tabindex="0" role="button" aria-pressed="false" aria-label="Gestionar usuarios">
-          <i class="fas fa-users icon"></i>
-          <h3>Gestión de Usuarios</h3>
-          <p>Administra perfiles, roles y estados</p>
-          <button type="button">Entrar</button>
-        </div>
-        <div class="access-card" tabindex="0" role="button" aria-pressed="false" aria-label="Gestionar concursos públicos">
-          <i class="fas fa-clipboard-list icon"></i>
-          <h3>Concursos Públicos</h3>
-          <p>Publica y gestiona convocatorias</p>
-          <button type="button">Entrar</button>
-        </div>
-        <div class="access-card" tabindex="0" role="button" aria-pressed="false" aria-label="Repositorio de documentos">
-          <i class="fas fa-file-alt icon"></i>
-          <h3>Repositorio Documentos</h3>
-          <p>Revisa y verifica documentos cargados</p>
-          <button type="button">Entrar</button>
-        </div>
-        <div class="access-card" tabindex="0" role="button" aria-pressed="false" aria-label="Configuración del sistema">
-          <i class="fas fa-cogs icon"></i>
-          <h3>Configuración</h3>
-          <p>Ajusta parámetros del sistema</p>
-          <button type="button">Entrar</button>
-        </div>
+  <section class="cards-summary" aria-label="Resumen rápido">
+    <div class="card" tabindex="0" aria-label="Total usuarios registrados">
+      <h3 id="total-usuarios">0</h3>
+      <p>Usuarios Registrados</p>
+    </div>
+    <div class="card" tabindex="0" aria-label="Total concursos públicos activos">
+      <h3 id="total-concursos-publicos">0</h3>
+      <p>Concursos Públicos</p>
+    </div>
+    <div class="card" tabindex="0" aria-label="Total concursos privados activos">
+      <h3 id="total-concursos-privados">0</h3>
+      <p>Concursos Privados</p>
+    </div>
+    <div class="card" tabindex="0" aria-label="Total documentos en repositorio">
+      <h3 id="total-documentos">0</h3>
+      <p>Documentos Repositorio</p>
+    </div>
+  </section>
+
+  <section class="quick-access" aria-label="Accesos rápidos para administración">
+    <h2>Accesos Rápidos</h2>
+    <div class="access-grid">
+      <div class="access-card" role="region" aria-labelledby="acceso-conc-publicos">
+        <span class="icon"><i class="fas fa-bullhorn"></i></span>
+        <h3 id="acceso-conc-publicos">Concursos Públicos</h3>
+        <p>Gestiona la publicación, edición y seguimiento de concursos públicos.</p>
+        <button onclick="window.location.href='admin/concursos-publicos.html'">Ir a Concursos Públicos</button>
       </div>
-    </section>
-  </main>
 
-  <!-- Script de funcionalidad -->
-  <script src="admin.js"></script>
+      <div class="access-card" role="region" aria-labelledby="acceso-conc-privados">
+        <span class="icon"><i class="fas fa-user-shield"></i></span>
+        <h3 id="acceso-conc-privados">Concursos Privados</h3>
+        <p>Administra convocatorias privadas y sus vacantes.</p>
+        <button onclick="window.location.href='admin/concursos-privados.html'">Ir a Concursos Privados</button>
+      </div>
+
+      <div class="access-card" role="region" aria-labelledby="acceso-repositorio">
+        <span class="icon"><i class="fas fa-folder-open"></i></span>
+        <h3 id="acceso-repositorio">Repositorio de Documentos</h3>
+        <p>Revisa y administra documentos públicos y privados cargados.</p>
+        <button onclick="window.location.href='admin/repositorio-documentos.html'">Ir al Repositorio</button>
+      </div>
+
+      <div class="access-card" role="region" aria-labelledby="acceso-usuarios">
+        <span class="icon"><i class="fas fa-users"></i></span>
+        <h3 id="acceso-usuarios">Gestión de Usuarios</h3>
+        <p>Administra cuentas de usuarios, roles y permisos.</p>
+        <button onclick="window.location.href='admin/usuarios.html'">Ir a Usuarios</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Datos simulados para demo, idealmente vendrían desde backend
+  const totalUsuarios = 124;
+  const totalConcursosPublicos = 18;
+  const totalConcursosPrivados = 7;
+  const totalDocumentos = 54;
+
+  document.getElementById('total-usuarios').textContent = totalUsuarios;
+  document.getElementById('total-concursos-publicos').textContent = totalConcursosPublicos;
+  document.getElementById('total-concursos-privados').textContent = totalConcursosPrivados;
+  document.getElementById('total-documentos').textContent = totalDocumentos;
+</script>
+
 </body>
 </html>
