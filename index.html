@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Agregar estas líneas antes del cierre de </body> -->
-<script type="module">
-  import { initApp } from './scripts/app.js';
-  document.addEventListener('DOMContentLoaded', initApp);
-</script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DocentePy - Plataforma Integral para Docentes</title>
   
   <!-- Google Fonts -->
@@ -16,53 +11,339 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7Z67H6DBG4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-7Z67H6DBG4');
-  </script>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #f39c12;
+      --light-color: #ecf0f1;
+      --dark-color: #2d3436;
+      --success-color: #27ae60;
+      --warning-color: #f1c40f;
+      --danger-color: #e74c3c;
+    }
 
-  <link rel="stylesheet" href="./styles/main.css" />
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
+      color: var(--dark-color);
+      background-color: var(--light-color);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header Styles */
+    .app-header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .logo h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .main-nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1rem;
+    }
+
+    .main-nav a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .main-nav a:hover, .main-nav a.active {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    /* Button Styles */
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--secondary-color);
+      color: var(--secondary-color);
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .btn-accent {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+    }
+
+    .btn-accent:hover {
+      background-color: #e67e22;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 4rem 0;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .hero-text {
+      flex: 1;
+    }
+
+    .hero-text h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-image {
+      flex: 1;
+      text-align: center;
+    }
+
+    .hero-image img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Profile Section */
+    .profile-section {
+      padding: 2rem 0;
+    }
+
+    .profile-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+    }
+
+    .profile-sidebar {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .avatar {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .edit-avatar-btn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .profile-content {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* Documents Section */
+    .documents-section {
+      padding: 2rem 0;
+    }
+
+    .upload-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    /* Footer */
+    .app-footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .footer-col h4 {
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-col a {
+      color: var(--light-color);
+      text-decoration: none;
+    }
+
+    .footer-col a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1rem;
+      margin-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .hero-content {
+        flex-direction: column;
+      }
+      
+      .profile-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="app-header">
     <div class="container">
       <div class="header-content">
         <div class="logo">
-          <img src="./assets/logo-docentepy.svg" alt="DocentePy Logo" width="120">
+          <img src="./assets/logo-docentepy.svg" alt="DocentePy Logo" width="140">
           <h1>DocentePy</h1>
         </div>
         <nav class="main-nav">
           <ul>
-            <li><a href="#inicio" class="active">Inicio</a></li>
-            <li><a href="#perfil">Mi Perfil</a></li>
-            <li><a href="#concursos">Concursos</a></li>
-            <li><a href="#documentos">Documentos</a></li>
-            <li><a href="#ayuda">Ayuda</a></li>
+            <li><a href="#inicio" class="nav-link active"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="#perfil" class="nav-link"><i class="fas fa-user"></i> Mi Perfil</a></li>
+            <li><a href="#concursos" class="nav-link"><i class="fas fa-trophy"></i> Concursos</a></li>
+            <li><a href="#documentos" class="nav-link"><i class="fas fa-folder"></i> Documentos</a></li>
+            <li><a href="#ayuda" class="nav-link"><i class="fas fa-question-circle"></i> Ayuda</a></li>
           </ul>
         </nav>
         <div class="user-actions">
-          <button id="login-btn" class="btn btn-outline">Iniciar Sesión</button>
-          <button id="register-btn" class="btn btn-primary">Registrarse</button>
+          <button id="login-btn" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+          <button id="register-btn" class="btn btn-accent"><i class="fas fa-user-plus"></i> Registrarse</button>
         </div>
       </div>
     </div>
   </header>
 
   <main class="main-content">
-    <!-- Sección Hero/Banner -->
-    <section id="presentacion" class="hero-section">
+    <!-- Sección Hero -->
+    <section id="inicio" class="hero-section">
       <div class="container">
         <div class="hero-content">
           <div class="hero-text">
-            <h2>Plataforma Integral para la Gestión Docente</h2>
+            <h1>Plataforma Integral para la Gestión Docente</h1>
             <p class="subtitle">Conectamos docentes con oportunidades laborales y simplificamos los procesos administrativos</p>
             <div class="cta-buttons">
-              <a href="#registro" class="btn btn-primary btn-lg">Regístrate Gratis</a>
-              <a href="#video-tour" class="btn btn-outline btn-lg">Ver Video Tour</a>
+              <a href="#registro" class="btn btn-primary btn-lg"><i class="fas fa-user-plus"></i> Regístrate Gratis</a>
+              <a href="#video-tour" class="btn btn-outline btn-lg"><i class="fas fa-play-circle"></i> Ver Video Tour</a>
             </div>
           </div>
           <div class="hero-image">
@@ -72,48 +353,8 @@
       </div>
     </section>
 
-    <!-- Sección de Características Principales -->
-    <section class="features-section">
-      <div class="container">
-        <h2 class="section-title">¿Qué ofrece DocentePy?</h2>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-file-alt"></i>
-            </div>
-            <h3>Gestor de Documentos</h3>
-            <p>Almacena y organiza todos tus documentos profesionales en un solo lugar</p>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-trophy"></i>
-            </div>
-            <h3>Concursos Públicos</h3>
-            <p>Accede a todas las convocatorias y postula directamente desde la plataforma</p>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-bell"></i>
-            </div>
-            <h3>Alertas Personalizadas</h3>
-            <p>Recibe notificaciones sobre nuevas oportunidades que coincidan con tu perfil</p>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-chart-line"></i>
-            </div>
-            <h3>Seguimiento de Postulaciones</h3>
-            <p>Monitorea el estado de todas tus aplicaciones en tiempo real</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Módulo de Perfil Docente -->
-    <section id="perfil-docente" class="profile-section">
+    <!-- Sección de Perfil -->
+    <section id="perfil" class="profile-section">
       <div class="container">
         <h2 class="section-title">Mi Perfil Docente</h2>
         <div class="profile-container">
@@ -123,9 +364,9 @@
                 <img src="./assets/default-avatar.jpg" alt="Foto de perfil" id="profile-avatar">
                 <button class="edit-avatar-btn"><i class="fas fa-camera"></i></button>
               </div>
-              <h3 id="profile-name">Nombre Apellido</h3>
-              <p id="profile-ci">C.I.: 1.234.567</p>
-              <p id="profile-matricula">Matrícula: 123456</p>
+              <h3 id="profile-name">Christian José Raúl Keim Jara</h3>
+              <p id="profile-ci"><i class="fas fa-id-card"></i> C.I.: 1.340.130</p>
+              <p id="profile-matricula"><i class="fas fa-graduation-cap"></i> Matrícula: 125532</p>
               <div class="profile-actions">
                 <button class="btn btn-outline btn-sm"><i class="fas fa-download"></i> Descargar CV</button>
               </div>
@@ -166,7 +407,7 @@
                   </div>
                   <div class="form-group">
                     <label for="telefono">Teléfono</label>
-                    <input type="tel" id="telefono" value="(0994) 340472">
+                    <input type="tel" id="telefono" value="(0994) 340472" pattern="\(\d{3,4}\) \d{3}-\d{4}">
                   </div>
                   <div class="form-group">
                     <label for="email">Correo Electrónico</label>
@@ -176,7 +417,8 @@
                     <label for="departamento">Departamento</label>
                     <select id="departamento">
                       <option value="Central" selected>Central</option>
-                      <!-- otras opciones -->
+                      <option value="Asunción">Asunción</option>
+                      <option value="Alto Paraná">Alto Paraná</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -185,78 +427,16 @@
                   </div>
                 </div>
                 <div class="form-actions">
-                  <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                  <button type="button" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Cambios</button>
                 </div>
               </form>
             </div>
-            
-            <!-- Otras pestañas del perfil (se cargarán dinámicamente) -->
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Módulo de Concursos Públicos -->
-    <section id="concursos" class="contests-section">
-      <div class="container">
-        <h2 class="section-title">Concursos Públicos</h2>
-        <div class="contests-filters">
-          <div class="filter-group">
-            <label for="filter-level">Nivel Educativo:</label>
-            <select id="filter-level">
-              <option value="all">Todos</option>
-              <option value="inicial">Inicial</option>
-              <option value="primaria">Primaria</option>
-              <option value="secundaria">Secundaria</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label for="filter-area">Área:</label>
-            <select id="filter-area">
-              <option value="all">Todas</option>
-              <option value="ciencias">Ciencias</option>
-              <option value="letras">Letras</option>
-              <option value="tecnica">Técnica</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label for="filter-location">Ubicación:</label>
-            <select id="filter-location">
-              <option value="all">Todas</option>
-              <option value="central">Central</option>
-              <option value="asuncion">Asunción</option>
-            </select>
-          </div>
-          <button class="btn btn-primary">Filtrar</button>
-        </div>
-        
-        <div class="contests-grid">
-          <!-- Ejemplo de tarjeta de concurso -->
-          <div class="contest-card">
-            <div class="contest-card-header">
-              <span class="badge badge-primary">Nuevo</span>
-              <h3>Concurso de Oposición para Profesor de Biología - Nivel Medio</h3>
-            </div>
-            <div class="contest-card-body">
-              <div class="contest-info">
-                <p><i class="fas fa-building"></i> <strong>Institución:</strong> Colegio Nacional San José</p>
-                <p><i class="fas fa-map-marker-alt"></i> <strong>Ubicación:</strong> Asunción</p>
-                <p><i class="fas fa-calendar-alt"></i> <strong>Postulaciones hasta:</strong> 15/08/2025</p>
-                <p><i class="fas fa-user-friends"></i> <strong>Vacantes:</strong> 2</p>
-              </div>
-              <div class="contest-actions">
-                <a href="#concurso-detalle" class="btn btn-outline">Ver Detalles</a>
-                <button class="btn btn-primary">Postularme</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Más concursos se cargarán dinámicamente -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Módulo de Documentos -->
+    <!-- Sección de Documentos -->
     <section id="documentos" class="documents-section">
       <div class="container">
         <h2 class="section-title">Mis Documentos</h2>
@@ -280,7 +460,7 @@
               <div class="upload-icon">
                 <i class="fas fa-file-excel"></i>
               </div>
-              <h4>Cuadro de Personal</h3>
+              <h4>Cuadro de Personal</h4>
               <p>Detalle de tus cargos actuales</p>
               <input type="file" id="upload-cuadro" accept=".pdf" class="file-input">
               <label for="upload-cuadro" class="btn btn-outline">Seleccionar Archivo</label>
@@ -304,7 +484,7 @@
           </div>
           
           <div class="upload-actions">
-            <button class="btn btn-primary" disabled id="upload-btn">Procesar Documentos</button>
+            <button class="btn btn-primary" id="upload-btn">Procesar Documentos</button>
           </div>
         </div>
         
@@ -322,7 +502,6 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Documentos se cargarán dinámicamente -->
                 <tr>
                   <td>Constancia de Puntajes</td>
                   <td>puntajes_1340130.pdf</td>
@@ -385,8 +564,90 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="./scripts/main.js"></script>
-  <!-- Incluir aquí otros scripts necesarios -->
+  <script>
+    // Función para manejar la carga de archivos
+    document.querySelectorAll('.file-input').forEach(input => {
+      input.addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : 'No se ha cargado archivo';
+        const statusElement = document.getElementById(`${this.id}-status`);
+        statusElement.textContent = fileName;
+      });
+    });
+
+    // Manejo del botón de procesar documentos
+    document.getElementById('upload-btn').addEventListener('click', function() {
+      const files = [
+        document.getElementById('upload-puntajes').files[0],
+        document.getElementById('upload-cuadro').files[0],
+        document.getElementById('upload-certificacion').files[0]
+      ].filter(file => file);
+      
+      if (files.length === 0) {
+        alert('Por favor seleccione al menos un archivo');
+        return;
+      }
+      
+      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+      this.disabled = true;
+      
+      // Simular procesamiento
+      setTimeout(() => {
+        alert('Documentos procesados exitosamente');
+        this.innerHTML = 'Procesar Documentos';
+        this.disabled = false;
+        
+        // Actualizar tabla de documentos (simulación)
+        if (files.length > 0) {
+          const tbody = document.querySelector('.documents-table tbody');
+          files.forEach(file => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+              <td>${file.name.includes('puntajes') ? 'Constancia de Puntajes' : 
+                 file.name.includes('cuadro') ? 'Cuadro de Personal' : 'Certificación Documental'}</td>
+              <td>${file.name}</td>
+              <td>${new Date().toLocaleDateString()}</td>
+              <td><span class="badge badge-success">Verificado</span></td>
+              <td>
+                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                <button class="btn-icon"><i class="fas fa-download"></i></button>
+              </td>
+            `;
+            tbody.appendChild(newRow);
+          });
+        }
+      }, 2000);
+    });
+
+    // Manejo de la navegación por pestañas
+    document.querySelectorAll('.profile-menu a').forEach(tab => {
+      tab.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remover clase active de todos
+        document.querySelectorAll('.profile-menu li').forEach(item => {
+          item.classList.remove('active');
+        });
+        document.querySelectorAll('.profile-tab').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Agregar active al seleccionado
+        this.parentElement.classList.add('active');
+        document.querySelector(this.getAttribute('href')).classList.add('active');
+      });
+    });
+
+    // Guardar datos del perfil
+    document.querySelector('.profile-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const submitBtn = this.querySelector('button[type="button"]');
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+      
+      setTimeout(() => {
+        alert('Datos guardados correctamente');
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
