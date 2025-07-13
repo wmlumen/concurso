@@ -1,3 +1,35 @@
+// Agregar al final del archivo data.js
+const guardarDatos = () => {
+  localStorage.setItem('DocentePyData', JSON.stringify(DocentePyData));
+};
+
+// Cargar datos guardados al inicio
+const cargarDatosGuardados = () => {
+  const datosGuardados = localStorage.getItem('DocentePyData');
+  if (datosGuardados) {
+    Object.assign(DocentePyData, JSON.parse(datosGuardados));
+  }
+};
+
+// Llamar al cargar
+cargarDatosGuardados();
+
+// Modificar los métodos de la API para que guarden después de cada cambio
+const modificarAPI = () => {
+  const methodsToWrap = ['postularConcurso', 'uploadDocumento', 'actualizarUsuario'];
+  
+  methodsToWrap.forEach(method => {
+    const original = DocentePyAPI[method];
+    DocentePyAPI[method] = async (...args) => {
+      const result = await original(...args);
+      guardarDatos();
+      return result;
+    };
+  });
+};
+
+modificarAPI();
+
 // Datos simulados para la plataforma DocentePy
 const DocentePyData = {
   // Datos del usuario actual
