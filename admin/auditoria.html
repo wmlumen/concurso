@@ -1,4 +1,45 @@
-[
-  { usuario: "Christian Keim", accion: "Editó concurso público", fecha: "2025-07-13 09:30" },
-  { usuario: "Pedro López", accion: "Postuló a vacante", fecha: "2025-07-13 10:02" }
-]
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auditoría - DocentePy</title>
+  <link rel="stylesheet" href="css/estilos-admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <header class="admin-header">
+    <h1><i class="fas fa-shield-alt"></i> Registro de Actividades</h1>
+  </header>
+
+  <main class="auditoria-container">
+    <div class="filtros">
+      <input type="text" id="buscarUsuario" placeholder="Filtrar por usuario..." />
+      <input type="date" id="filtroFecha" />
+      <select id="filtroAccion">
+        <option value="">Todas las acciones</option>
+        <option value="creacion">Creación</option>
+        <option value="edicion">Edición</option>
+        <option value="eliminacion">Eliminación</option>
+        <option value="login">Acceso</option>
+      </select>
+    </div>
+
+    <table class="tabla-auditoria">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Usuario</th>
+          <th>Acción</th>
+          <th>Descripción</th>
+          <th>Fecha y hora</th>
+        </tr>
+      </thead>
+      <tbody id="tablaAuditoriaBody">
+        <!-- Datos dinámicos -->
+      </tbody>
+    </table>
+  </main>
+
+  <script src="js/auditoria.js"></script>
+</body>
+</html>
