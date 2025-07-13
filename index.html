@@ -1,68 +1,177 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>DocentePy - Inicio</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #panel-usuario { display: none; border: 1px solid #ccc; padding: 20px; margin-top: 20px; }
-    button { padding: 8px 15px; margin: 5px; cursor: pointer; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Inicio - DocentePy</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<!-- FontAwesome -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+<style>
+  :root {
+    --primary-color: #2c3e50;
+    --accent-color: #f39c12;
+    --background-color: #fafafa;
+    --text-color: #2d3436;
+    --button-hover: #e67e22;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body, html {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  main h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  main p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    max-width: 400px;
+    color: #444;
+  }
+
+  .btn {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.85rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(243,156,18,0.4);
+  }
+
+  .btn:hover,
+  .btn:focus {
+    background-color: var(--button-hover);
+    outline: none;
+  }
+
+  .links {
+    margin-top: 1.8rem;
+  }
+
+  .links a {
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    margin: 0 1rem;
+    transition: color 0.3s ease;
+  }
+
+  .links a:hover,
+  .links a:focus {
+    color: var(--accent-color);
+    outline: none;
+  }
+
+  footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 1rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  footer .social-links {
+    margin-top: 0.5rem;
+  }
+
+  footer .social-links a {
+    color: white;
+    margin: 0 0.6rem;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+
+  footer .social-links a:hover,
+  footer .social-links a:focus {
+    color: var(--accent-color);
+    outline: none;
+  }
+
+  @media (max-width: 480px) {
+    main h1 {
+      font-size: 2rem;
+    }
+
+    main p {
+      font-size: 1rem;
+      max-width: 90vw;
+    }
+
+    .links a {
+      margin: 0 0.6rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>
 </head>
 <body>
+  <div class="wrapper">
+    <main role="main">
+      <h1>Bienvenido a DocentePy</h1>
+      <p>Tu plataforma para potenciar tu desarrollo profesional docente. Regístrate para acceder a concursos, documentación y soporte.</p>
+      <a href="registro.html" class="btn" aria-label="Registrarse en DocentePy">Registrarse</a>
 
-  <header>
-    <h1>DocentePy Logo</h1>
-    <nav>
-      <button id="btn-ingresar">Ingresar</button>
-      <button id="btn-preguntas">Preguntas Frecuentes</button>
-    </nav>
-  </header>
+      <nav class="links" aria-label="Navegación principal">
+        <a href="preguntas-frecuentes.html" tabindex="0">Preguntas Frecuentes</a>
+      </nav>
+    </main>
 
-  <main>
-    <section id="inicio">
-      <h2>Bienvenido a DocentePy</h2>
-      <p>Una plataforma pensada para apoyar tu desarrollo profesional docente</p>
-      <button id="btn-comenzar">Comenzar</button>
-      <footer><small>© 2025 DocentePy - Todos los derechos reservados</small></footer>
-    </section>
-
-    <section id="panel-usuario">
-      <h2>Panel del Usuario</h2>
-      <p><strong>Nombre:</strong> Christian Keim</p>
-      <p><strong>Rol:</strong> Docente</p>
-      <p><strong>Email:</strong> ckeim@example.com</p>
-      <button id="btn-logout">Cerrar sesión</button>
-    </section>
-  </main>
-
-  <script>
-    const btnIngresar = document.getElementById('btn-ingresar');
-    const btnPreguntas = document.getElementById('btn-preguntas');
-    const btnComenzar = document.getElementById('btn-comenzar');
-    const panelUsuario = document.getElementById('panel-usuario');
-    const inicio = document.getElementById('inicio');
-    const btnLogout = document.getElementById('btn-logout');
-
-    function mostrarPanelUsuario() {
-      inicio.style.display = 'none';
-      panelUsuario.style.display = 'block';
-    }
-
-    function mostrarInicio() {
-      panelUsuario.style.display = 'none';
-      inicio.style.display = 'block';
-    }
-
-    btnIngresar.addEventListener('click', mostrarPanelUsuario);
-    btnComenzar.addEventListener('click', mostrarPanelUsuario);
-
-    btnLogout.addEventListener('click', mostrarInicio);
-
-    btnPreguntas.addEventListener('click', () => {
-      alert('Aquí iría la sección de Preguntas Frecuentes');
-    });
-  </script>
-
+    <footer role="contentinfo">
+      <p>© 2025 DocentePy - Todos los derechos reservados</p>
+      <nav class="social-links" aria-label="Redes sociales">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </nav>
+      <p style="margin-top:0.5rem;">
+        <a href="contacto.html" style="color: #f39c12; text-decoration:none;" aria-label="Contacto">Contáctanos</a>
+      </p>
+    </footer>
+  </div>
 </body>
 </html>
+
