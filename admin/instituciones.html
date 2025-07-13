@@ -1,11 +1,763 @@
-Funcionalidad:
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin DocentePy - Instituciones</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Admin Styles (embedded for self-containment) -->
+    <style>
+        /* estilos-admin.css content */
+        :root {
+            --primary-color: #2c3e50; /* Azul oscuro */
+            --secondary-color: #3498db; /* Azul claro */
+            --accent-color: #f39c12; /* Naranja */
+            --light-color: #ecf0f1; /* Gris muy claro */
+            --dark-color: #2d3436; /* Gris oscuro casi negro */
+            --success-color: #27ae60; /* Verde */
+            --warning-color: #f1c40f; /* Amarillo */
+            --danger-color: #e74c3c; /* Rojo */
+        }
 
-Registro, edición y baja de instituciones registradas.
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
 
-Asociación con concursos privados.
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
 
-Estado de validación y geolocalización.
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-Campos sugeridos:
+        .admin-sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
 
-Nombre, Tipo, Código MEC, Dirección, Localidad, Email, Estado.
+        .admin-sidebar .logo img {
+            height: 40px;
+        }
+
+        .admin-sidebar .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .admin-sidebar nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .admin-sidebar nav ul li {
+            margin-bottom: 1rem;
+        }
+
+        .admin-sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .admin-sidebar nav ul li a:hover {
+            background-color: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+        .admin-sidebar nav ul li a.active {
+            background-color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .admin-content {
+            flex-grow: 1;
+            padding: 2rem;
+            background-color: var(--light-color);
+        }
+
+        .admin-content-header {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-content-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.75rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        .data-table th {
+            background-color: #f8f8f8;
+            font-weight: 600;
+            color: var(--dark-color);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-primary {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .badge {
+            padding: 0.3rem 0.7rem;
+            border-radius: 9999px; /* Fully rounded */
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .badge-success { background-color: var(--success-color); }
+        .badge-warning { background-color: var(--warning-color); }
+        .badge-danger { background-color: var(--danger-color); }
+        .badge-info { background-color: var(--secondary-color); }
+        .badge-secondary { background-color: #95a5a6; }
+
+        .fas, .fab {
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+
+            .admin-sidebar {
+                width: 100%;
+                height: auto;
+                padding: 1rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .admin-sidebar .logo {
+                margin-bottom: 0;
+            }
+
+            .admin-sidebar nav {
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            .admin-sidebar nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .admin-sidebar nav ul li {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .admin-content {
+                padding: 1rem;
+            }
+
+            .admin-content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .admin-content-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar de Navegación -->
+        <aside class="admin-sidebar">
+            <div>
+                <div class="logo">
+                    <img src="https://placehold.co/40x40/E0E0E0/333333?text=DP" alt="DocentePy Logo" class="rounded-full"/>
+                    <h1>Admin DocentePy</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="concurso-publico.html"><i class="fas fa-bullhorn"></i> Concursos Públicos</a></li>
+                        <li><a href="Concursos Privados.html"><i class="fas fa-lock"></i> Concursos Privados</a></li>
+                        <li><a href="instituciones.html" class="active"><i class="fas fa-school"></i> Instituciones</a></li>
+                        <li><a href="permisos.html"><i class="fas fa-user-shield"></i> Permisos y Roles</a></li>
+                        <li><a href="comunicaciones.html"><i class="fas fa-envelope"></i> Comunicaciones</a></li>
+                        <li><a href="auditoria.html"><i class="fas fa-clipboard-list"></i> Auditoría</a></li>
+                        <li><a href="reportes.html"><i class="fas fa-chart-line"></i> Reportes</a></li>
+                        <li><a href="Repositorio.html"><i class="fas fa-folder-open"></i> Repositorio Doc.</a></li>
+                        <li><a href="ai-asistente.html"><i class="fas fa-robot"></i> Asistente IA</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="mt-auto">
+                <a href="#" class="btn btn-danger w-full"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="admin-content">
+            <div class="admin-content-header">
+                <h1>Gestión de Instituciones</h1>
+                <button id="addInstitutionBtn" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Añadir Institución</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Buscar Institución</div>
+                <div class="form-group">
+                    <label for="searchInstitution">Buscar por Nombre, Código MEC o Localidad</label>
+                    <input type="text" id="searchInstitution" placeholder="Escribe para buscar..." class="w-full">
+                </div>
+            </div>
+
+            <div class="card mt-6">
+                <div class="card-header">Lista de Instituciones Educativas</div>
+                <div class="table-container">
+                    <table class="data-table w-full">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Cód. MEC</th>
+                                <th>Ubicación</th>
+                                <th>Email</th>
+                                <th>Estado Val.</th>
+                                <th>Geolocalización</th>
+                                <th>Concursos Privados</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="institutionsTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card mt-6">
+                <div class="card-header" id="formHeader">Añadir Institución</div>
+                <form id="institutionForm" class="space-y-4">
+                    <input type="hidden" id="institutionId">
+                    <div class="form-group">
+                        <label for="inst-name">Nombre de la Institución</label>
+                        <input type="text" id="inst-name" placeholder="Ej: Colegio Nacional de la Capital" class="w-full" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inst-type">Tipo</label>
+                        <select id="inst-type" class="w-full" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="Publico">Público</option>
+                            <option value="Privado">Privado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="inst-cod-mec">Código MEC</label>
+                        <input type="text" id="inst-cod-mec" placeholder="Ej: 12345" class="w-full">
+                    </div>
+                    <div class="form-group">
+                        <label for="inst-address">Dirección</label>
+                        <input type="text" id="inst-address" placeholder="Ej: Calle Principal 123" class="w-full" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inst-department">Departamento</label>
+                        <select id="inst-department" class="w-full" required>
+                            <option value="">Seleccione un departamento</option>
+                            <option value="Asunción">Asunción</option>
+                            <option value="Central">Central</option>
+                            <option value="Alto Paraná">Alto Paraná</option>
+                            <option value="Itapúa">Itapúa</option>
+                            <!-- Add more departments as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="inst-locality">Localidad</label>
+                        <input type="text" id="inst-locality" placeholder="Ej: Asunción" class="w-full" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inst-contact">Correo Electrónico de Contacto</label>
+                        <input type="email" id="inst-contact" placeholder="Ej: contacto@institucion.edu.py" class="w-full" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inst-validation-status">Estado de Validación</label>
+                        <select id="inst-validation-status" class="w-full" required>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Verificado">Verificado</option>
+                            <option value="Rechazado">Rechazado</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="inst-latitude">Latitud</label>
+                            <input type="number" step="any" id="inst-latitude" placeholder="-25.300" class="w-full">
+                        </div>
+                        <div class="form-group">
+                            <label for="inst-longitude">Longitud</label>
+                            <input type="number" step="any" id="inst-longitude" placeholder="-57.600" class="w-full">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inst-private-contests">Concursos Privados Asociados (IDs separados por coma)</label>
+                        <input type="text" id="inst-private-contests" placeholder="Ej: PRI-CONV-001, PRI-CONV-003" class="w-full">
+                    </div>
+                    <button type="submit" id="saveInstitutionBtn" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Institución</button>
+                    <button type="button" id="cancelEditBtn" class="btn btn-outline-primary ml-2" style="display:none;"><i class="fas fa-times"></i> Cancelar Edición</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Modal for Confirmation -->
+    <div id="confirmationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <p id="modalMessage" class="text-lg font-semibold mb-4"></p>
+            <div class="modal-buttons">
+                <button id="confirmYesBtn" class="btn btn-danger"><i class="fas fa-check"></i> Sí</button>
+                <button id="confirmNoBtn" class="btn btn-outline-primary"><i class="fas fa-times"></i> No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const INSTITUTIONS_STORAGE_KEY = 'docentepy_institutions';
+        let institutions = [];
+        let editingInstitutionId = null;
+
+        const institutionsTableBody = document.getElementById('institutionsTableBody');
+        const institutionForm = document.getElementById('institutionForm');
+        const institutionIdInput = document.getElementById('institutionId');
+        const instNameInput = document.getElementById('inst-name');
+        const instTypeSelect = document.getElementById('inst-type');
+        const instCodMecInput = document.getElementById('inst-cod-mec');
+        const instAddressInput = document.getElementById('inst-address');
+        const instDepartmentSelect = document.getElementById('inst-department');
+        const instLocalityInput = document.getElementById('inst-locality');
+        const instContactInput = document.getElementById('inst-contact');
+        const instValidationStatusSelect = document.getElementById('inst-validation-status');
+        const instLatitudeInput = document.getElementById('inst-latitude');
+        const instLongitudeInput = document.getElementById('inst-longitude');
+        const instPrivateContestsInput = document.getElementById('inst-private-contests');
+        const saveInstitutionBtn = document.getElementById('saveInstitutionBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const formHeader = document.getElementById('formHeader');
+        const addInstitutionBtn = document.getElementById('addInstitutionBtn');
+        const searchInstitutionInput = document.getElementById('searchInstitution');
+
+        // Modal elements
+        const confirmationModal = document.getElementById('confirmationModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const confirmYesBtn = document.getElementById('confirmYesBtn');
+        const confirmNoBtn = document.getElementById('confirmNoBtn');
+        let resolveModalPromise;
+
+        // Function to show custom confirmation modal
+        function showConfirmationModal(message) {
+            modalMessage.textContent = message;
+            confirmationModal.style.display = 'flex';
+            return new Promise(resolve => {
+                resolveModalPromise = resolve;
+            });
+        }
+
+        // Event listeners for modal buttons
+        confirmYesBtn.onclick = () => {
+            confirmationModal.style.display = 'none';
+            resolveModalPromise(true);
+        };
+        confirmNoBtn.onclick = () => {
+            confirmationModal.style.display = 'none';
+            resolveModalPromise(false);
+        };
+
+        // Load institutions from localStorage
+        function loadInstitutions() {
+            const storedInstitutions = localStorage.getItem(INSTITUTIONS_STORAGE_KEY);
+            if (storedInstitutions) {
+                institutions = JSON.parse(storedInstitutions);
+            } else {
+                // Initial dummy data if no data in localStorage
+                institutions = [
+                    {
+                        id: 'INST001',
+                        name: 'Colegio Nacional San José',
+                        type: 'Publico',
+                        codMec: '12345',
+                        address: 'Av. Principal 123',
+                        department: 'Asunción',
+                        locality: 'Asunción',
+                        contact: 'info@sanjose.edu.py',
+                        validationStatus: 'Verificado',
+                        latitude: -25.283,
+                        longitude: -57.599,
+                        privateContests: ['PRI-CONV-001']
+                    },
+                    {
+                        id: 'INST002',
+                        name: 'Escuela Básica N° 123',
+                        type: 'Publico',
+                        codMec: '67890',
+                        address: 'Calle Falsa 456',
+                        department: 'Central',
+                        locality: 'Luque',
+                        contact: 'escuela123@edu.py',
+                        validationStatus: 'Pendiente',
+                        latitude: -25.267,
+                        longitude: -57.533,
+                        privateContests: []
+                    }
+                ];
+                saveInstitutions(); // Save dummy data
+            }
+        }
+
+        // Save institutions to localStorage
+        function saveInstitutions() {
+            localStorage.setItem(INSTITUTIONS_STORAGE_KEY, JSON.stringify(institutions));
+        }
+
+        // Render institutions table
+        function renderInstitutions(filterText = '') {
+            institutionsTableBody.innerHTML = '';
+            const filteredInstitutions = institutions.filter(inst =>
+                inst.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                inst.codMec.toLowerCase().includes(filterText.toLowerCase()) ||
+                inst.locality.toLowerCase().includes(filterText.toLowerCase())
+            );
+
+            filteredInstitutions.forEach(inst => {
+                const row = institutionsTableBody.insertRow();
+                row.innerHTML = `
+                    <td class="py-2 px-4 border-b">${inst.id}</td>
+                    <td class="py-2 px-4 border-b">${inst.name}</td>
+                    <td class="py-2 px-4 border-b">${inst.type}</td>
+                    <td class="py-2 px-4 border-b">${inst.codMec || 'N/A'}</td>
+                    <td class="py-2 px-4 border-b">${inst.locality}, ${inst.department}</td>
+                    <td class="py-2 px-4 border-b">${inst.contact}</td>
+                    <td class="py-2 px-4 border-b">
+                        <span class="badge ${getValidationStatusBadgeClass(inst.validationStatus)}">
+                            ${inst.validationStatus}
+                        </span>
+                    </td>
+                    <td class="py-2 px-4 border-b">${inst.latitude ? `${inst.latitude.toFixed(3)}, ${inst.longitude.toFixed(3)}` : 'N/A'}</td>
+                    <td class="py-2 px-4 border-b">${inst.privateContests && inst.privateContests.length > 0 ? inst.privateContests.join(', ') : 'Ninguno'}</td>
+                    <td class="py-2 px-4 border-b">
+                        <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${inst.id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger delete-btn" data-id="${inst.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+            });
+
+            addEventListenersToButtons();
+        }
+
+        function getValidationStatusBadgeClass(status) {
+            switch (status) {
+                case 'Verificado': return 'badge-success';
+                case 'Pendiente': return 'badge-warning';
+                case 'Rechazado': return 'badge-danger';
+                default: return 'badge-secondary';
+            }
+        }
+
+        // Add event listeners for edit and delete buttons
+        function addEventListenersToButtons() {
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.onclick = (e) => editInstitution(e.currentTarget.dataset.id);
+            });
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.onclick = (e) => deleteInstitution(e.currentTarget.dataset.id);
+            });
+        }
+
+        // Clear form fields
+        function clearForm() {
+            institutionIdInput.value = '';
+            instNameInput.value = '';
+            instTypeSelect.value = '';
+            instCodMecInput.value = '';
+            instAddressInput.value = '';
+            instDepartmentSelect.value = '';
+            instLocalityInput.value = '';
+            instContactInput.value = '';
+            instValidationStatusSelect.value = 'Pendiente'; // Default status
+            instLatitudeInput.value = '';
+            instLongitudeInput.value = '';
+            instPrivateContestsInput.value = '';
+            saveInstitutionBtn.textContent = 'Guardar Institución';
+            saveInstitutionBtn.classList.remove('btn-outline-primary');
+            saveInstitutionBtn.classList.add('btn-primary');
+            cancelEditBtn.style.display = 'none';
+            formHeader.textContent = 'Añadir Institución';
+            editingInstitutionId = null;
+        }
+
+        // Populate form for editing
+        function editInstitution(id) {
+            const institutionToEdit = institutions.find(inst => inst.id === id);
+            if (institutionToEdit) {
+                editingInstitutionId = id;
+                institutionIdInput.value = institutionToEdit.id;
+                instNameInput.value = institutionToEdit.name;
+                instTypeSelect.value = institutionToEdit.type;
+                instCodMecInput.value = institutionToEdit.codMec || '';
+                instAddressInput.value = institutionToEdit.address;
+                instDepartmentSelect.value = institutionToEdit.department;
+                instLocalityInput.value = institutionToEdit.locality;
+                instContactInput.value = institutionToEdit.contact;
+                instValidationStatusSelect.value = institutionToEdit.validationStatus;
+                instLatitudeInput.value = institutionToEdit.latitude || '';
+                instLongitudeInput.value = institutionToEdit.longitude || '';
+                instPrivateContestsInput.value = (institutionToEdit.privateContests || []).join(', ');
+
+                saveInstitutionBtn.textContent = 'Actualizar Institución';
+                saveInstitutionBtn.classList.remove('btn-primary');
+                saveInstitutionBtn.classList.add('btn-outline-primary');
+                cancelEditBtn.style.display = 'inline-flex';
+                formHeader.textContent = `Editar Institución: ${institutionToEdit.name}`;
+            }
+        }
+
+        // Handle form submission (add/edit)
+        institutionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const newInstitution = {
+                id: editingInstitutionId || 'INST' + Date.now(), // Generate unique ID if adding
+                name: instNameInput.value,
+                type: instTypeSelect.value,
+                codMec: instCodMecInput.value,
+                address: instAddressInput.value,
+                department: instDepartmentSelect.value,
+                locality: instLocalityInput.value,
+                contact: instContactInput.value,
+                validationStatus: instValidationStatusSelect.value,
+                latitude: instLatitudeInput.value ? parseFloat(instLatitudeInput.value) : null,
+                longitude: instLongitudeInput.value ? parseFloat(instLongitudeInput.value) : null,
+                privateContests: instPrivateContestsInput.value.split(',').map(id => id.trim()).filter(id => id !== '')
+            };
+
+            if (editingInstitutionId) {
+                // Update existing institution
+                const index = institutions.findIndex(inst => inst.id === editingInstitutionId);
+                if (index !== -1) {
+                    institutions[index] = newInstitution;
+                }
+            } else {
+                // Add new institution
+                institutions.push(newInstitution);
+            }
+
+            saveInstitutions();
+            renderInstitutions(searchInstitutionInput.value);
+            clearForm();
+        });
+
+        // Handle delete institution
+        async function deleteInstitution(id) {
+            const confirmed = await showConfirmationModal('¿Está seguro de que desea eliminar esta institución?');
+            if (confirmed) {
+                institutions = institutions.filter(inst => inst.id !== id);
+                saveInstitutions();
+                renderInstitutions(searchInstitutionInput.value);
+                if (editingInstitutionId === id) {
+                    clearForm(); // Clear form if the deleted item was being edited
+                }
+            }
+        }
+
+        // Cancel edit button
+        cancelEditBtn.addEventListener('click', clearForm);
+
+        // Add Institution button (to clear form and prepare for new entry)
+        addInstitutionBtn.addEventListener('click', clearForm);
+
+        // Search functionality
+        searchInstitutionInput.addEventListener('input', (e) => {
+            renderInstitutions(e.target.value);
+        });
+
+        // Initial load and render
+        loadInstitutions();
+        renderInstitutions();
+    </script>
+</body>
+</html>
