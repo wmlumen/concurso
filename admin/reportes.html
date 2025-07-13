@@ -1,15 +1,690 @@
-Funcionalidad:
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin DocentePy - Reportes</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Admin Styles (embedded for self-containment) -->
+    <style>
+        /* estilos-admin.css content */
+        :root {
+            --primary-color: #2c3e50; /* Azul oscuro */
+            --secondary-color: #3498db; /* Azul claro */
+            --accent-color: #f39c12; /* Naranja */
+            --light-color: #ecf0f1; /* Gris muy claro */
+            --dark-color: #2d3436; /* Gris oscuro casi negro */
+            --success-color: #27ae60; /* Verde */
+            --warning-color: #f1c40f; /* Amarillo */
+            --danger-color: #e74c3c; /* Rojo */
+        }
 
-Generación de reportes semanales/mensuales (usuarios activos, concursos abiertos, vacancias sin postulantes, instituciones más activas).
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
 
-Exportación a Excel y PDF.
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
 
-Filtros avanzados por fecha, institución, tipo de concurso.
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-Módulos posibles:
+        .admin-sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
 
-Reporte de concursos por estado.
+        .admin-sidebar .logo img {
+            height: 40px;
+        }
 
-Reporte de usuarios por rol.
+        .admin-sidebar .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
 
-Reporte de documentos cargados.
+        .admin-sidebar nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .admin-sidebar nav ul li {
+            margin-bottom: 1rem;
+        }
+
+        .admin-sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .admin-sidebar nav ul li a:hover {
+            background-color: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+        .admin-sidebar nav ul li a.active {
+            background-color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .admin-content {
+            flex-grow: 1;
+            padding: 2rem;
+            background-color: var(--light-color);
+        }
+
+        .admin-content-header {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-content-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.75rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        .data-table th {
+            background-color: #f8f8f8;
+            font-weight: 600;
+            color: var(--dark-color);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-primary {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .badge {
+            padding: 0.3rem 0.7rem;
+            border-radius: 9999px; /* Fully rounded */
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .badge-success { background-color: var(--success-color); }
+        .badge-warning { background-color: var(--warning-color); }
+        .badge-danger { background-color: var(--danger-color); }
+        .badge-info { background-color: var(--secondary-color); }
+        .badge-secondary { background-color: #95a5a6; }
+
+        .fas, .fab {
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+
+            .admin-sidebar {
+                width: 100%;
+                height: auto;
+                padding: 1rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .admin-sidebar .logo {
+                margin-bottom: 0;
+            }
+
+            .admin-sidebar nav {
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            .admin-sidebar nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .admin-sidebar nav ul li {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .admin-content {
+                padding: 1rem;
+            }
+
+            .admin-content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .admin-content-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar de Navegación -->
+        <aside class="admin-sidebar">
+            <div>
+                <div class="logo">
+                    <img src="https://placehold.co/40x40/E0E0E0/333333?text=DP" alt="DocentePy Logo" class="rounded-full"/>
+                    <h1>Admin DocentePy</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="concurso-publico.html"><i class="fas fa-bullhorn"></i> Concursos Públicos</a></li>
+                        <li><a href="Concursos Privados.html"><i class="fas fa-lock"></i> Concursos Privados</a></li>
+                        <li><a href="instituciones.html"><i class="fas fa-school"></i> Instituciones</a></li>
+                        <li><a href="permisos.html"><i class="fas fa-user-shield"></i> Permisos y Roles</a></li>
+                        <li><a href="comunicaciones.html"><i class="fas fa-envelope"></i> Comunicaciones</a></li>
+                        <li><a href="auditoria.html"><i class="fas fa-clipboard-list"></i> Auditoría</a></li>
+                        <li><a href="reportes.html" class="active"><i class="fas fa-chart-line"></i> Reportes</a></li>
+                        <li><a href="Repositorio.html"><i class="fas fa-folder-open"></i> Repositorio Doc.</a></li>
+                        <li><a href="ai-asistente.html"><i class="fas fa-robot"></i> Asistente IA</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="mt-auto">
+                <a href="#" class="btn btn-danger w-full"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="admin-content">
+            <div class="admin-content-header">
+                <h1>Generación de Reportes</h1>
+                <div>
+                    <button id="exportExcelBtn" class="btn btn-outline-primary mr-2"><i class="fas fa-file-excel"></i> Exportar a Excel</button>
+                    <button id="exportPdfBtn" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Exportar a PDF</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Configuración del Reporte</div>
+                <form id="reportForm" class="space-y-4">
+                    <div class="form-group">
+                        <label for="report-type">Tipo de Reporte</label>
+                        <select id="report-type" class="w-full">
+                            <option value="users-active">Usuarios Activos</option>
+                            <option value="contests-open">Concursos Abiertos</option>
+                            <option value="vacancies-no-applicants">Vacancias sin Postulantes</option>
+                            <option value="institutions-active">Instituciones Más Activas</option>
+                            <option value="contests-by-status">Concursos por Estado</option>
+                            <option value="users-by-role">Usuarios por Rol</option>
+                            <option value="documents-uploaded">Documentos Cargados</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="start-date">Fecha de Inicio</label>
+                            <input type="date" id="start-date" class="w-full">
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">Fecha de Fin</label>
+                            <input type="date" id="end-date" class="w-full">
+                        </div>
+                    </div>
+                    <div class="form-group" id="institutionFilterGroup" style="display:none;">
+                        <label for="filter-institution">Institución</label>
+                        <input type="text" id="filter-institution" placeholder="Filtrar por institución">
+                    </div>
+                    <div class="form-group" id="contestTypeFilterGroup" style="display:none;">
+                        <label for="filter-contest-type">Tipo de Concurso</label>
+                        <select id="filter-contest-type" class="w-full">
+                            <option value="">Todos</option>
+                            <option value="Publico">Público</option>
+                            <option value="Privado">Privado</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-cogs"></i> Generar Reporte</button>
+                </form>
+            </div>
+
+            <div class="card mt-6">
+                <div class="card-header">Vista Previa del Reporte</div>
+                <div id="reportPreview" class="report-preview mt-4 p-4 bg-gray-100 rounded-lg border border-gray-200 min-h-[200px] overflow-y-auto">
+                    <p class="text-gray-500 text-sm">Seleccione un tipo de reporte y haga clic en "Generar Reporte" para ver la vista previa.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Dummy data for simulation
+        const dummyData = {
+            users: [
+                { id: 'U001', name: 'Juan Perez', role: 'Docente', lastActivity: '2025-07-14' },
+                { id: 'U002', name: 'Maria Lopez', role: 'Docente', lastActivity: '2025-07-12' },
+                { id: 'U003', name: 'Carlos Gomez', role: 'Administrador', lastActivity: '2025-07-15' },
+                { id: 'U004', name: 'Ana Diaz', role: 'Verificador', lastActivity: '2025-07-13' },
+                { id: 'U005', name: 'Pedro Rojas', role: 'Docente', lastActivity: '2025-07-01' },
+            ],
+            contests: [
+                { id: 'C001', title: 'Profesor de Matemáticas', type: 'Publico', status: 'Abierto', applicants: 10, vacancies: 2, closeDate: '2025-07-30' },
+                { id: 'C002', title: 'Coordinador Pedagógico', type: 'Privado', status: 'Abierto', applicants: 0, vacancies: 1, closeDate: '2025-08-15' },
+                { id: 'C003', title: 'Docente de Inglés', type: 'Publico', status: 'Cerrado', applicants: 5, vacancies: 1, closeDate: '2025-06-30' },
+                { id: 'C004', title: 'Director de Escuela', type: 'Publico', status: 'Abierto', applicants: 2, vacancies: 3, closeDate: '2025-08-20' },
+                { id: 'C005', title: 'Profesor de Historia', type: 'Privado', status: 'Abierto', applicants: 0, vacancies: 1, closeDate: '2025-07-25' },
+            ],
+            documents: [
+                { id: 'D001', userId: 'U001', type: 'Título', uploadDate: '2025-07-10' },
+                { id: 'D002', userId: 'U002', type: 'Certificado', uploadDate: '2025-07-11' },
+                { id: 'D003', userId: 'U001', type: 'Experiencia', uploadDate: '2025-07-05' },
+                { id: 'D004', userId: 'U004', type: 'Cédula', uploadDate: '2025-07-14' },
+            ],
+            institutions: [
+                { id: 'I001', name: 'Colegio Central', activityScore: 120 },
+                { id: 'I002', name: 'Escuela del Sol', activityScore: 90 },
+                { id: 'I003', name: 'Universidad Nacional', activityScore: 200 },
+            ]
+        };
+
+        const reportTypeSelect = document.getElementById('report-type');
+        const startDateInput = document.getElementById('start-date');
+        const endDateInput = document.getElementById('end-date');
+        const institutionFilterGroup = document.getElementById('institutionFilterGroup');
+        const filterInstitutionInput = document.getElementById('filter-institution');
+        const contestTypeFilterGroup = document.getElementById('contestTypeFilterGroup');
+        const filterContestTypeSelect = document.getElementById('filter-contest-type');
+        const reportForm = document.getElementById('reportForm');
+        const reportPreview = document.getElementById('reportPreview');
+        const exportExcelBtn = document.getElementById('exportExcelBtn');
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
+
+        // Function to format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('es-ES', options);
+        }
+
+        // Generate Report function
+        function generateReport() {
+            const reportType = reportTypeSelect.value;
+            const startDate = startDateInput.value ? new Date(startDateInput.value) : null;
+            const endDate = endDateInput.value ? new Date(endDateInput.value) : null;
+            const filterInstitution = filterInstitutionInput.value.toLowerCase();
+            const filterContestType = filterContestTypeSelect.value;
+
+            let reportContent = '';
+
+            switch (reportType) {
+                case 'users-active':
+                    let activeUsers = dummyData.users.filter(user => {
+                        const lastActivityDate = new Date(user.lastActivity);
+                        return (!startDate || lastActivityDate >= startDate) && (!endDate || lastActivityDate <= endDate);
+                    });
+                    reportContent = `
+                        <h3 class="text-xl font-semibold mb-2">Reporte de Usuarios Activos</h3>
+                        <p class="text-gray-700 mb-4">Período: ${startDate ? formatDate(startDate) : 'Inicio'} - ${endDate ? formatDate(endDate) : 'Fin'}</p>
+                        <p>Total de Usuarios Activos: <span class="font-bold">${activeUsers.length}</span></p>
+                        <table class="data-table w-full mt-4">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Rol</th>
+                                    <th>Última Actividad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${activeUsers.map(user => `
+                                    <tr>
+                                        <td>${user.id}</td>
+                                        <td>${user.name}</td>
+                                        <td>${user.role}</td>
+                                        <td>${formatDate(user.lastActivity)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+                case 'contests-open':
+                    let openContests = dummyData.contests.filter(contest => {
+                        const closeDate = new Date(contest.closeDate);
+                        return contest.status === 'Abierto' && (!startDate || closeDate >= startDate) && (!endDate || closeDate <= endDate) &&
+                               (filterContestType === '' || contest.type === filterContestType);
+                    });
+                    reportContent = `
+                        <h3 class="text-xl font-semibold mb-2">Reporte de Concursos Abiertos</h3>
+                        <p class="text-gray-700 mb-4">Período: ${startDate ? formatDate(startDate) : 'Inicio'} - ${endDate ? formatDate(endDate) : 'Fin'}</p>
+                        <p>Total de Concursos Abiertos: <span class="font-bold">${openContests.length}</span></p>
+                        <table class="data-table w-full mt-4">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Título</th>
+                                    <th>Tipo</th>
+                                    <th>Vacantes</th>
+                                    <th>Fecha Cierre</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${openContests.map(contest => `
+                                    <tr>
+                                        <td>${contest.id}</td>
+                                        <td>${contest.title}</td>
+                                        <td>${contest.type}</td>
+                                        <td>${contest.vacancies}</td>
+                                        <td>${formatDate(contest.closeDate)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+                case 'vacancies-no-applicants':
+                    let noApplicantContests = dummyData.contests.filter(contest =>
+                        contest.applicants === 0 && contest.status === 'Abierto' &&
+                        (!startDate || new Date(contest.closeDate) >= startDate) && (!endDate || new Date(contest.closeDate) <= endDate) &&
+                        (filterContestType === '' || contest.type === filterContestType)
+                    );
+                    reportContent = `
+                        <h3 class="text-xl font-semibold mb-2">Reporte de Vacancias sin Postulantes</h3>
+                        <p class="text-gray-700 mb-4">Período: ${startDate ? formatDate(startDate) : 'Inicio'} - ${endDate ? formatDate(endDate) : 'Fin'}</p>
+                        <p>Total de Vacancias sin Postulantes: <span class="font-bold">${noApplicantContests.length}</span></p>
+                        <table class="data-table w-full mt-4">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Título</th>
+                                    <th>Tipo</th>
+                                    <th>Vacantes</th>
+                                    <th>Fecha Cierre</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${noApplicantContests.map(contest => `
+                                    <tr>
+                                        <td>${contest.id}</td>
+                                        <td>${contest.title}</td>
+                                        <td>${contest.type}</td>
+                                        <td>${contest.vacancies}</td>
+                                        <td>${formatDate(contest.closeDate)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+                case 'institutions-active':
+                    let activeInstitutions = dummyData.institutions.filter(inst =>
+                        inst.name.toLowerCase().includes(filterInstitution)
+                    ).sort((a, b) => b.activityScore - a.activityScore); // Sort by activity score
+                    reportContent = `
+                        <h3 class="text-xl font-semibold mb-2">Reporte de Instituciones Más Activas</h3>
+                        <p class="text-gray-700 mb-4">Filtro de Institución: "${filterInstitution || 'Ninguno'}"</p>
+                        <table class="data-table w-full mt-4">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Puntaje de Actividad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${activeInstitutions.map(inst => `
+                                    <tr>
+                                        <td>${inst.id}</td>
+                                        <td>${inst.name}</td>
+                                        <td>${inst.activityScore}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+                case 'contests-by-status':
+                    const contestsByStatus = dummyData.contests.reduce((acc, contest) => {
+                        acc[contest.status] = (acc[contest.status] || 0) + 1;
+                        return acc;
+                    }, {});
+                    reportContent = `
+                        <h3 class="text-xl font-semibold mb-2">Reporte de Concursos por Estado</h3>
+                        <ul class="list-disc list-inside mt-4">
+                            ${Object.entries(contestsByStatus).map(([status, count]) => `
+                                <li>${status}: <span class="font-bold">${count}</span></li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    break;
+                case 'users-by-role':
+                    const usersByRole = dummyData.users.reduce((acc, user) => {
+                        acc[user.role] = (acc[user.role] || 0) + 1;
+                        return acc;
+                    }, {});
+                    reportContent = `
+                        <h3 class="text-xl font-semibold mb-2">Reporte de Usuarios por Rol</h3>
+                        <ul class="list-disc list-inside mt-4">
+                            ${Object.entries(usersByRole).map(([role, count]) => `
+                                <li>${role}: <span class="font-bold">${count}</span></li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    break;
+                case 'documents-uploaded':
+                    let uploadedDocuments = dummyData.documents.filter(doc => {
+                        const uploadDate = new Date(doc.uploadDate);
+                        return (!startDate || uploadDate >= startDate) && (!endDate || uploadDate <= endDate);
+                    });
+                    reportContent = `
+                        <h3 class="text-xl font-semibold mb-2">Reporte de Documentos Cargados</h3>
+                        <p class="text-gray-700 mb-4">Período: ${startDate ? formatDate(startDate) : 'Inicio'} - ${endDate ? formatDate(endDate) : 'Fin'}</p>
+                        <p>Total de Documentos Cargados: <span class="font-bold">${uploadedDocuments.length}</span></p>
+                        <table class="data-table w-full mt-4">
+                            <thead>
+                                <tr>
+                                    <th>ID Doc.</th>
+                                    <th>ID Usuario</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha de Carga</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${uploadedDocuments.map(doc => `
+                                    <tr>
+                                        <td>${doc.id}</td>
+                                        <td>${doc.userId}</td>
+                                        <td>${doc.type}</td>
+                                        <td>${formatDate(doc.uploadDate)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    break;
+                default:
+                    reportContent = '<p class="text-gray-500 text-sm">Seleccione un tipo de reporte para generar la vista previa.</p>';
+            }
+            reportPreview.innerHTML = reportContent;
+        }
+
+        // Event listener for report type change to show/hide filters
+        reportTypeSelect.addEventListener('change', () => {
+            const selectedType = reportTypeSelect.value;
+            institutionFilterGroup.style.display = 'none';
+            contestTypeFilterGroup.style.display = 'none';
+
+            if (selectedType === 'institutions-active') {
+                institutionFilterGroup.style.display = 'block';
+            } else if (selectedType === 'contests-open' || selectedType === 'vacancies-no-applicants') {
+                contestTypeFilterGroup.style.display = 'block';
+            }
+        });
+
+        // Event listener for form submission
+        reportForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            generateReport();
+        });
+
+        // Simulate export to Excel
+        exportExcelBtn.addEventListener('click', () => {
+            alert('Simulando exportación a Excel. En una aplicación real, esto generaría un archivo .xlsx.');
+            // In a real application, you would send the report data to a backend
+            // to generate and download the Excel file.
+        });
+
+        // Simulate export to PDF
+        exportPdfBtn.addEventListener('click', () => {
+            alert('Simulando exportación a PDF. En una aplicación real, esto generaría un archivo .pdf.');
+            // In a real application, you would send the report data to a backend
+            // to generate and download the PDF file.
+        });
+
+        // Initial generation of report preview on page load
+        document.addEventListener('DOMContentLoaded', generateReport);
+    </script>
+</body>
+</html>
