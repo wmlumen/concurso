@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Repositorio Documentos - Admin | DocentePy</title>
+
+  <link rel="stylesheet" href="../estilos/main.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <style>
+    body {
+      font-family: var(--font-main, Arial, sans-serif);
+      background: var(--light-color, #f8fafc);
+      margin: 0; padding: 0;
+      color: var(--dark-color, #222);
+      min-height: 100vh;
+      padding: 1rem 2rem;
+    }
+    h1, h2 {
+      color: var(--primary-color, #2c3e50);
+      margin-bottom: 1rem;
+    }
+    section {
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.5rem;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background: var(--primary-color, #2c3e50);
+      color: white;
+    }
+    input.link-input {
+      width: 100%;
+      border: none;
+      background: transparent;
+      font-size: 0.9rem;
+      color: var(--link-color, #3498db);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    input.link-input:focus {
+      outline: 1px solid #3498db;
+      background: #eaf4fc;
+    }
+    button.save-btn {
+      background-color: var(--secondary-color, #3498db);
+      border: none;
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+    button.save-btn:hover {
+      background-color: var(--secondary-dark, #2980b9);
+    }
+  </style>
+</head>
+<body>
+  <h1>Repositorio de Documentos - Administrador</h1>
+
+  <section aria-label="Documentos Públicos">
+    <h2>Documentos Públicos</h2>
+
+    <h3>1. Convocatoria</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre Documento</th>
+          <th>Enlace Editable</th>
+        </tr>
+      </thead>
+      <tbody id="publico-convocatoria">
+        <!-- Documentos públicos convocatoria -->
+      </tbody>
+    </table>
+
+    <h3>2. Mejores Posicionados</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre Documento</th>
+          <th>Enlace Editable</th>
+        </tr>
+      </thead>
+      <tbody id="publico-mejores">
+        <!-- Documentos públicos mejores posicionados -->
+      </tbody>
+    </table>
+
+    <h3>3. Ganadores</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre Documento</th>
+          <th>Enlace Editable</th>
+        </tr>
+      </thead>
+      <tbody id="publico-ganadores">
+        <!-- Documentos públicos ganadores -->
+      </tbody>
+    </table>
+  </section>
+
+  <section aria-label="Documentos Privados">
+    <h2>Documentos Privados</h2>
+
+    <h3>1. Convocatoria</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre Documento</th>
+          <th>Enlace Editable</th>
+        </tr>
+      </thead>
+      <tbody id="privado-convocatoria">
+        <!-- Documentos privados convocatoria -->
+      </tbody>
+    </table>
+
+    <h3>2. Ganadores</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre Documento</th>
+          <th>Enlace Editable</th>
+        </tr>
+      </thead>
+      <tbody id="privado-ganadores">
+        <!-- Documentos privados ganadores -->
+      </tbody>
+    </table>
+  </section>
+
+  <button id="btnGuardar" class="save-btn" aria-label="Guardar cambios en los enlaces">Guardar Cambios</button>
+
+  <script>
+    // Datos simulados - reemplazar con datos reales desde backend
+    const documentos = {
+      publico: {
+        convocatoria: [
+          { codigo: 'PUB-CONV-001', nombre: 'Convocatoria General 2025', enlace: 'https://docs.example.com/pub/convocatoria2025.pdf' },
+          { codigo: 'PUB-CONV-002', nombre: 'Convocatoria Extraordinaria', enlace: 'https://docs.example.com/pub/convocatoria-extra.pdf' }
+        ],
+        mejores: [
+          { codigo: 'PUB-MEJ-001', nombre: 'Ranking Mejores Posicionados', enlace: 'https://docs.example.com/pub/mejores-2025.pdf' }
+        ],
+        ganadores: [
+          { codigo: 'PUB-GAN-001', nombre: 'Ganadores Concurso 2024', enlace: 'https://docs.example.com/pub/ganadores2024.pdf' }
+        ]
+      },
+      privado: {
+        convocatoria: [
+          { codigo: 'PRI-CONV-001', nombre: 'Convocatoria Privada Institución A', enlace: 'https://docs.example.com/pri/convocatoriaA.pdf' }
+        ],
+        ganadores: [
+          { codigo: 'PRI-GAN-001', nombre: 'Ganadores Privados Institución A', enlace: 'https://docs.example.com/pri/ganadoresA.pdf' }
+        ]
+      }
+    };
+
+    function crearFilaDocumento(doc) {
+      const tr = document.createElement('tr');
+
+      const tdCodigo = document.createElement('td');
+      tdCodigo.textContent = doc.codigo;
+
+      const tdNombre = document.createElement('td');
+      tdNombre.textContent = doc.nombre;
+
+      const tdEnlace = document.createElement('td');
+      const inputEnlace = document.createElement('input');
+      inputEnlace.type = 'url';
+      inputEnlace.className = 'link-input';
+      inputEnlace.value = doc.enlace;
+      inputEnlace.setAttribute('aria-label', `Editar enlace para documento ${doc.nombre}`);
+      tdEnlace.appendChild(inputEnlace);
+
+      tr.appendChild(tdCodigo);
+      tr.appendChild(tdNombre);
+      tr.appendChild(tdEnlace);
+
+      return tr;
+    }
+
+    function cargarDocumentos() {
+      // Público convocatoria
+      const publicoConvocatoria = document.getElementById('publico-convocatoria');
+      documentos.publico.convocatoria.forEach(doc => {
+        publicoConvocatoria.appendChild(crearFilaDocumento(doc));
+      });
+
+      // Público mejores
+      const publicoMejores = document.getElementById('publico-mejores');
+      documentos.publico.mejores.forEach(doc => {
+        publicoMejores.appendChild(crearFilaDocumento(doc));
+      });
+
+      // Público ganadores
+      const publicoGanadores = document.getElementById('publico-ganadores');
+      documentos.publico.ganadores.forEach(doc => {
+        publicoGanadores.appendChild(cr
