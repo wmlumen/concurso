@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Concurso Público - DocentePy (Modo Visitante)</title>
+
+  <link rel="stylesheet" href="estilos/main.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    body {
+      background-color: var(--light-color);
+      color: var(--dark-color);
+      font-family: var(--font-main);
+      padding: 1.5rem;
+      max-width: 900px;
+      margin: 2rem auto;
+    }
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .filters {
+      background: white;
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-sm);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 180px;
+      max-width: 220px;
+    }
+
+    .filter-group label {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--secondary-color);
+    }
+
+    select {
+      padding: 0.4rem 0.5rem;
+      border-radius: var(--border-radius-sm);
+      border: 1px solid var(--medium-gray);
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+    }
+
+    select[multiple] {
+      height: 6rem;
+      overflow-y: auto;
+    }
+
+    .concurso-card {
+      background: white;
+      border-radius: var(--border-radius-md);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s ease;
+    }
+    .concurso-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .concurso-titulo {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+      color: var(--secondary-color);
+    }
+    .concurso-detalle {
+      font-size: 0.9rem;
+      color: var(--dark-gray);
+      margin-bottom: 0.2rem;
+    }
+    .btn-registro {
+      display: block;
+      max-width: 200px;
+      margin: 2rem auto 0;
+      padding: 0.7rem 1rem;
+      background: var(--secondary-color);
+      color: white;
+      text-align: center;
+      border-radius: var(--border-radius-sm);
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .btn-registro:hover {
+      background: var(--secondary-dark);
+    }
+    .aviso-expirado {
+      text-align: center;
+      background-color: rgba(231, 76, 60, 0.1);
+      border: 1px solid var(--danger-color);
+      color: var(--danger-color);
+      padding: 1rem;
+      margin-top: 2rem;
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <h1>Puestos Vacantes en Concurso Público</h1>
+
+  <section class="filters" aria-label="Filtros para buscar concursos">
+    <div class="filter-group">
+      <label for="filter-departamento">Departamento</label>
+      <select id="filter-departamento" multiple aria-multiselectable="true" aria-label="Filtrar por Departamento">
+        <!-- Opciones cargadas por JS -->
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filter-distrito">Distrito</label>
+      <select id="filter-distrito" multiple aria-multiselectable="true" aria-label="Filtrar por Distrito">
+        <!-- Opciones cargadas por JS -->
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filter-institucion">Institución Educativa</label>
+      <select id="filter-institucion" multiple aria-multiselectable="true" aria-label="Filtrar por Institución Educativa">
+        <!-- Opciones cargadas por JS -->
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filter-asignatura">Asignatura</label>
+      <select id="filter-asignatura" multiple aria-multiselectable="true" aria-label="Filtrar por Asignatura">
+        <!-- Opciones cargadas por JS -->
+      </select>
+    </div>
+  </section>
+
+  <div id="lista-concursos" aria-live="polite"></div>
+
+  <a href="registro.html" class="btn-registro" aria-label="Registrarse para postular a concursos">Registrarse para postular</a>
+
+  <div id="aviso-expirado" class="aviso-expirado" style="display:none;">
+    Su tiempo como visitante ha expirado.<br />
+    Por favor, <a href="registro.html">regístrese</a> para continuar viendo los concursos.
+  </div>
+
+  <script>
+    // Tiempo visita visitante (2 horas)
+    if (!localStorage.getItem("visitante_inicia")) {
+      localStorage.setItem("visitante_inicia", Date.now());
+    }
+    const inicio = parseInt(localStorage.getItem("visitante_inicia"), 10);
+    const ahora = Date.now();
+    const dosHoras = 2 * 60 * 60 * 1000;
+    const lista = document.getElementById("lista-concursos");
+    const aviso = document.getElementById("aviso-expirado");
+
+    // Datos de concursos con atributos extra para filtros
+    const concursos = [
+      {
+        titulo: "Concurso Educación Inicial - Asunción",
+        fecha: "2025-07-20",
+        vacancias: 12,
+        descripcion: "Docentes para nivel inicial, jornada completa.",
+        departamento: "Central",
+        distrito: "Asunción",
+        institucion: "Escuela Básica Nº 1",
+        asignatura: "Educación Inicial"
+      },
+      {
+        titulo: "Concurso Matemática Media - Encarnación",
+        fecha: "2025-07-25",
+        vacancias: 5,
+        descripcion: "Docentes de matemática para escuelas secundarias.",
+        departamento: "Itapúa",
+        distrito: "Encarnación",
+        institucion: "Colegio Nacional Encarnación",
+        asignatura: "Matemática"
+      },
+      {
+        titulo: "Concurso Ciencias Naturales - Ciudad del Este",
+        fecha: "2025-07-28",
+        vacancias: 3,
+        descripcion: "Cargos para docentes de ciencias naturales en jornada simple.",
+        departamento: "Alto Paraná",
+        distrito: "Ciudad del Este",
+        institucion: "Escuela Técnica Nº 3",
+        asignatura: "Ciencias Naturales"
+      },
+      {
+        titulo: "Concurso Lengua y Literatura - Asunción",
+        fecha: "2025-07-30",
+        vacancias: 4,
+        descripcion: "Docentes para Lengua y Literatura en jornada completa.",
+        departamento: "Central",
+        distrito: "Asunción",
+        institucion: "Escuela Media Nº 4",
+        asignatura: "Lengua y Literatura"
+      }
+    ];
+
+    if (ahora - inicio > dosHoras) {
+      lista.style.display = "none";
+      aviso.style.display = "block";
+    } else {
+      aviso.style.display = "none";
+      lista.style.display = "block";
+
+      // Función para extraer valores únicos de un array de objetos para una clave
+      function valoresUnicos(arr, key) {
+        return [...new Set(arr.map(item => item[key]))].sort();
+      }
+
+      // Referencias a selects
+      const selectDepartamento = document.getElementById("filter-departamento");
+      const selectDistrito = document.getElementById("filter-distrito");
+      const selectInstitucion = document.getElementById("filter-institucion");
+      const selectAsignatura = document.getElementById("filter-asignatura");
+
+      // Función para llenar opciones select multiple
+      function llenarOpciones(selectElem, opciones) {
+        selectElem.innerHTML = "";
+        opciones.forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt;
+          option.textContent = opt;
+          selectElem.appendChild(option);
+        });
+      }
+
+      // Llenar selects con valores únicos
+      llenarOpciones(selectDepartamento, valoresUnicos(concursos, "departamento"));
+      llenarOpciones(selectDistrito, valoresUnicos(concursos, "distrito"));
+      llenarOpciones(selectInstitucion, valoresUnicos(concursos, "institucion"));
+      llenarOpciones(selectAsignatura, valoresUnicos(concursos, "asignatura"));
+
+      // Función que lee las opciones seleccionadas de un select multiple
+      function obtenerSeleccionados(selectElem) {
+        return Array.from(selectElem.selectedOptions).map(opt => opt.value);
+      }
+
+      // Función para filtrar concursos según filtros seleccionados
+      function filtrarConcursos() {
+        const depSel = obtenerSeleccionados(selectDepartamento);
+        const distSel = obtenerSeleccionados(selectDistrito);
+        const instSel = obtenerSeleccionados(selectInstitucion);
+        const asiSel = obtenerSeleccionados(selectAsignatura);
+
+        const filtrados = concursos.filter(c => {
+          const cumpleDepartamento = depSel.length === 0 || depSel.includes(c.departamento);
+          const cumpleDistrito = distSel.length === 0 || distSel.includes(c.distrito);
+          const cumpleInstitucion = instSel.length === 0 || instSel.includes(c.institucion);
+          const cumpleAsignatura = asiSel.length === 0 || asiSel.includes(c.asignatura);
+          return cumpleDepartamento && cumpleDistrito && cumpleInstitucion && cumpleAsignatura;
+        });
+
+        mostrarConcursos(filtrados);
+      }
+
+      // Función para renderizar concursos en lista
+      function mostrarConcursos(listaConcursos) {
+        lista.innerHTML = "";
+        if (listaConcursos.length === 0) {
+          lista.innerHTML = "<p>No se encontraron concursos que coincidan con los filtros seleccionados.</p>";
+          return;
+        }
+        listaConcursos.forEach(c => {
+          const card = document.createElement("div");
+          card.className = "concurso-card";
+          card.innerHTML = `
+            <div class="concurso-titulo">${c.titulo}</div>
+            <div class="concurso-detalle"><strong>Fecha límite:</strong> ${c.fecha}</div>
+            <div class="concurso-detalle"><strong>Vacancias:</strong> ${c.vacancias}</div>
+            <div class="concurso-detalle">${c.descripcion}</div>
+          `;
+          lista.appendChild(card);
+        });
+      }
+
+      // Evento para filtrar al cambiar cualquier select
+      [selectDepartamento, selectDistrito, selectInstitucion, selectAsignatura].forEach(sel => {
+        sel.addEventListener("change", filtrarConcursos);
+      });
+
+      // Mostrar todos al cargar
+      mostrarConcursos(concursos);
+    }
+  </script>
+</body>
+</html>
