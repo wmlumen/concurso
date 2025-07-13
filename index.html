@@ -3,134 +3,236 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inicio - DocentePy</title>
+  <title>Puestos Vacantes - DocentePy (Visitante)</title>
 
-  <!-- Estilos -->
   <link rel="stylesheet" href="estilos/main.css" />
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   />
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+4I14GPCbO1kkN+2zUC3KjQpXtcKnMoEnSkKD/0Lw="
-    crossorigin=""
-  />
+
   <style>
-    #mapa-concursos {
-      height: 400px;
-      width: 100%;
-      border-radius: 8px;
+    body {
+      font-family: var(--font-main, Arial, sans-serif);
+      background: var(--light-color, #f4f6f8);
+      margin: 0;
+      padding: 0;
+      color: var(--dark-color, #333);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--primary-color, #2c3e50);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: white;
+    }
+    header .logo img {
+      height: 40px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    /* Panel lateral */
+    aside.sidebar {
+      width: 320px;
+      background: white;
+      border-radius: var(--border-radius-md, 8px);
+      box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    aside.sidebar h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color, #2c3e50);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .filter-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      color: var(--dark-gray, #555);
+    }
+    .filter-group select {
+      padding: 0.4rem 0.6rem;
+      border-radius: var(--border-radius-sm, 4px);
+      border: 1px solid var(--medium-gray, #b2bec3);
+      font-size: 0.95rem;
+    }
+    .filter-group select[multiple] {
+      height: 100px;
+    }
+
+    .btn-register {
+      margin-top: auto;
+      padding: 0.8rem 1.2rem;
+      background-color: var(--secondary-color, #3498db);
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--border-radius-sm, 4px);
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      display: block;
+    }
+    .btn-register:hover,
+    .btn-register:focus {
+      background-color: var(--secondary-dark, #2980b9);
+    }
+
+    /* Contenedor del mapa */
+    section.map-container {
+      flex: 1;
+      background: white;
+      border-radius: var(--border-radius-md, 8px);
+      box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .map-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--border-radius-md, 8px);
+      box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .map-caption {
       margin-top: 1rem;
+      font-style: italic;
+      color: var(--dark-gray, #555);
+      font-size: 0.9rem;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      aside.sidebar {
+        width: 100%;
+        order: 2;
+      }
+      section.map-container {
+        order: 1;
+        margin-bottom: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="app-header">
-    <div class="container header-content">
-      <a href="index.html" class="logo">
-        <img src="./assets/logo-docentepy.svg" alt="DocentePy Logo" class="logo-img" />
-        <h1>DocentePy</h1>
-      </a>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="registro.html">Registro</a></li>
-          <li><a href="perfilDocente.html">Mi Perfil</a></li>
-          <li><a href="administrador.html" title="Acceso Administrador"><i class="fas fa-lock"></i></a></li>
-        </ul>
-      </nav>
-    </div>
+  <header role="banner">
+    <a href="index.html" class="logo" aria-label="Ir a inicio DocentePy">
+      <img src="assets/logo-docentepy.svg" alt="Logo DocentePy" />
+      DocentePy
+    </a>
   </header>
 
-  <!-- MAIN -->
-  <main class="container main-content">
-    <section class="welcome-section text-center">
-      <h1 class="title">Bienvenido a DocentePy</h1>
-      <p class="subtitle">Plataforma pensada para apoyar tu desarrollo profesional docente.</p>
-      <a href="registro.html" class="btn btn-primary btn-lg">Registrarse</a>
-    </section>
+  <main role="main" aria-label="Mapa de puestos vacantes y filtros">
+    <aside class="sidebar" aria-label="Filtros para puestos vacantes">
+      <h2>Filtros</h2>
 
-    <!-- Panel de concursos -->
-    <section class="section mt-5" id="panel-visitante">
-      <h2 class="section-title">Cargos en Concurso (Modo Visitante)</h2>
-      <div id="lista-concursos" class="grid mt-3"></div>
-      <div id="mapa-concursos"></div>
-      <div class="alert alert-warning mt-3" id="aviso-expirado" style="display:none;">
-        Tu sesión como visitante ha expirado. Por favor <a href="registro.html">regístrate</a> para continuar.
+      <div class="filter-group">
+        <label for="filtro-departamento">Departamento</label>
+        <select id="filtro-departamento" aria-describedby="desc-departamento">
+          <option value="">-- Seleccionar --</option>
+          <option value="central">Central</option>
+          <option value="asuncion">Asunción</option>
+          <option value="cordillera">Cordillera</option>
+          <option value="paraguarí">Paraguarí</option>
+          <option value="alto-parana">Alto Paraná</option>
+        </select>
+        <small id="desc-departamento" class="sr-only">Seleccione uno o varios departamentos</small>
       </div>
+
+      <div class="filter-group">
+        <label for="filtro-distrito">Distrito</label>
+        <select id="filtro-distrito" multiple aria-describedby="desc-distrito">
+          <option value="luque">Luque</option>
+          <option value="san-lorenzo">San Lorenzo</option>
+          <option value="lujan">Luján</option>
+          <option value="villarrica">Villarrica</option>
+          <option value="capiatá">Capiatá</option>
+        </select>
+        <small id="desc-distrito" class="sr-only">Puede seleccionar varios distritos manteniendo Ctrl o Shift</small>
+      </div>
+
+      <div class="filter-group">
+        <label for="filtro-institucion">Institución Educativa</label>
+        <select id="filtro-institucion" multiple aria-describedby="desc-institucion">
+          <option value="escuela1">Escuela Nº 1</option>
+          <option value="escuela2">Escuela Nº 2</option>
+          <option value="escuela3">Escuela Nº 3</option>
+          <option value="escuela4">Escuela Nº 4</option>
+        </select>
+        <small id="desc-institucion" class="sr-only">Seleccione una o más instituciones</small>
+      </div>
+
+      <div class="filter-group">
+        <label for="filtro-asignatura">Asignatura</label>
+        <select id="filtro-asignatura" multiple aria-describedby="desc-asignatura">
+          <option value="matematica">Matemática</option>
+          <option value="lengua">Lengua Española</option>
+          <option value="ciencias">Ciencias Naturales</option>
+          <option value="historia">Historia</option>
+          <option value="ingles">Inglés</option>
+        </select>
+        <small id="desc-asignatura" class="sr-only">Seleccione una o más asignaturas</small>
+      </div>
+
+      <a href="registro.html" class="btn-register" aria-label="Registrarse para acceder al mapa interactivo y filtros avanzados">
+        Registrarse para ver el mapa interactivo
+      </a>
+    </aside>
+
+    <section class="map-container" aria-label="Mapa estático de puestos vacantes">
+      <img
+        src="assets/mapa-vacantes.jpg"
+        alt="Mapa estático con la ubicación aproximada de los puestos vacantes"
+        class="map-image"
+      />
+      <p class="map-caption">
+        Este es un mapa estático que muestra la ubicación aproximada de los puestos vacantes. Para un acceso completo y detallado, regístrese en la plataforma.
+      </p>
     </section>
   </main>
-
-  <!-- FOOTER -->
-  <footer class="app-footer text-center">
-    <div class="container footer-content">
-      <p>© 2025 DocentePy - Todos los derechos reservados</p>
-      <div class="social-links mt-2">
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      </div>
-      <p class="mt-1">
-        <a href="contacto.html" class="link link-accent">Contáctanos</a>
-      </p>
-    </div>
-  </footer>
-
-  <!-- Scripts principales -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="sessionControl.js"></script>
-  <script src="main.js"></script>
-  <script src="register.js"></script>
-  <script src="validate.js"></script>
-  <script src="mapa-concursos.js"></script>
-
-  <!-- Script adicional: Mostrar concursos y controlar tiempo de visitante -->
-  <script>
-    // Guardar hora de ingreso si es visitante
-    if (!localStorage.getItem("visitante_inicia")) {
-      const ahora = new Date().getTime();
-      localStorage.setItem("visitante_inicia", ahora);
-    }
-
-    // Validar si ya pasaron 2 horas
-    const inicio = parseInt(localStorage.getItem("visitante_inicia"), 10);
-    const ahora = new Date().getTime();
-    const dosHoras = 2 * 60 * 60 * 1000;
-
-    if (ahora - inicio > dosHoras) {
-      document.getElementById("panel-visitante").classList.add("fade-out");
-      document.getElementById("aviso-expirado").style.display = "block";
-      document.getElementById("lista-concursos").innerHTML = "";
-      document.getElementById("mapa-concursos").remove();
-    } else {
-      // Mostrar concursos disponibles (simulados)
-      const concursos = [
-        { titulo: "Inicial - Asunción", fecha: "2025-07-20", vacancias: 12, lat: -25.2637, lng: -57.5759 },
-        { titulo: "Matemática - Encarnación", fecha: "2025-07-25", vacancias: 5, lat: -27.3306, lng: -55.8667 }
-      ];
-
-      const lista = document.getElementById("lista-concursos");
-      concursos.forEach(c => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<h4>${c.titulo}</h4><p><strong>Fecha:</strong> ${c.fecha}</p><p><strong>Vacancias:</strong> ${c.vacancias}</p>`;
-        lista.appendChild(card);
-      });
-
-      // Mapa Leaflet
-      const mapa = L.map("mapa-concursos").setView([-23.5, -58], 6);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap"
-      }).addTo(mapa);
-
-      concursos.forEach(c => {
-        L.marker([c.lat, c.lng])
-          .addTo(mapa)
-          .bindPopup(`<strong>${c.titulo}</strong><br>${c.fecha}<br>${c.vacancias} vacancias`);
-      });
-    }
-  </script>
 </body>
 </html>
