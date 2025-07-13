@@ -110,7 +110,6 @@
       transition: all 0.3s;
       gap: 1rem;
       flex-wrap: nowrap;
-      /* Para que el botón no provoque salto de línea */
     }
 
     .faq-question:hover {
@@ -154,7 +153,18 @@
 
     .faq-item.active .faq-answer {
       padding: 0 1.5rem 1.5rem;
-      max-height: 500px;
+      max-height: 1000px;
+    }
+
+    .faq-answer p,
+    .faq-answer ol,
+    .faq-answer ul {
+      margin-bottom: 1rem;
+    }
+
+    .faq-answer ol,
+    .faq-answer ul {
+      padding-left: 1.5rem;
     }
 
     .contact-section {
@@ -246,7 +256,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span>¿Cómo me registro en la plataforma?</span>
-            <button class="copy-btn" title="Copiar pregunta">Copiar</button>
+            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
             <i class="fas fa-chevron-down"></i>
           </div>
           <div class="faq-answer">
@@ -268,7 +278,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span>¿Qué documentos necesito para postular a concursos?</span>
-            <button class="copy-btn" title="Copiar pregunta">Copiar</button>
+            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
             <i class="fas fa-chevron-down"></i>
           </div>
           <div class="faq-answer">
@@ -288,7 +298,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span>¿Cómo subo mis documentos a la plataforma?</span>
-            <button class="copy-btn" title="Copiar pregunta">Copiar</button>
+            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
             <i class="fas fa-chevron-down"></i>
           </div>
           <div class="faq-answer">
@@ -308,7 +318,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span>¿Cómo sé si mis documentos fueron aprobados?</span>
-            <button class="copy-btn" title="Copiar pregunta">Copiar</button>
+            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
             <i class="fas fa-chevron-down"></i>
           </div>
           <div class="faq-answer">
@@ -330,7 +340,7 @@
         <div class="faq-item">
           <div class="faq-question">
             <span>¿Puedo postular a más de un concurso a la vez?</span>
-            <button class="copy-btn" title="Copiar pregunta">Copiar</button>
+            <button class="copy-btn" title="Copiar pregunta y respuesta">Copiar</button>
             <i class="fas fa-chevron-down"></i>
           </div>
           <div class="faq-answer">
@@ -368,10 +378,10 @@
   </footer>
 
   <script>
-    // Funcionalidad de acordeón para las preguntas frecuentes
+    // Funcionalidad acordeón
     document.querySelectorAll(".faq-question").forEach((question) => {
       question.addEventListener("click", (e) => {
-        // Evita que el click en el botón copiar dispare el acordeón
+        // No expandir si clic en botón copiar
         if (e.target.classList.contains("copy-btn")) return;
 
         const item = question.parentElement;
@@ -382,7 +392,6 @@
           el.classList.remove("active")
         );
 
-        // Abrir solo si no estaba activo
         if (!isActive) {
           item.classList.add("active");
         }
@@ -393,18 +402,59 @@
     const firstFaq = document.querySelector(".faq-item");
     if (firstFaq) firstFaq.classList.add("active");
 
-    // Funcionalidad copiar al portapapeles
+    // Copiar pregunta + respuesta al portapapeles con buen formato
     document.querySelectorAll(".copy-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const questionText = btn.parentElement.querySelector("span").textContent;
-        navigator.clipboard.writeText(questionText).then(() => {
-          btn.textContent = "Copiado!";
-          setTimeout(() => {
-            btn.textContent = "Copiar";
-          }, 1500);
-        }).catch(() => {
-          alert("Error al copiar al portapapeles");
-        });
+        const faqItem = btn.closest(".faq-item");
+        const pregunta = faqItem.querySelector(".faq-question span").textContent.trim();
+        const respuestaNode = faqItem.querySelector(".faq-answer");
+
+        // Crear texto limpio formateado para copiar:
+        // Extraer texto de respuesta respetando párrafos y listas:
+        function extractText(node) {
+          let text = "";
+          node.childNodes.forEach((child) => {
+            if (child.nodeType === Node.TEXT_NODE) {
+              text += child.textContent.trim() + "\n";
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
+              if (child.tagName === "P") {
+                text += child.textContent.trim() + "\n\n";
+              } else if (child.tagName === "OL" || child.tagName === "UL") {
+                Array.from(child.children).forEach((li, idx) => {
+                  if (child.tagName === "OL") {
+                    text += `${idx + 1}. ${li.textContent.trim()}\n`;
+                  } else {
+                    text += `- ${li.textContent.trim()}\n`;
+                  }
+                });
+                text += "\n";
+              } else {
+                // Otros nodos (span, strong, etc)
+                text += child.textContent.trim() + "\n";
+              }
+            }
+          });
+          return text.trim();
+        }
+
+        const respuesta = extractText(respuestaNode);
+
+        const textoACopiar = `PREGUNTA:\n${pregunta}\n\nRESPUESTA:\n${respuesta}`;
+
+        navigator.clipboard
+          .writeText(textoACopiar)
+          .then(() => {
+            const original = btn.textContent;
+            btn.textContent = "Copiado!";
+            btn.disabled = true;
+            setTimeout(() => {
+              btn.textContent = original;
+              btn.disabled = false;
+            }, 1800);
+          })
+          .catch(() => {
+            alert("Error al copiar al portapapeles");
+          });
       });
     });
   </script>
