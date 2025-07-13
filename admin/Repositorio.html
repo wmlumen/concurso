@@ -1,226 +1,201 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Repositorio Documentos - Admin | DocentePy</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Repositorio Documentos - DocentePy</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 1rem; background: #f9f9f9; }
+  .badge {
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+  .activo { background-color: #27ae60; }
+  .cerrado { background-color: #c0392b; }
+  .reabierto { background-color: #e67e22; }
+  .desierto { background-color: #7f8c8d; }
 
-  <link rel="stylesheet" href="../estilos/main.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  .acordion-section {
+    border: 1px solid #ccc;
+    margin: 1rem 0;
+    border-radius: 6px;
+    background: white;
+  }
+  .acordion-header {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    background: #3498db;
+    color: white;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .acordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 1rem;
+  }
+  .acordion-content.open {
+    padding: 1rem;
+    max-height: 1000px; /* bastante para contenido */
+  }
 
-  <style>
-    body {
-      font-family: var(--font-main, Arial, sans-serif);
-      background: var(--light-color, #f8fafc);
-      margin: 0; padding: 0;
-      color: var(--dark-color, #222);
-      min-height: 100vh;
-      padding: 1rem 2rem;
-    }
-    h1, h2 {
-      color: var(--primary-color, #2c3e50);
-      margin-bottom: 1rem;
-    }
-    section {
-      margin-bottom: 2rem;
-      background: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 0.5rem;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 0.5rem;
-      text-align: left;
-      vertical-align: middle;
-    }
-    th {
-      background: var(--primary-color, #2c3e50);
-      color: white;
-    }
-    input.link-input {
-      width: 100%;
-      border: none;
-      background: transparent;
-      font-size: 0.9rem;
-      color: var(--link-color, #3498db);
-      text-decoration: underline;
-      cursor: pointer;
-    }
-    input.link-input:focus {
-      outline: 1px solid #3498db;
-      background: #eaf4fc;
-    }
-    button.save-btn {
-      background-color: var(--secondary-color, #3498db);
-      border: none;
-      color: white;
-      padding: 0.4rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 0.5rem;
-      transition: background-color 0.3s ease;
-    }
-    button.save-btn:hover {
-      background-color: var(--secondary-dark, #2980b9);
-    }
-  </style>
+  a.document-link {
+    display: block;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+    color: #2980b9;
+  }
+
+  a.document-link:hover {
+    text-decoration: underline;
+  }
+
+  #toggleView {
+    margin-bottom: 1rem;
+    cursor: pointer;
+    background: #2980b9;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+</style>
 </head>
 <body>
-  <h1>Repositorio de Documentos - Administrador</h1>
 
-  <section aria-label="Documentos Públicos">
-    <h2>Documentos Públicos</h2>
+<h1>Repositorio Documentos - DocentePy</h1>
 
-    <h3>1. Convocatoria</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Nombre Documento</th>
-          <th>Enlace Editable</th>
-        </tr>
-      </thead>
-      <tbody id="publico-convocatoria">
-        <!-- Documentos públicos convocatoria -->
-      </tbody>
-    </table>
+<button id="toggleView">Mostrar todos los documentos</button>
 
-    <h3>2. Mejores Posicionados</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Nombre Documento</th>
-          <th>Enlace Editable</th>
-        </tr>
-      </thead>
-      <tbody id="publico-mejores">
-        <!-- Documentos públicos mejores posicionados -->
-      </tbody>
-    </table>
+<div id="repositorio"></div>
 
-    <h3>3. Ganadores</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Nombre Documento</th>
-          <th>Enlace Editable</th>
-        </tr>
-      </thead>
-      <tbody id="publico-ganadores">
-        <!-- Documentos públicos ganadores -->
-      </tbody>
-    </table>
-  </section>
+<script>
+  // Datos simulados
+  const documentosRepositorio = {
+    publico: {
+      convocatoria: [
+        { codigo: 'PUB-CONV-001', nombre: 'Convocatoria General 2025', enlace: '#', estado: 'Activo' },
+        { codigo: 'PUB-CONV-002', nombre: 'Convocatoria Extraordinaria', enlace: '#', estado: 'Cerrado' },
+        { codigo: 'PUB-CONV-003', nombre: 'Convocatoria Especial Región Norte', enlace: '#', estado: 'Re abierto' },
+        { codigo: 'PUB-CONV-004', nombre: 'Convocatoria Anticipada Zona Sur', enlace: '#', estado: 'Desierto' },
+      ],
+      mejores: [
+        { codigo: 'PUB-MEJ-001', nombre: 'Ranking Mejores Posicionados 2025', enlace: '#', estado: 'Activo' },
+        { codigo: 'PUB-MEJ-002', nombre: 'Listado Destacados Concurso 2024', enlace: '#', estado: 'Cerrado' },
+      ],
+      ganadores: [
+        { codigo: 'PUB-GAN-001', nombre: 'Ganadores Concurso General 2024', enlace: '#', estado: 'Activo' },
+        { codigo: 'PUB-GAN-002', nombre: 'Ganadores Concurso Extraordinario 2023', enlace: '#', estado: 'Cerrado' },
+      ],
+    },
+    privado: {
+      convocatoria: [
+        { codigo: 'PRI-CONV-001', nombre: 'Convocatoria Privada Institución A', enlace: '#', estado: 'Activo' },
+        { codigo: 'PRI-CONV-002', nombre: 'Convocatoria Privada Institución B', enlace: '#', estado: 'Cerrado' },
+      ],
+      ganadores: [
+        { codigo: 'PRI-GAN-001', nombre: 'Ganadores Privados Institución A', enlace: '#', estado: 'Activo' },
+        { codigo: 'PRI-GAN-002', nombre: 'Ganadores Privados Institución B', enlace: '#', estado: 'Cerrado' },
+      ],
+    },
+  };
 
-  <section aria-label="Documentos Privados">
-    <h2>Documentos Privados</h2>
+  // Mapear estado a clase CSS para badge
+  function claseEstado(estado) {
+    switch (estado.toLowerCase()) {
+      case 'activo': return 'activo';
+      case 'cerrado': return 'cerrado';
+      case 're abierto': return 'reabierto';
+      case 'desierto': return 'desierto';
+      default: return '';
+    }
+  }
 
-    <h3>1. Convocatoria</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Nombre Documento</th>
-          <th>Enlace Editable</th>
-        </tr>
-      </thead>
-      <tbody id="privado-convocatoria">
-        <!-- Documentos privados convocatoria -->
-      </tbody>
-    </table>
+  // Renderizar documentos según filtro
+  function renderRepositorio(mostrarTodos) {
+    const contenedor = document.getElementById('repositorio');
+    contenedor.innerHTML = '';
 
-    <h3>2. Ganadores</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Nombre Documento</th>
-          <th>Enlace Editable</th>
-        </tr>
-      </thead>
-      <tbody id="privado-ganadores">
-        <!-- Documentos privados ganadores -->
-      </tbody>
-    </table>
-  </section>
+    function crearAcordion(titulo, categoria, datos) {
+      // Filtrar datos si no mostrarTodos
+      const items = mostrarTodos ? datos : datos.filter(d => d.estado.toLowerCase() === 'activo');
+      if (items.length === 0) return '';
 
-  <button id="btnGuardar" class="save-btn" aria-label="Guardar cambios en los enlaces">Guardar Cambios</button>
+      // Crear elementos acordeón
+      const section = document.createElement('section');
+      section.className = 'acordion-section';
 
-  <script>
-    // Datos simulados - reemplazar con datos reales desde backend
-    const documentos = {
-      publico: {
-        convocatoria: [
-          { codigo: 'PUB-CONV-001', nombre: 'Convocatoria General 2025', enlace: 'https://docs.example.com/pub/convocatoria2025.pdf' },
-          { codigo: 'PUB-CONV-002', nombre: 'Convocatoria Extraordinaria', enlace: 'https://docs.example.com/pub/convocatoria-extra.pdf' }
-        ],
-        mejores: [
-          { codigo: 'PUB-MEJ-001', nombre: 'Ranking Mejores Posicionados', enlace: 'https://docs.example.com/pub/mejores-2025.pdf' }
-        ],
-        ganadores: [
-          { codigo: 'PUB-GAN-001', nombre: 'Ganadores Concurso 2024', enlace: 'https://docs.example.com/pub/ganadores2024.pdf' }
-        ]
-      },
-      privado: {
-        convocatoria: [
-          { codigo: 'PRI-CONV-001', nombre: 'Convocatoria Privada Institución A', enlace: 'https://docs.example.com/pri/convocatoriaA.pdf' }
-        ],
-        ganadores: [
-          { codigo: 'PRI-GAN-001', nombre: 'Ganadores Privados Institución A', enlace: 'https://docs.example.com/pri/ganadoresA.pdf' }
-        ]
-      }
-    };
+      const header = document.createElement('div');
+      header.className = 'acordion-header';
+      header.textContent = titulo;
 
-    function crearFilaDocumento(doc) {
-      const tr = document.createElement('tr');
+      // Icono para expandir/colapsar
+      const icon = document.createElement('span');
+      icon.textContent = '+';
+      header.appendChild(icon);
 
-      const tdCodigo = document.createElement('td');
-      tdCodigo.textContent = doc.codigo;
+      header.addEventListener('click', () => {
+        content.classList.toggle('open');
+        icon.textContent = content.classList.contains('open') ? '-' : '+';
+      });
 
-      const tdNombre = document.createElement('td');
-      tdNombre.textContent = doc.nombre;
+      const content = document.createElement('div');
+      content.className = 'acordion-content';
 
-      const tdEnlace = document.createElement('td');
-      const inputEnlace = document.createElement('input');
-      inputEnlace.type = 'url';
-      inputEnlace.className = 'link-input';
-      inputEnlace.value = doc.enlace;
-      inputEnlace.setAttribute('aria-label', `Editar enlace para documento ${doc.nombre}`);
-      tdEnlace.appendChild(inputEnlace);
+      items.forEach(doc => {
+        const a = document.createElement('a');
+        a.href = doc.enlace;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.className = 'document-link';
+        a.textContent = `[${doc.codigo}] ${doc.nombre} `;
+        
+        // Badge estado
+        const badge = document.createElement('span');
+        badge.className = 'badge ' + claseEstado(doc.estado);
+        badge.textContent = doc.estado;
+        badge.style.marginLeft = '8px';
 
-      tr.appendChild(tdCodigo);
-      tr.appendChild(tdNombre);
-      tr.appendChild(tdEnlace);
+        a.appendChild(badge);
+        content.appendChild(a);
+      });
 
-      return tr;
+      section.appendChild(header);
+      section.appendChild(content);
+      contenedor.appendChild(section);
     }
 
-    function cargarDocumentos() {
-      // Público convocatoria
-      const publicoConvocatoria = document.getElementById('publico-convocatoria');
-      documentos.publico.convocatoria.forEach(doc => {
-        publicoConvocatoria.appendChild(crearFilaDocumento(doc));
-      });
+    // Publico
+    crearAcordion('Público - Convocatoria', 'publico-convocatoria', documentosRepositorio.publico.convocatoria);
+    crearAcordion('Público - Mejores Posicionados', 'publico-mejores', documentosRepositorio.publico.mejores);
+    crearAcordion('Público - Ganadores', 'publico-ganadores', documentosRepositorio.publico.ganadores);
 
-      // Público mejores
-      const publicoMejores = document.getElementById('publico-mejores');
-      documentos.publico.mejores.forEach(doc => {
-        publicoMejores.appendChild(crearFilaDocumento(doc));
-      });
+    // Privado
+    crearAcordion('Privado - Convocatoria', 'privado-convocatoria', documentosRepositorio.privado.convocatoria);
+    crearAcordion('Privado - Ganadores', 'privado-ganadores', documentosRepositorio.privado.ganadores);
+  }
 
-      // Público ganadores
-      const publicoGanadores = document.getElementById('publico-ganadores');
-      documentos.publico.ganadores.forEach(doc => {
-        publicoGanadores.appendChild(cr
+  // Inicializar mostrando solo activos
+  let mostrarTodos = false;
+  renderRepositorio(mostrarTodos);
+
+  // Botón toggle
+  const toggleBtn = document.getElementById('toggleView');
+  toggleBtn.addEventListener('click', () => {
+    mostrarTodos = !mostrarTodos;
+    renderRepositorio(mostrarTodos);
+    toggleBtn.textContent = mostrarTodos ? 'Mostrar solo documentos activos' : 'Mostrar todos los documentos';
+  });
+</script>
+
+</body>
+</html>
