@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocentePy - Plataforma de Concursos Docentes</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #f9fafb;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #2c3e50;
+        }
+        
+        .features {
+            padding: 4rem 2rem;
+            background: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+        
+        .navigation {
+            padding: 2rem;
+            background: #f8f9fa;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .nav-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .nav-card i {
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Bienvenido a DocentePy</h1>
+            <p>La plataforma digital para concursos docentes en Paraguay</p>
+            <div class="cta-buttons">
+                <a href="../registro.html" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Registrarse
+                </a>
+                <a href="../login.html" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">¿Por qué elegir DocentePy?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Búsqueda Inteligente</h3>
+                    <p>Encuentra concursos docentes que se adapten a tu perfil y especialidad.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Gestión Simplificada</h3>
+                    <p>Administra tus documentos y postulaciones desde un solo lugar.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Notificaciones</h3>
+                    <p>Recibe alertas sobre nuevos concursos y actualizaciones importantes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="navigation">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1rem;">Explora la plataforma</h2>
+            <div class="nav-grid">
+                <div class="nav-card">
+                    <a href="../visitante.html">
+                        <i class="fas fa-eye"></i>
+                        <h3>Modo Visitante</h3>
+                        <p>Explora concursos disponibles sin necesidad de registrarte</p>
+                    </a>
+                </div>
+                <div class="nav-card">
+                    <a href="../registro.html">
+                        <i class="fas fa-user-plus"></i>
+                        <h3>Registro</h3>
+                        <p>Crea tu cuenta para acceder a todas las funcionalidades</p>
+                    </a>
+                </div>
+                <div class="nav-card">
+                    <a href="../perfil.html">
+                        <i class="fas fa-user"></i>
+                        <h3>Mi Perfil</h3>
+                        <p>Gestiona tu información personal y profesional</p>
+                    </a>
+                </div>
+                <div class="nav-card">
+                    <a href="../admin.html">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Administración</h3>
+                        <p>Panel de control para administradores del sistema</p>
+                    </a>
+                </div>
+                <div class="nav-card">
+                    <a href="../preguntas-frecuentes.html">
+                        <i class="fas fa-question-circle"></i>
+                        <h3>Preguntas Frecuentes</h3>
+                        <p>Encuentra respuestas a las dudas más comunes</p>
+                    </a>
+                </div>
+                <div class="nav-card">
+                    <a href="../contacto.html">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Contacto</h3>
+                        <p>Ponte en contacto con nuestro equipo de soporte</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DocentePy. Todos los derechos reservados.</p>
+            <p>Desarrollado para facilitar los concursos docentes en Paraguay</p>
+        </div>
+    </footer>
+</body>
+</html>

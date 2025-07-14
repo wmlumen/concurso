@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - DocentePy</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo-docentepy.svg" alt="DocentePy Logo">
+                <span>DocentePy</span>
+            </a>
+            <nav>
+                <a href="index.html">Inicio</a>
+                <a href="registro.html">Registro</a>
+                <a href="visitante.html">Visitante</a>
+                <a href="admin.html">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="profile-section">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="assets/avatar-docente.jpg" alt="Foto de perfil">
+                    <button class="btn-edit-avatar">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                <div class="profile-info">
+                    <h1>María González</h1>
+                    <p class="profile-title">Docente de Matemáticas</p>
+                    <p class="profile-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Asunción, Paraguay
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="personal">
+                        <i class="fas fa-user"></i>
+                        Información Personal
+                    </button>
+                    <button class="tab-btn" data-tab="education">
+                        <i class="fas fa-graduation-cap"></i>
+                        Educación
+                    </button>
+                    <button class="tab-btn" data-tab="experience">
+                        <i class="fas fa-briefcase"></i>
+                        Experiencia
+                    </button>
+                    <button class="tab-btn" data-tab="applications">
+                        <i class="fas fa-file-alt"></i>
+                        Mis Postulaciones
+                    </button>
+                </div>
+
+                <div class="tab-content active" id="personal">
+                    <form class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" id="nombre" name="nombre" value="María">
+                            </div>
+                            <div class="form-group">
+                                <label for="apellido">Apellido</label>
+                                <input type="text" id="apellido" name="apellido" value="González">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cedula">Cédula</label>
+                                <input type="text" id="cedula" name="cedula" value="1.234.567">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" value="maria.gonzalez@email.com">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" name="telefono" value="+595 21 123 4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="especialidad">Especialidad</label>
+                                <select id="especialidad" name="especialidad">
+                                    <option value="matematicas" selected>Matemáticas</option>
+                                    <option value="lengua">Lengua y Literatura</option>
+                                    <option value="ciencias">Ciencias Naturales</option>
+                                    <option value="historia">Historia</option>
+                                    <option value="educacion-fisica">Educación Física</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+
+                <div class="tab-content" id="education">
+                    <div class="education-list">
+                        <div class="education-item">
+                            <h3>Licenciatura en Matemáticas</h3>
+                            <p>Universidad Nacional de Asunción</p>
+                            <span>2015 - 2019</span>
+                        </div>
+                        <div class="education-item">
+                            <h3>Especialización en Didáctica</h3>
+                            <p>Universidad Católica</p>
+                            <span>2020 - 2021</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="experience">
+                    <div class="experience-list">
+                        <div class="experience-item">
+                            <h3>Profesora de Matemáticas</h3>
+                            <p>Colegio San José</p>
+                            <span>2019 - Presente</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="applications">
+                    <div class="applications-list">
+                        <div class="application-item">
+                            <h3>Concurso Docente - Matemáticas</h3>
+                            <p>Ministerio de Educación</p>
+                            <span class="status pending">Pendiente</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DocentePy. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    // Remove active class from all tabs
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

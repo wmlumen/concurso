@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Frecuentes - DocentePy</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo-docentepy.svg" alt="DocentePy Logo">
+                <span>DocentePy</span>
+            </a>
+            <nav>
+                <a href="index.html">Inicio</a>
+                <a href="registro.html">Registro</a>
+                <a href="visitante.html">Visitante</a>
+                <a href="admin.html">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="faq-section">
+            <h1>Preguntas Frecuentes</h1>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Qué es DocentePy?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>DocentePy es una plataforma digital que facilita la gestión de concursos docentes en Paraguay, permitiendo a los educadores postularse a diferentes oportunidades laborales de manera eficiente.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Cómo me registro en la plataforma?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Para registrarte, haz clic en el botón "Registrarse" en la página principal, completa el formulario con tus datos personales y verifica tu email.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Qué documentos necesito para postularme?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Necesitarás tu CV actualizado, títulos académicos, certificados de experiencia laboral y cualquier documentación adicional que requiera el concurso específico.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Puedo postularme a múltiples concursos?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sí, puedes postularte a tantos concursos como desees, siempre y cuando cumplas con los requisitos específicos de cada uno.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>¿Cómo puedo seguir el estado de mi postulación?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Una vez que inicies sesión, podrás ver el estado de todas tus postulaciones en tu panel de usuario, donde se actualizará el progreso de cada concurso.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DocentePy. Todos los derechos reservados. | <a href="contacto.html">Contacto</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                const icon = item.querySelector('.faq-question i');
+                
+                question.addEventListener('click', function() {
+                    const isOpen = item.classList.contains('open');
+                    
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('open');
+                        otherItem.querySelector('.faq-question i').classList.remove('fa-chevron-up');
+                        otherItem.querySelector('.faq-question i').classList.add('fa-chevron-down');
+                    });
+                    
+                    // Toggle current item
+                    if (!isOpen) {
+                        item.classList.add('open');
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
