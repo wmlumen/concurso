@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - DocentePy</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo-docentepy.svg" alt="DocentePy Logo">
+                <span>DocentePy</span>
+            </a>
+            <nav>
+                <a href="index.html">Inicio</a>
+                <a href="registro.html">Registro</a>
+                <a href="visitante.html">Visitante</a>
+                <a href="admin.html" class="active">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="admin-redirect-section">
+            <div class="redirect-container">
+                <div class="redirect-content">
+                    <i class="fas fa-user-shield fa-4x"></i>
+                    <h1>Acceso Administrativo</h1>
+                    <p>Estás siendo redirigido al panel de administración completo.</p>
+                    <div class="redirect-actions">
+                        <a href="admin.html" class="btn btn-primary">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Ir al Panel de Admin
+                        </a>
+                        <a href="login.html" class="btn btn-outline">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Iniciar Sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-info">
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Gestión de Usuarios</h3>
+                    <p>Administra usuarios, permisos y roles en la plataforma.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-trophy"></i>
+                    <h3>Concursos</h3>
+                    <p>Crea y gestiona concursos públicos y privados.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Reportes</h3>
+                    <p>Genera reportes y estadísticas de la plataforma.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Configuración</h3>
+                    <p>Ajusta la configuración general del sistema.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DocentePy. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Auto-redirect after 3 seconds
+        setTimeout(() => {
+            window.location.href = 'admin.html';
+        }, 3000);
+    </script>
+</body>
+</html>
